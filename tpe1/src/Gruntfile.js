@@ -75,7 +75,7 @@ module.exports = function(grunt) {
       },
       bootstrap: {
         src: ['less/bootstrap.less'],
-        dest: 'dist/css/<%= pkg.name %>.css'
+        dest: 'app/css/<%= pkg.name %>.css'
       },
       min: {
         options: {
