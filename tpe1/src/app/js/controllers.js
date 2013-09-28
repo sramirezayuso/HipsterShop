@@ -8,12 +8,12 @@ angular.module('myApp.controllers', []).
   }])
   .controller('ProductsCtrl', ['$scope', function(sc) {
     sc.products = [
-      { title: "Zapato Rojo", price: 21.50 },
-      { title: "Zapato Rojo", price: 21.50 },
-      { title: "Zapato Rojo", price: 21.50 },
-      { title: "Zapato Rojo", price: 21.50 },
-      { title: "Zapato Rojo", price: 21.50 },
-      { title: "Zapato Azul", price: 24.50 }
+      { id: 1, title: "Zapato Rojo", price: 21.50 },
+      { id: 2, title: "Zapato Azul", price: 24.50 },
+      { id: 3, title: "Zapato Azul", price: 24.50 },
+      { id: 4, title: "Zapato Azul", price: 24.50 },
+      { id: 5, title: "Zapato Azul", price: 24.50 },
+      { id: 6, title: "Zapato Azul", price: 24.50 }
     ];
 
     sc.categories = [
@@ -23,6 +23,10 @@ angular.module('myApp.controllers', []).
       { title: "Anteojos", active: false }
     ];
 
+
+  }])
+  .controller('ProductCtrl', ['$scope', '$routeParams', function(sc, rt) {
+    // $rt.productId;
 
   }])
   .controller('MyCtrl2', [function() {
