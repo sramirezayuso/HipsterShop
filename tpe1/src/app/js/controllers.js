@@ -25,8 +25,20 @@ angular.module('myApp.controllers', []).
 
 
   }])
-  .controller('ProductCtrl', ['$scope', '$routeParams', function(sc, rt) {
-    // $rt.productId;
+  .controller('ProductCtrl', ['$scope', '$routeParams', function(sc, rp) {
+  // .controller('ProductCtrl', ['$scope', function(sc) {
+
+    sc.categories = [
+      { title: "Pantalones", active: false },
+      { title: "Remeras", active: true },
+      { title: "Zapatos", active: false },
+      { title: "Anteojos", active: false }
+    ];
+
+    sc.product = {
+      id: rp.productId,
+      title: "Remeras Verdes"
+    }
 
   }])
   .controller('MyCtrl2', [function() {
