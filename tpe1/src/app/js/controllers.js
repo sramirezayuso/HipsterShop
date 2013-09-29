@@ -3,9 +3,32 @@
 /* Controllers */
 
 angular.module('myApp.controllers', []).
-  controller('MyCtrl1', [function() {
+  controller('HomeCtrl', ['$scope', function(sc) {
+    sc.products = [
+      { title: "Camisa Leñadoras Abercrombie", price: 210.00 },
+      { title: "Vestido Minifalda Negro de Encaje y Jersey", price: 170.00 },
+      { title: "Jean Elastizado Chupín Tiro Medio Óxido", price: 120.00 },
+      { title: "Cartera Gamuza Multicolor Con Dos Bolsillos", price: 450.00 },
+      { title: "Buzo Gap Hombre", price: 320.00 },
+      { title: "Zapato Punta Priamo", price: 500.00 },
+    ];
+
+    sc.categories1 = [
+      { title: "Pantalones"},
+      { title: "Remeras"},
+      { title: "Zapatos"},
+      { title: "Anteojos"},
+    ];
+
+	 sc.categories2 = [
+	  { title: "Camisas"},
+      { title: "Camperas"},
+      { title: "Chalecos"},
+      { title: "Bufandas"}
+    ];
 
   }])
+  
   .controller('ProductsCtrl', ['$scope', function(sc) {
     sc.products = [
       { id: 1, title: "Zapato Rojo", price: 21.50 },

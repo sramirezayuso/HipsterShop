@@ -1,0 +1,22 @@
+#genres-home{
+	background:#2b3b58;
+	color:white;
+}
+
+#genres-home a:link{
+	color:white;
+}
+
+#genres-home a:hover{
+	color:gray;
+	background:#2b3b58;
+}
+
+.symbol-home{
+	padding:10px;
+}
+
+#thumbnail-home{
+	border:0px;
+	padding-bottom:25px;
+}

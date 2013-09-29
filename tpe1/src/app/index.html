@@ -2,13 +2,14 @@
 <html lang="en" ng-app="myApp">
 <head>
   <meta charset="utf-8">
-  <title>Hipster Store</title>
+  <title>Hipster Shop</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="css/hipstershop.css" rel="stylesheet" media="screen">
 </head>
 <body>
-  <nav class=topbar>
-    <div class=container>
+  <nav class="topbar">
+    <div class="container">
       <ul class="topbar-links list-inline pull-right">
         <li><a class=a href=#>Ver carrito</a></li>
         <li><a href=#>Check out</a></li>
@@ -16,13 +17,13 @@
     </div>
   </nav>
   <nav class="navbar navbar-default" role="navigation">
-  <div class=container>
+  <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Hipster Store</a>
+      <a class="navbar-brand" href="#">Hipster Shop</a>
     </div>
 
       <ul class="nav navbar-nav">
-        <li class=active><a href="#/products">Mujeres</a></li>
+        <li class="active"><a href="#/products">Mujeres</a></li>
         <li><a href="#/products">Hombres</a></li>
       </ul>
 
@@ -35,7 +36,7 @@
   </div>
   </nav>
 
-  <div class=container>
+  <div class="container">
     <div ng-view></div>
   </div>
 
