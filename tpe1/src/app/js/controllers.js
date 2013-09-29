@@ -5,9 +5,9 @@
 angular.module('myApp.controllers', []).
   controller('HomeCtrl', ['$scope', function(sc) {
     sc.products = [
-      { title: "Camisa Leñadoras Abercrombie", price: 210.00 },
+      { title: "Camisa LeÅ„adoras Abercrombie", price: 210.00 },
       { title: "Vestido Minifalda Negro de Encaje y Jersey", price: 170.00 },
-      { title: "Jean Elastizado Chupín Tiro Medio Óxido", price: 120.00 },
+      { title: "Jean Elastizado ChupÃ­n Tiro Medio Ã“xido", price: 120.00 },
       { title: "Cartera Gamuza Multicolor Con Dos Bolsillos", price: 450.00 },
       { title: "Buzo Gap Hombre", price: 320.00 },
       { title: "Zapato Punta Priamo", price: 500.00 },
@@ -20,8 +20,8 @@ angular.module('myApp.controllers', []).
       { title: "Anteojos"},
     ];
 
-	 sc.categories2 = [
-	  { title: "Camisas"},
+    sc.categories2 = [
+      { title: "Camisas"},
       { title: "Camperas"},
       { title: "Chalecos"},
       { title: "Bufandas"}
@@ -66,4 +66,15 @@ angular.module('myApp.controllers', []).
   }])
   .controller('MyCtrl2', [function() {
 
-  }]);
+  }])
+
+  .controller('CartCtrl', ['$scope', function(sc) {
+    sc.products = [
+      { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
+      { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
+      { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
+      { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
+      { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
+    ];
+  }])
+;

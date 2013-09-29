@@ -1,0 +1,18 @@
+<div class="header-image header-image-women">
+  <h1>Carrito</h1>
+</div>
+
+<div class=row>
+  <div class="col-md-9">
+    <div class="row" ng-repeat="product in products">
+      <a href="#" class="thumbnail thumbnail-infinite cart-elem">
+        <img class="cart-elem-img" src="http://placehold.it/150x150" alt="...">
+        <h2 class="cart-elem-title">{{ product.title }}</h2>
+        <span class="cart-elem-size">Talle: {{ product.size }}</span>
+        <span class="cart-elem-color">Color: {{ product.color }}</span>
+        <span class="cart-elem-price">Precio: {{ product.price }}</span>
+        <span class="cart-elem-del">(X)</span>
+      </a>
+    </div>
+  </div>
+</div>
