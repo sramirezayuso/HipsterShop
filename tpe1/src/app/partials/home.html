@@ -1,0 +1,61 @@
+<img src="./img/hipster.png" class="img-responsive" alt="Hipster Image">
+<div class="col-md-12">
+	<div class="row" id="genres-home">
+		<div class="col-md-6">
+			<div class="col-md-4">
+				<img src="./img/womansymbol.png" class="img-responsive symbol-home" alt="Woman">
+			</div>
+			
+			<div class="col-md-8">
+				<h3>Mujer</h3>
+				
+				<div class="col-md-6">
+					<ul class="nav">
+						<li ng-repeat="category in categories1"><a href=#>{{ category.title }}</a></li>
+					</ul>
+				</div>
+				
+				<div class="col-md-6">
+					<ul class="nav">
+						<li ng-repeat="category in categories2"><a href=#>{{ category.title }}</a></li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+		
+		<div class="col-md-6">
+			<div class="col-md-4">
+				<img src="./img/mansymbol.png" class="img-responsive symbol-home" alt="Man">
+			</div>
+			
+			<div class="col-md-8">
+				<h3>Hombre</h3>
+				
+				<div class="col-md-6">
+					<ul class="nav">
+						<li ng-repeat="category in categories1"><a href=#>{{ category.title }}</a></li>
+					</ul>
+				</div>
+				
+				<div class="col-md-6">
+					<ul class="nav">
+						<li ng-repeat="category in categories2"><a href=#>{{ category.title }}</a></li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<h3>Destacados de la semana</h3>
+
+	<div class="row">
+		<div class="col-md-4 text-center" ng-repeat="product in products">
+			<a href="#/products/{{ product.id }}" class="thumbnail" id="thumbnail-home">
+				<img src="http://placehold.it/250x250" alt="...">
+				<span class="caption">{{ product.title }}</span>
+			</a>
+		</div>
+	</div>
+</div>
