@@ -13,6 +13,29 @@
   </div>
 
   <div class="col-md-9">
+    <form class="">
+      <div class=row>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label for=order-by-input>Ordenar</label>
+            <select id=order-by-input class="form-control input-sm form-control-horizontal-with-label">
+              <option>alfabeticamente</option>
+              <option>por marca</option>
+              <option>por precio</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for=filter-by-age-input>Edad</label>
+            <select id=filter-by-age-input class="form-control input-sm form-control-horizontal-with-label">
+              <option>adulto</option>
+              <option>infantil</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
     <div class="row">
       <div class="col-md-4" ng-repeat="product in products">
         <a href="#/products/{{ product.id }}" class="thumbnail thumbnail-infinite">
