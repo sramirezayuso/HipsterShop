@@ -76,5 +76,13 @@ angular.module('myApp.controllers', []).
       { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
       { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
     ];
+
+    sc.runningTotal = function(){
+      var runningTotal = 0;
+      angular.forEach(sc.products, function(product, index){
+        runningTotal += product.price;
+      });
+      return runningTotal;
+    };
   }])
 ;

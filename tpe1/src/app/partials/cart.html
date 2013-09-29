@@ -1,8 +1,8 @@
-<div class="header-image header-image-women">
+<div class="header-image">
   <h1>Carrito</h1>
 </div>
 
-<div class=row>
+<div class="row box">
   <div class="col-md-9">
     <div class="row" ng-repeat="product in products">
       <a href="#" class="thumbnail thumbnail-infinite cart-elem">
@@ -10,9 +10,12 @@
         <h2 class="cart-elem-title">{{ product.title }}</h2>
         <span class="cart-elem-size">Talle: {{ product.size }}</span>
         <span class="cart-elem-color">Color: {{ product.color }}</span>
-        <span class="cart-elem-price">Precio: {{ product.price }}</span>
+        <span class="cart-elem-price">Precio: ${{ product.price }}</span>
         <span class="cart-elem-del">(X)</span>
       </a>
     </div>
+    <span class="cart-total">Total: ${{ runningTotal() }}</span>
+    <button type="button" class="btn btn-default cart-submit">Checkout</button>
   </div>
 </div>
+
