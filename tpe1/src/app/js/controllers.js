@@ -221,4 +221,24 @@ angular.module('myApp.controllers', []).
     };
 
   }])
+
+  .controller('CheckoutCtrl', ['$scope', function(sc) {
+
+    sc.products = [
+      { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
+      { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
+      { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
+      { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
+      { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
+    ];
+
+    sc.runningTotal = function(){
+      var runningTotal = 0;
+      angular.forEach(sc.products, function(product, index){
+        runningTotal += product.price;
+      });
+      return runningTotal;
+    };
+
+  }])
 ;

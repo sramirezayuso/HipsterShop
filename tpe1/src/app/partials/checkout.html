@@ -1,0 +1,63 @@
+<div class="header-image">
+  <h1>Checkout</h1>
+</div>
+
+<div class="checkout-container">
+
+	<div class="right-container">
+		<div class="saved-address-container">
+			<div class="saved-address" ng-repeat="address in addresses">
+			</div>
+		</div>
+		<div class="checkout-summary">
+			<div ng-repeat="product in products">
+				<span class="checkout-product-title">{{ product.title }}</span>
+	         	<span class="checkout-product-size">Talle: {{ product.size }}</span>
+	          	<span class="checkout-product-color">Color: {{ product.color }}</span>
+	          	<span class="checkout-product-price">Precio: ${{ product.price }}</span>
+			</div>
+			<span class="checkout-summary-total">Total: {{runningTotal()}}</span>
+		</div>
+	</div>
+
+	<div class="new-address">
+		<form role="form">
+			<div class="addrForm-elem-group">
+				<label class="form-label" for="name">Nombre</label>
+				<input class="addrForm-elem" id="name" type="text" required="required">
+			</div>
+			<div class="addrForm-elem-group">
+				<label class="form-label" for="street">Calle</label>
+				<input class="addrForm-elem" id="street" type="text" required="required">
+				</div>
+			<div class="addrForm-elem-group">
+				<label class="form-label" for="door">Puerta</label>
+				<input class="addrForm-elem" id="door" type="text" required="required">
+			</div>
+			<div class="addrForm-elem-group">
+				<label class="form-label" for="floor">Piso</label>
+				<input class="addrForm-elem" id="floor" type="text" required="required">
+			</div>
+			<div class="addrForm-elem-group">
+				<label class="form-label" for="apartment">Departamento</label>
+				<input class="addrForm-elem" id="apartment" type="text" required="required">
+			</div>
+			<div class="addrForm-elem-group">
+				<label class="form-label" for="province">Provincia</label>
+				<input class="addrForm-elem" id="province" type="text" required="required">
+			</div>
+			<div class="addrForm-elem-group">
+				<label class="form-label" for="city">Ciudad</label>
+				<input class="addrForm-elem" id="city" type="text" required="required">
+			</div>
+			<div class="addrForm-elem-group">
+				<label class="form-label" for="zipCode">Código Postal</label>
+				<input class="addrForm-elem" id="zipCode" type="text" required="required">
+			</div>
+			<div class="addrForm-elem-group">
+				<label class="form-label" for="phone">Teléfono</label>
+				<input class="addrForm-elem" id="phone" type="tel" required="required">
+			</div>
+		</form>
+	</div>
+</div>

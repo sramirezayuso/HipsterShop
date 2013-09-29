@@ -12,5 +12,6 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     $routeProvider.when('/access', {templateUrl: 'partials/access.html', controller: 'AccessCtrl'});
     $routeProvider.when('/orders', {templateUrl: 'partials/orders.html', controller: 'OrdersCtrl'});
     $routeProvider.when('/orders/:orderno', {templateUrl: 'partials/order.html', controller: 'OrderCtrl'});
+    $routeProvider.when('/checkout', {templateUrl: 'partials/checkout.html', controller: 'CheckoutCtrl'});
     $routeProvider.otherwise({redirectTo: '/home'});
   }]);
