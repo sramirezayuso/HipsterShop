@@ -31,12 +31,12 @@ angular.module('myApp.controllers', []).
 
   .controller('ProductsCtrl', ['$scope', function(sc) {
     sc.products = [
-      { id: 1, title: "Zapato Rojo", price: 21.50 },
-      { id: 2, title: "Zapato Azul", price: 24.50 },
-      { id: 3, title: "Zapato Azul", price: 24.50 },
-      { id: 4, title: "Zapato Azul", price: 24.50 },
-      { id: 5, title: "Zapato Azul", price: 24.50 },
-      { id: 6, title: "Zapato Azul", price: 24.50 }
+      { id: 1, title: "Zapato Rojo", price: 21.50, brand: "A"},
+      { id: 2, title: "Azul el zapato", price: 26.00, brand: "A"},
+      { id: 3, title: "Zapato Azul", price: 24.50, brand: "E"},
+      { id: 4, title: "Verde la camiseta", price: 24.50, brand: "A"},
+      { id: 5, title: "Zapato Azul", price: 14.50, brand: "B"},
+      { id: 6, title: "Zapato Azul", price: 25.50, brand: "C"},
     ];
 
     sc.categories = [
@@ -45,6 +45,8 @@ angular.module('myApp.controllers', []).
       { title: "Zapatos", active: false },
       { title: "Anteojos", active: false }
     ];
+
+    sc.order = "brand";
 
 
   }])
@@ -169,7 +171,7 @@ angular.module('myApp.controllers', []).
         { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
         { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
       ]},
-      { orderno: 34644, 
+      { orderno: 34644,
         products: [
         { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
         { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
@@ -177,7 +179,7 @@ angular.module('myApp.controllers', []).
         { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
         { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
       ]},
-      { orderno: 23483, 
+      { orderno: 23483,
         products: [
         { title: "Zapatos", price: 24.50, size: 12, color: 'Rojo' },
         { title: "Zapatillas", price: 12.50, size: 12, color: 'Azul' },
@@ -193,7 +195,7 @@ angular.module('myApp.controllers', []).
         { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
         { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
       ]},
-      { orderno: 78073, 
+      { orderno: 78073,
         products: [
         { title: "Zapatos", price: 41.50, size: 12, color: 'Rojo' },
         { title: "Zapatillas", price: 21.70, size: 12, color: 'Azul' },

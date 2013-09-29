@@ -18,10 +18,10 @@
         <div class="col-md-4">
           <div class="form-group">
             <label for=order-by-input>Ordenar</label>
-            <select id=order-by-input class="form-control input-sm form-control-horizontal-with-label">
-              <option>alfabeticamente</option>
-              <option>por marca</option>
-              <option>por precio</option>
+            <select ng-model=order id=order-by-input class="form-control input-sm form-control-horizontal-with-label">
+              <option value=title>alfábeticamente</option>
+              <option value=brand>por marca</option>
+              <option value=price>por precio</option>
             </select>
           </div>
         </div>
@@ -37,10 +37,10 @@
       </div>
     </form>
     <div class="row">
-      <div class="col-md-4" ng-repeat="product in products">
+      <div class="col-md-4" ng-repeat="product in products | orderBy: order">
         <a href="#/products/{{ product.id }}" class="thumbnail thumbnail-infinite">
           <img src="http://placehold.it/250x250" alt="...">
-          <span class=caption>{{ product.title }} - {{ product.price }}</span>
+          <span class=caption>{{ product.title }} - ${{ product.price }} Marca: {{ product.brand }}</span>
         </a>
       </div>
     </div>
