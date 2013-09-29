@@ -1,0 +1,20 @@
+<div class="header-image">
+  <h1>Pedidos</h1>
+</div>
+
+<div class="row box">
+  <div class="col-md-9">
+    <div class="row" ng-repeat="order in orders">
+      <a href="#" class="thumbnail thumbnail-infinite order">
+        <h6>Pedido nro: {{ order.orderno }}</h6>
+        <div class="order-elem" ng-repeat="product in order.products">
+          <span class="order-elem-title">{{ product.title }}</span>
+          <span class="order-elem-size">Talle: {{ product.size }}</span>
+          <span class="order-elem-color">Color: {{ product.color }}</span>
+          <span class="order-elem-price">Precio: ${{ product.price }}</span>
+        </div>
+        <span class="order-total">Total: {{runningTotal(order.orderno)}}</span>
+      </a>
+    </div>
+  </div>
+</div>

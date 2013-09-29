@@ -64,6 +64,7 @@ angular.module('myApp.controllers', []).
     }
 
   }])
+
   .controller('MyCtrl2', [function() {
 
   }])
@@ -84,5 +85,64 @@ angular.module('myApp.controllers', []).
       });
       return runningTotal;
     };
+  }])
+
+  .controller('OrdersCtrl', ['$scope', function(sc) {
+
+    sc.orders = [
+      { orderno: 21343,
+        products: [
+        { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
+        { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
+        { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
+        { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
+        { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
+      ]},
+      { orderno: 34644, 
+        products: [
+        { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
+        { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
+        { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
+        { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
+        { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
+      ]},
+      { orderno: 23483, 
+        products: [
+        { title: "Zapatos", price: 24.50, size: 12, color: 'Rojo' },
+        { title: "Zapatillas", price: 12.50, size: 12, color: 'Azul' },
+        { title: "Ojotas", price: 21.90, size: 12, color: 'Amarillo' },
+        { title: "Mocasines", price: 41.20, size: 12, color: 'Verde' },
+        { title: "Botas", price: 54.50, size: 12, color: 'Violeta' },
+      ]},
+      { orderno: 18442,
+        products: [
+        { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
+        { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
+        { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
+        { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
+        { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
+      ]},
+      { orderno: 78073, 
+        products: [
+        { title: "Zapatos", price: 41.50, size: 12, color: 'Rojo' },
+        { title: "Zapatillas", price: 21.70, size: 12, color: 'Azul' },
+        { title: "Ojotas", price: 23.50, size: 12, color: 'Amarillo' },
+        { title: "Mocasines", price: 24.50, size: 12, color: 'Verde' },
+        { title: "Botas", price: 31.50, size: 12, color: 'Violeta' },
+      ]},
+    ];
+
+    sc.runningTotal = function(orderno){
+      var runningTotal = 0;
+      angular.forEach(sc.orders, function(order, index){
+        if (order.orderno == orderno) {
+          angular.forEach(order.products, function(product, index){
+            runningTotal += product.price;
+          })
+        };
+      });
+      return runningTotal;
+    };
+
   }])
 ;

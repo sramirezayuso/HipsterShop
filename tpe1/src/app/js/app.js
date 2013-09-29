@@ -9,5 +9,6 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     $routeProvider.when('/products', {templateUrl: 'partials/products.html', controller: 'ProductsCtrl'});
     $routeProvider.when('/products/:productId', {templateUrl: 'partials/product.html', controller: 'ProductCtrl'});
     $routeProvider.when('/cart', {templateUrl: 'partials/cart.html', controller: 'CartCtrl'});
+    $routeProvider.when('/orders', {templateUrl: 'partials/orders.html', controller: 'OrdersCtrl'});
     $routeProvider.otherwise({redirectTo: '/home'});
   }]);
