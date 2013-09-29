@@ -1,6 +1,6 @@
 <img src="./img/hipster.png" class="img-responsive" alt="Hipster Image">
 <div class="col-md-12">
-	<div class="row" id="genres-home">
+	<div class="row genres-home">
 		<div class="col-md-6">
 			<div class="col-md-4">
 				<img src="./img/womansymbol.png" class="img-responsive symbol-home" alt="Woman">
@@ -52,7 +52,7 @@
 
 	<div class="row">
 		<div class="col-md-4 text-center" ng-repeat="product in products">
-			<a href="#/products/{{ product.id }}" class="thumbnail" id="thumbnail-home">
+			<a href="#/products/{{ product.id }}" class="thumbnail thumbnail-home">
 				<img src="http://placehold.it/250x250" alt="...">
 				<span class="caption">{{ product.title }}</span>
 			</a>
