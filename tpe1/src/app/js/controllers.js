@@ -28,7 +28,7 @@ angular.module('myApp.controllers', []).
     ];
 
   }])
-  
+
   .controller('ProductsCtrl', ['$scope', function(sc) {
     sc.products = [
       { id: 1, title: "Zapato Rojo", price: 21.50 },
@@ -48,8 +48,8 @@ angular.module('myApp.controllers', []).
 
 
   }])
+
   .controller('ProductCtrl', ['$scope', '$routeParams', function(sc, rp) {
-  // .controller('ProductCtrl', ['$scope', function(sc) {
 
     sc.categories = [
       { title: "Pantalones", active: false },
@@ -60,12 +60,12 @@ angular.module('myApp.controllers', []).
 
     sc.product = {
       id: rp.productId,
-      title: "Remeras Verdes"
+      title: "Remeras Verdes",
+      price: 40,
+      brand: "Printashirt",
+      color: "Verde",
+      imageUrl: "http://rlv.zcache.com/omg_hipster_triangle_t_shirt-r9ec715764a9c4a4c840fc9de6bc978e3_8041a_512.jpg?bg=0xffffff"
     }
-
-  }])
-
-  .controller('MyCtrl2', [function() {
 
   }])
 
@@ -98,7 +98,7 @@ angular.module('myApp.controllers', []).
         { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
         { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
       ]},
-      { orderno: 34644, 
+      { orderno: 34644,
         products: [
         { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
         { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
@@ -106,7 +106,7 @@ angular.module('myApp.controllers', []).
         { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
         { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
       ]},
-      { orderno: 23483, 
+      { orderno: 23483,
         products: [
         { title: "Zapatos", price: 24.50, size: 12, color: 'Rojo' },
         { title: "Zapatillas", price: 12.50, size: 12, color: 'Azul' },
@@ -122,7 +122,7 @@ angular.module('myApp.controllers', []).
         { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
         { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
       ]},
-      { orderno: 78073, 
+      { orderno: 78073,
         products: [
         { title: "Zapatos", price: 41.50, size: 12, color: 'Rojo' },
         { title: "Zapatillas", price: 21.70, size: 12, color: 'Azul' },
