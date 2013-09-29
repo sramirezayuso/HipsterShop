@@ -2,6 +2,13 @@
     <h1>{{ product.title }}</h1>
 </div>
 
+<ol class="breadcrumb">
+  <li><a href="#">Inicio</a></li>
+  <li><a href="#">Remeras</a></li>
+  <li><a href="#">Manga corta</a></li>
+  <li class="active">{{ product.title }}</li>
+</ol>
+
 <div class=row>
   <div class="col-md-3" ng-include="'partials/sidebar.html'">
   </div>
