@@ -1,0 +1,18 @@
+<div class="header-image">
+  <h1>Pedido nro: {{ orderno }}</h1>
+</div>
+
+<div class="row box">
+  <div class="col-md-9">
+    <div class="row" ng-repeat="product in products()">
+      <a href="#" class="thumbnail thumbnail-infinite order-product">
+        <img class="order-product-img" src="http://placehold.it/150x150" alt="...">
+        <h2 class="order-product-title">{{ product.title }}</h2>
+        <span class="order-product-size">Talle: {{ product.size }}</span>
+        <span class="order-product-color">Color: {{ product.color }}</span>
+        <span class="order-product-price">Precio: ${{ product.price }}</span>
+      </a>
+    </div>
+    <span class="order-product-total">Total: ${{ runningTotal() }}</span>
+  </div>
+</div>

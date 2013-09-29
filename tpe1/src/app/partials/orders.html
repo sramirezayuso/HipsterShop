@@ -5,7 +5,7 @@
 <div class="row box">
   <div class="col-md-9">
     <div class="row" ng-repeat="order in orders">
-      <a href="#" class="thumbnail thumbnail-infinite order">
+      <a href="#/orders/{{ order.orderno }}" class="thumbnail thumbnail-infinite order">
         <h6>Pedido nro: {{ order.orderno }}</h6>
         <div class="order-elem" ng-repeat="product in order.products">
           <span class="order-elem-title">{{ product.title }}</span>
