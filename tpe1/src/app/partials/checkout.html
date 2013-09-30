@@ -5,18 +5,23 @@
 <div class="checkout-container">
 
 	<div class="right-container">
-		<div class="saved-address-container">
-			<div class="saved-address" ng-repeat="address in addresses">
-			</div>
-		</div>
 		<div class="checkout-summary">
-			<div ng-repeat="product in products">
+			<div class="checkout-product" ng-repeat="product in products">
 				<span class="checkout-product-title">{{ product.title }}</span>
 	         	<span class="checkout-product-size">Talle: {{ product.size }}</span>
 	          	<span class="checkout-product-color">Color: {{ product.color }}</span>
 	          	<span class="checkout-product-price">Precio: ${{ product.price }}</span>
 			</div>
 			<span class="checkout-summary-total">Total: {{runningTotal()}}</span>
+		</div>
+		<div class="saved-address-container">
+			<div class="saved-address" ng-repeat="address in addresses">
+				<span class="saved-address-data">Nombre: {{ address.name }}</span>
+				<span class="saved-address-data">Dirección: {{ address.street }} {{ address.door }}, {{ address.floor }} {{ address.apartment }}</span>
+				<span class="saved-address-data">Ciudad: {{ address.city }}, {{ address.province }}</span>
+				<span class="saved-address-data">Código Postal: {{ address.zipCode }}</span>
+				<span class="saved-address-data">Teléfono: {{ address.phone }}</span>
+			</div>
 		</div>
 	</div>
 

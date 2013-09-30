@@ -232,6 +232,12 @@ angular.module('myApp.controllers', []).
       { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
     ];
 
+    sc.addresses = [
+      { name: "Juan", street: "Rivadavia", door: 4060, floor: 1, apartment: "E", province: "Buenos Aires", city: "Capital Federal", zipCode: "13324", phone: "4892-2343" },
+      { name: "Juan", street: "Rivadavia", door: 4060, floor: 1, apartment: "E", province: "Buenos Aires", city: "Capital Federal", zipCode: "13324", phone: "4892-2343" },
+      { name: "Juan", street: "Rivadavia", door: 4060, floor: 1, apartment: "E", province: "Buenos Aires", city: "Capital Federal", zipCode: "13324", phone: "4892-2343" }
+    ];
+
     sc.runningTotal = function(){
       var runningTotal = 0;
       angular.forEach(sc.products, function(product, index){
