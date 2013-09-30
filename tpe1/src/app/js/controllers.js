@@ -147,7 +147,10 @@ angular.module('myApp.controllers', []).
     };
 
   }])
+.controller('AccessCtrl', ['$scope', '$routeParams', function(sc, rp) {
 
+
+}])
 .controller('OrderCtrl', ['$scope', '$routeParams', function(sc, rp) {
 
     sc.orderno = rp.orderno;
