@@ -1,6 +1,20 @@
+//ng-click="goOrder(order.orderno)
+
 .order {
-	overflow: hidden;
-	position: relative;
+	.make-row();
+	.border-radius(8px);
+	.transition(0.2s);
+	color: #666666;
+
+	&:hover {
+		background-color: #D3D3D3;
+		color: #222222;
+	}
+}
+
+.order-container {
+	.make-md-column(8);
+	.make-md-column-offset(2);
 }
 
 .order-elem {
@@ -9,34 +23,41 @@
 }
 
 .order-elem-data {
-	position: absolute;
+	.make-md-column(3);
 	font-size: 1em;
 	font-family: Arial, Helvetica, sans-serif;
+}
+
+.order:hover .order-elem-title {
 	color: #000000;
 }
 
 .order-elem-title {
-	font-family: Arial, Helvetica, sans-serif;
+	.order-elem-data;
+	font-weight: bold;
+	color: #444444;
+}
+
+.order:hover .order-elem-title {
 	color: #000000;
 }
 
 .order-elem-size {
 	.order-elem-data;
-	left: 20em;
 }
 
 .order-elem-price {
 	.order-elem-data;
-	left: 50em;
 }
 
 .order-elem-color {
 	.order-elem-data;
-	left: 35em;
 }
 
 .order-total {
+	.make-md-column(3);
+	.make-md-column-offset(9);
 	margin-top: 1.5em;
-	font-size: 1em;
-	float: right;
+	font-size: 1.2em;
+	font-weight: bold;
 }

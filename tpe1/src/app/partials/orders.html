@@ -2,19 +2,17 @@
   <h1>Pedidos</h1>
 </div>
 
-<div class="row box">
-  <div class="col-md-9">
-    <div class="row" ng-repeat="order in orders">
-      <a href="#/orders/{{ order.orderno }}" class="thumbnail thumbnail-infinite order">
-        <h6>Pedido nro: {{ order.orderno }}</h6>
-        <div class="order-elem" ng-repeat="product in order.products">
-          <span class="order-elem-title">{{ product.title }}</span>
-          <span class="order-elem-size">Talle: {{ product.size }}</span>
-          <span class="order-elem-color">Color: {{ product.color }}</span>
-          <span class="order-elem-price">Precio: ${{ product.price }}</span>
-        </div>
-        <span class="order-total">Total: {{runningTotal(order.orderno)}}</span>
-      </a>
+
+<div class="order-container">
+  <div class="order" ng-repeat="order in orders">
+    <h6>Pedido nro: {{ order.orderno }}</h6>
+    <div class="order-elem" ng-repeat="product in order.products" ng-click="goOrder( order.orderno )">
+      <span class="order-elem-title">{{ product.title }}</span>
+      <span class="order-elem-size">Talle: {{ product.size }}</span>
+      <span class="order-elem-color">Color: {{ product.color }}</span>
+      <span class="order-elem-price">Precio: ${{ product.price }}</span>
     </div>
+    <span class="order-total">Total: {{runningTotal(order.orderno)}}</span>
   </div>
 </div>
+

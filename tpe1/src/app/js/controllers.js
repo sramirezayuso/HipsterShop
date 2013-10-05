@@ -89,7 +89,7 @@ angular.module('myApp.controllers', []).
     };
   }])
 
-  .controller('OrdersCtrl', ['$scope', function(sc) {
+  .controller('OrdersCtrl', ['$scope', '$location', function(sc, loc) {
 
     sc.orders = [
       { orderno: 21343,
@@ -133,6 +133,10 @@ angular.module('myApp.controllers', []).
         { title: "Botas", price: 31.50, size: 12, color: 'Violeta' },
       ]},
     ];
+
+    sc.goOrder = function ( orderno ) {
+      loc.path( '/orders/' + orderno );
+    };
 
     sc.runningTotal = function(orderno){
       var runningTotal = 0;
