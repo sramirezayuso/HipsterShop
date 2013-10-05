@@ -5,6 +5,7 @@
 .saved-address-container {
 	.make-row();
 	margin-top: 7em;
+	text-align: left;
 }
 
 .saved-address {
@@ -17,6 +18,7 @@
 	&:hover {
 		background-color: #D3D3D3;
 		color: #000000;
+		cursor: pointer;
 	}
 }
 
@@ -29,7 +31,7 @@
 	color: inherit;
 }
 
-.new-address {
+.address {
 	.make-md-column(5);
 	margin-top: 2em;
 }
@@ -47,13 +49,15 @@
 	.form-control;
 }
 
-.right-container {
+.left-container {
 	.make-md-column(7);
 	margin-top: 2em;
 }
 
 .checkout-summary {
 	.make-row();
+	padding: 0.5em;
+	padding-left: 1em;
 }
 
 .checkout-product {

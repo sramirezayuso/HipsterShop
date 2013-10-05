@@ -243,9 +243,11 @@ angular.module('myApp.controllers', []).
 
     sc.addresses = [
       { name: "Juan", street: "Rivadavia", door: 4060, floor: 1, apartment: "E", province: "Buenos Aires", city: "Capital Federal", zipCode: "13324", phone: "4892-2343" },
-      { name: "Juan", street: "Rivadavia", door: 4060, floor: 1, apartment: "E", province: "Buenos Aires", city: "Capital Federal", zipCode: "13324", phone: "4892-2343" },
+      { name: "Pedro", street: "Rivadavia", door: 4060, floor: 1, apartment: "E", province: "Buenos Aires", city: "Capital Federal", zipCode: "13324", phone: "4243-2343" },
       { name: "Juan", street: "Rivadavia", door: 4060, floor: 1, apartment: "E", province: "Buenos Aires", city: "Capital Federal", zipCode: "13324", phone: "4892-2343" }
     ];
+
+    sc.currentAddr = {};
 
     sc.runningTotal = function(){
       var runningTotal = 0;
@@ -253,6 +255,10 @@ angular.module('myApp.controllers', []).
         runningTotal += product.price;
       });
       return runningTotal;
+    };
+
+    sc.loadSavedAddress = function( idx ) {
+      sc.currentAddr = JSON.parse(JSON.stringify(sc.addresses[idx]));
     };
 
   }])
