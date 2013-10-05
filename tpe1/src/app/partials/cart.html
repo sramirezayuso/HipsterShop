@@ -11,7 +11,7 @@
       <span class="cart-elem-color">Color: {{ product.color }}</span>
       <span class="cart-elem-price">Precio: ${{ product.price }}</span>
     </div>
-    <button type="button" class="cart-elem-del">x</button>
+    <button type="button" class="cart-elem-del" animate remove="remove($index)">x</button>
   </div>
   <span class="cart-total">Total: ${{ runningTotal() }}</span>
   <button type="button" class="btn btn-default cart-submit">Checkout</button>

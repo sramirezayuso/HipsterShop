@@ -6,10 +6,19 @@
 .cart-elem {
 	.make-row();
 	.border-radius(8px);
-	.transition(0.2s);
-	padding: 0.5em;
+	.transition(0.2s; all; ease);
+    overflow: hidden;
+    padding: 0.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
 	color: #666666;
-	margin-top: 1em;
+	
+
+	&.cart-hide {
+		max-height: 0;
+		margin: 0 10px;
+		padding: 0 10px;
+	}
 
 	&:hover {
 		background-color: #D3D3D3;

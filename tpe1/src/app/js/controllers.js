@@ -87,6 +87,11 @@ angular.module('myApp.controllers', []).
       });
       return runningTotal;
     };
+
+    sc.remove = function( idx ) {
+      sc.products.splice(idx, 1);
+    };
+
   }])
 
   .controller('OrdersCtrl', ['$scope', '$location', function(sc, loc) {
