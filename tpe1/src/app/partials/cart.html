@@ -2,20 +2,18 @@
   <h1>Carrito</h1>
 </div>
 
-<div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <div class="row" ng-repeat="product in products">
-      <a href="#" class="thumbnail cart-elem">
-        <img class="cart-elem-img" src="http://placehold.it/150x150" alt="...">
-        <h2 class="cart-elem-title">{{ product.title }}</h2>
-        <span class="cart-elem-size">Talle: {{ product.size }}</span>
-        <span class="cart-elem-color">Color: {{ product.color }}</span>
-        <span class="cart-elem-price">Precio: ${{ product.price }}</span>
-        <span class="cart-elem-del">(X)</span>
-      </a>
+<div class="product-container">
+  <div class="cart-elem" ng-repeat="product in products">
+    <img class="cart-elem-img" src="http://placehold.it/150x150" alt="...">
+    <div class="info-container">
+      <h2 class="cart-elem-title">{{ product.title }}</h2>
+      <span class="cart-elem-size">Talle: {{ product.size }}</span>
+      <span class="cart-elem-color">Color: {{ product.color }}</span>
+      <span class="cart-elem-price">Precio: ${{ product.price }}</span>
     </div>
-    <span class="cart-total">Total: ${{ runningTotal() }}</span>
-    <button type="button" class="btn btn-default cart-submit">Checkout</button>
+    <button type="button" class="cart-elem-del">x</button>
   </div>
+  <span class="cart-total">Total: ${{ runningTotal() }}</span>
+  <button type="button" class="btn btn-default cart-submit">Checkout</button>
 </div>
 

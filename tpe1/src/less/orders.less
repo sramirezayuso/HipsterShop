@@ -1,23 +1,25 @@
-//ng-click="goOrder(order.orderno)
+.order-container {
+	.make-md-column(8);
+	.make-md-column-offset(2);
+}
 
 .order {
 	.make-row();
 	.border-radius(8px);
 	.transition(0.2s);
 	color: #666666;
+	margin-top: 1em;
+	padding: 0.5em;
 
 	&:hover {
 		background-color: #D3D3D3;
 		color: #222222;
+		cursor: pointer;
 	}
 }
 
-.order-container {
-	.make-md-column(8);
-	.make-md-column-offset(2);
-}
-
 .order-elem {
+	.make-row();
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
 }
@@ -26,10 +28,6 @@
 	.make-md-column(3);
 	font-size: 1em;
 	font-family: Arial, Helvetica, sans-serif;
-}
-
-.order:hover .order-elem-title {
-	color: #000000;
 }
 
 .order-elem-title {
@@ -55,9 +53,9 @@
 }
 
 .order-total {
-	.make-md-column(3);
-	.make-md-column-offset(9);
-	margin-top: 1.5em;
+	.make-row();
+	text-align: center;
+	margin-top: 1em;
 	font-size: 1.2em;
 	font-weight: bold;
 }
