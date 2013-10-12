@@ -7,54 +7,55 @@
 	<div class="col-md-6">
     <div class="panel panel-default">
       <div class=panel-heading>
-        <h3>Registrarse</h3>
+        <h3>Registrate</h3>
+        <small>Todos los campos son obligatorios.</small>
       </div>
       <div class=panel-body>
-        <form class="form-horizontal" ng-submit="signUp()">
-          <div class="form-group">
-          <label class="col-md-3 control-label" for="signup-username-input">Usuario</label>
-          <div class="col-md-9">
-            <input type="text" id="signup-username-input" ng-model=signup.username class="form-control">
+        <form novalidate class="form-horizontal" name=signupForm ng-submit="signUp()">
+          <div class=form-group ng-class="{'has-error': submitted && signupForm.username.$invalid}">
+            <label class="col-md-3 control-label" for="signup-username-input">Usuario</label>
+            <div class="col-md-9">
+              <input type="text" name=username id="signup-username-input" ng-model="signup.username" class="form-control" required>
+            </div>
           </div>
+          <div class=form-group ng-class="{'has-error': submitted && signupForm.password.$invalid}">
+            <label class="col-md-3 control-label" for="signup-password-input">Contraseña</label>
+            <div class="col-md-9">
+              <input type="password" id="signup-password-input" name=password ng-model=signup.password class="form-control" required>
+            </div>
           </div>
-          <div class="form-group">
-          <label class="col-md-3 control-label" for="signup-password-input">Contraseña</label>
-          <div class="col-md-9">
-            <input type="password" id="signup-password-input" ng-model=signup.password class="form-control">
-          </div>
-          </div>
-          <div class="form-group">
+          <div class=form-group ng-class="{'has-error': submitted && signupForm.firstName.$invalid}">
           <label class="col-md-3 control-label" for="signup-firstName-input">Nombre/s</label>
           <div class="col-md-9">
-            <input type="text" id="signup-firstName-input" ng-model=signup.firstName class="form-control">
+            <input type="text" id="signup-firstName-input" name=firstName ng-model=signup.firstName class="form-control" required>
           </div>
           </div>
-          <div class="form-group">
+          <div class=form-group ng-class="{'has-error': submitted && signupForm.lastName.$invalid}">
           <label class="col-md-3 control-label" for="signup-lastName-input">Apellido/s</label>
           <div class="col-md-9">
-            <input type="text" id="signup-lastName-input" ng-model=signup.lastName  class="form-control">
+            <input type="text" id="signup-lastName-input" name=lastName ng-model=signup.lastName  class="form-control" required>
           </div>
           </div>
-          <div class="form-group">
-          <label class="col-md-3 control-label" for="signup-gender-input">Género</label>
-          <div class="col-md-9" >
-            <select class="form-control" id="signup-gender-input" ng-model=signup.gender>
-              <option value="M">Hombre</option>
-              <option value="F">Mujer</option>
-            </select>
+          <div class=form-group ng-class="{'has-error': submitted && signupForm.gender.$invalid}">
+            <label class="col-md-3 control-label" for="signup-gender-input">Género</label>
+            <div class="col-md-9" >
+              <select class="form-control" id="signup-gender-input" name=gender ng-model=signup.gender required>
+                <option value="M">Hombre</option>
+                <option value="F">Mujer</option>
+              </select>
+            </div>
           </div>
-          </div>
-          <div class="form-group">
+          <div class=form-group ng-class="{'has-error': submitted && signupForm.identityCard.$invalid}">
           <label class="col-md-3 control-label" for="signup-identityCard-input">DNI</label>
           <div class="col-md-9">
-            <input type="text" maxlength="8" id="signup-identityCard-input" ng-model=signup.identityCard class="form-control">
+            <input type="text" id="signup-identityCard-input" name=identityCard ng-model=signup.identityCard class="form-control" required>
           </div>
           </div>
-          <div class="form-group">
-          <label class="col-md-3 control-label" for="signup-email-input">E-mail</label>
-          <div class="col-md-9">
-            <input type="email" id="signup-email-input" ng-model=signup.email class="form-control">
-          </div>
+          <div class=form-group ng-class="{'has-error': submitted && signupForm.email.$invalid}">
+            <label class="col-md-3 control-label" for="signup-email-input">Email</label>
+            <div class="col-md-9">
+              <input type="email" id="signup-email-input" ng-model=signup.email class="form-control" name=email required>
+            </div>
           </div>
           <div class="form-group">
           <label class="col-md-3 control-label">Fecha de Nacimiento</label>

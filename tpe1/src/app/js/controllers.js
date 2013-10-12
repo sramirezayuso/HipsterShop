@@ -179,9 +179,13 @@ angular.module('myApp.controllers', []).
   }])
 .controller('AccessCtrl', ['$scope', '$routeParams', '$http', function(sc, rp, http) {
 
+    sc.submitted = false;
+
     sc.signUp = function() {
+      sc.submitted = true;
+
       var params = { account: sc.signup, callback: "JSON_CALLBACK"};
-      params.account["birthDate"] = "1980-01-01";
+      // params.account["birthDate"] = "1980-01-01";
 
       http.jsonp(
        'http://eiffel.itba.edu.ar/hci/service3/Account.groovy?method=CreateAccount',
@@ -190,6 +194,10 @@ angular.module('myApp.controllers', []).
         success(function(data, status) {
           console.log(data);
           console.log(status);
+          if (data.error) {
+            console.log(data.error);
+          }
+
         }).
         error(function(data, status) {
         });
