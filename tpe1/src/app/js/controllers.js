@@ -84,9 +84,9 @@ angular.module('myApp.controllers', []).
       birthDate: "1980-01-01"
     };*/
 
-    ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey', callback: 'JSON_CALLBACK'} ).then(function(response) {
+    ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey'} ).then(function(response) {
       $scope.authToken = response.data.authenticationToken;
-      ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', id: 6, authentication_token: $scope.authToken, callback: 'JSON_CALLBACK'} ).then(function(response) {
+      ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', id: 6, authentication_token: $scope.authToken} ).then(function(response) {
         console.log(response);
         $scope.products = response.data.order.items;
       });
@@ -184,7 +184,7 @@ angular.module('myApp.controllers', []).
     sc.signUp = function() {
       sc.submitted = true;
 
-      var params = { account: sc.signup, callback: "JSON_CALLBACK"};
+      var params = { account: sc.signup};
       // params.account["birthDate"] = "1980-01-01";
 
       params.method = 'CreateAccount';
