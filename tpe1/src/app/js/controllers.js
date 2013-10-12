@@ -177,7 +177,7 @@ angular.module('myApp.controllers', []).
     };
 
   }])
-.controller('AccessCtrl', ['$scope', '$routeParams', '$http', function(sc, rp, http) {
+.controller('AccessCtrl', ['$scope', '$routeParams', 'ajaxService', function(sc, rp, as) {
 
     sc.submitted = false;
 
@@ -187,21 +187,13 @@ angular.module('myApp.controllers', []).
       var params = { account: sc.signup, callback: "JSON_CALLBACK"};
       // params.account["birthDate"] = "1980-01-01";
 
-      http.jsonp(
-       'http://eiffel.itba.edu.ar/hci/service3/Account.groovy?method=CreateAccount',
-        { params: params }
-      ).
-        success(function(data, status) {
-          console.log(data);
-          console.log(status);
-          if (data.error) {
-            console.log(data.error);
-          }
-
-        }).
-        error(function(data, status) {
-        });
+      params.method = 'CreateAccount';
+      as.async('Account', params).then(function(response) {
+      });
     }
+
+
+
 }])
 .controller('OrderCtrl', ['$scope', '$routeParams', function(sc, rp) {
 
