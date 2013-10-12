@@ -9,8 +9,8 @@ angular.module('myApp.services', []).
 	value('version', '0.1')
 	.factory('ajaxService', function($http) {
 		var ajaxService = {
-			async: function( params ) {
-				var promise = $http({method: 'JSONP', url: 'http://eiffel.itba.edu.ar/hci/service3/Common.groovy', params: params })
+			async: function( domain, params ) {
+				var promise = $http({method: 'JSONP', url: 'http://eiffel.itba.edu.ar/hci/service3/'+domain+'.groovy', params: params })
 				.success(function(data) {
 					console.log(data);
                 	return data;

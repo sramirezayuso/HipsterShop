@@ -73,8 +73,23 @@ angular.module('myApp.controllers', []).
 
   .controller('CartCtrl', function($scope, ajaxService) {
     
-    ajaxService.async( {method: 'GetAllStates', callback: 'JSON_CALLBACK'} ).then(function(data) {
-      $scope.data = data;
+    /*$scope.testUser = {
+      username: "MattHarvey",
+      password: "nymetsharvey",
+      firstName: "Matt",
+      lastName: "Harvey",
+      gender: "M",
+      identityCard: "00000000",
+      email: "matt@harvey.com",
+      birthDate: "1980-01-01"
+    };*/
+
+    ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey', callback: 'JSON_CALLBACK'} ).then(function(response) {
+      $scope.authToken = response.data.authenticationToken;
+      ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', id: 6, authentication_token: $scope.authToken, callback: 'JSON_CALLBACK'} ).then(function(response) {
+        console.log(response);
+        $scope.products = response.data.order.items;
+      });
     });
 
     $scope.products = [];
