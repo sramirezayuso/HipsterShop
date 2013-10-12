@@ -71,28 +71,34 @@ angular.module('myApp.controllers', []).
 
   }])
 
-  .controller('CartCtrl', ['$scope', function(sc) {
-    sc.products = [
+  .controller('CartCtrl', function($scope, ajaxService) {
+    
+    ajaxService.async( {method: 'GetAllStates', callback: 'JSON_CALLBACK'} ).then(function(data) {
+      $scope.data = data;
+    });
+
+    $scope.products = [];
+    /*sc.products = [
       { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
       { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
       { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
       { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
       { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
-    ];
+    ];*/
 
-    sc.runningTotal = function(){
+    $scope.runningTotal = function(){
       var runningTotal = 0;
-      angular.forEach(sc.products, function(product, index){
+      angular.forEach($scope.products, function(product, index){
         runningTotal += product.price;
       });
       return runningTotal;
     };
 
-    sc.remove = function( idx ) {
-      sc.products.splice(idx, 1);
+    $scope.remove = function( idx ) {
+      $scope.products.splice(idx, 1);
     };
 
-  }])
+  })
 
   .controller('OrdersCtrl', ['$scope', '$location', function(sc, loc) {
 
