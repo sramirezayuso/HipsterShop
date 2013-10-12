@@ -72,7 +72,7 @@ angular.module('myApp.controllers', []).
   }])
 
   .controller('CartCtrl', function($scope, ajaxService) {
-    
+
     /*$scope.testUser = {
       username: "MattHarvey",
       password: "nymetsharvey",
@@ -177,9 +177,23 @@ angular.module('myApp.controllers', []).
     };
 
   }])
-.controller('AccessCtrl', ['$scope', '$routeParams', function(sc, rp) {
+.controller('AccessCtrl', ['$scope', '$routeParams', '$http', function(sc, rp, http) {
 
+    sc.signUp = function() {
+      var params = { account: sc.signup, callback: "JSON_CALLBACK"};
+      params.account["birthDate"] = "1980-01-01";
 
+      http.jsonp(
+       'http://eiffel.itba.edu.ar/hci/service3/Account.groovy?method=CreateAccount',
+        { params: params }
+      ).
+        success(function(data, status) {
+          console.log(data);
+          console.log(status);
+        }).
+        error(function(data, status) {
+        });
+    }
 }])
 .controller('OrderCtrl', ['$scope', '$routeParams', function(sc, rp) {
 
