@@ -3,7 +3,17 @@
 /* Controllers */
 
 angular.module('myApp.controllers', []).
-  controller('HomeCtrl', ['$scope', function(sc) {
+controller('PageHeaderCtrl', ['$scope', '$cookieStore', function(sc, cs) {
+    sc.loggedIn = false;
+
+    if (cs.get('authToken')) {
+      sc.loggedIn = true;
+      // sc.user.firstName = cs.get('user.firstName');
+      sc.user ={}
+      sc.user.firstName = 'carlos';
+    }
+  }])
+  .controller('HomeCtrl', ['$scope', function(sc) {
     sc.products = [
       { title: "Camisa Leńadoras Abercrombie", price: 210.00 },
       { title: "Vestido Minifalda Negro de Encaje y Jersey", price: 170.00 },

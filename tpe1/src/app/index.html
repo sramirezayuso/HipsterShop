@@ -9,8 +9,14 @@
 
 </head>
 <body>
-  <nav class="topbar">
+  <nav class="topbar" ng-controller=PageHeaderCtrl>
     <div class="container">
+      <ul class="topbar-links list-inline pull-left" ui-if=loggedIn>
+        <li><a href="#">{{ user.firstName }}</a></li>
+        <li><a href="#">Salir</a></li>
+        <li>|</li>
+      </ul>
+
       <ul class="topbar-links list-inline pull-right">
         <li><a class=a href="#/cart">Ver carrito</a></li>
         <li><a class=a href="#/orders">Ver pedidos</a></li>
