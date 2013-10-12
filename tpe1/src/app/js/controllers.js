@@ -13,8 +13,53 @@ controller('PageHeaderCtrl', ['$scope', '$cookieStore', function(sc, cs) {
       sc.user.firstName = 'carlos';
     }
   }])
-  .controller('HomeCtrl', ['$scope', function(sc) {
-    sc.products = [
+  
+  .controller('HomeCtrl', function($scope, ajaxService){
+	var sc = $scope;
+	
+	function genreInCategory(genre, category){
+		for(var i = 0; i < category.attributes.length; i++){
+			var att = category.attributes[i];
+			if(att.name == "Genero") {
+				for(var j = 0; j < att.values.length; j++) {
+					if(att.values[j] == genre)
+						return true;
+				}
+				return false;
+			}
+		}
+		return true;
+	}
+	
+  	ajaxService.async('Catalog', {method: 'GetAllCategories'} ).then(function(response) {
+		var categories = response.data.categories;
+		var i, j=0, k=0;
+		var maxCategories = 12;
+		
+		//Initialize Arrays
+		sc.categoriesM = new Array();
+		sc.categoriesH = new Array();
+		
+		//Add available categories to each genre-array
+		for(i = 0; i < categories.length; i++) {
+			if(j <= maxCategories && genreInCategory('Femenino',categories[i])) {
+				sc.categoriesM[j++] = categories[i].name;
+			}
+			
+			if(k <= maxCategories && genreInCategory('Masculino',categories[i])) {
+				sc.categoriesH[k++] = categories[i].name;
+			}
+		}
+		
+		//Divide each category into 2
+		var div = sc.categoriesM.length/2 + 1;
+		sc.categories1M = sc.categoriesM.slice(0, div);
+		sc.categories2M = sc.categoriesM.slice(div);
+		sc.categories1H = sc.categoriesH.slice(0, div);
+		sc.categories2H = sc.categoriesH.slice(div);
+    });
+	
+	sc.products = [
       { title: "Camisa Leńadoras Abercrombie", price: 210.00 },
       { title: "Vestido Minifalda Negro de Encaje y Jersey", price: 170.00 },
       { title: "Jean Elastizado Chupín Tiro Medio Óxido", price: 120.00 },
@@ -22,22 +67,7 @@ controller('PageHeaderCtrl', ['$scope', '$cookieStore', function(sc, cs) {
       { title: "Buzo Gap Hombre", price: 320.00 },
       { title: "Zapato Punta Priamo", price: 500.00 },
     ];
-
-    sc.categories1 = [
-      { title: "Pantalones"},
-      { title: "Remeras"},
-      { title: "Zapatos"},
-      { title: "Anteojos"},
-    ];
-
-    sc.categories2 = [
-      { title: "Camisas"},
-      { title: "Camperas"},
-      { title: "Chalecos"},
-      { title: "Bufandas"}
-    ];
-
-  }])
+  })
 
   .controller('ProductsCtrl', ['$scope', function(sc) {
     sc.products = [
