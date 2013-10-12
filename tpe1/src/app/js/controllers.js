@@ -177,22 +177,37 @@ angular.module('myApp.controllers', []).
     };
 
   }])
-.controller('AccessCtrl', ['$scope', '$routeParams', 'ajaxService', function(sc, rp, as) {
+.controller('AccessCtrl', ['$scope', '$routeParams', 'ajaxService', '$cookieStore', '$location', function(sc, rp, as, cs, lc) {
 
     sc.submitted = false;
 
     sc.signUp = function() {
       sc.submitted = true;
 
-      var params = { account: sc.signup};
-      // params.account["birthDate"] = "1980-01-01";
+      var params = { account: sc.signup || {}};
+      params.account["birthDate"] = "1980-01-01";
 
       params.method = 'CreateAccount';
       as.async('Account', params).then(function(response) {
+        // console.log(response)
+        if (response.data.error) {
+          console.log(response.data.error);
+        } else {
+          // Need to sign in after account creation.
+          console.log("Sign in");
+          as.async('Account', { method: 'SignIn', username: sc.signup.username, password: sc.signup.password }).then(function(response) {
+            // We assume everything went okay.
+            if (!response.data.error) {
+              cs.put('authToken', response.data.authenticationToken);
+              cs.put('user.id', response.data.account.id);
+              cs.put('user.firstName', response.data.account.firstName);
+              console.log('new cookie authToken:' + response.data.authenticationToken);
+              lc.path('#products')
+            }
+          });
+        }
       });
     }
-
-
 
 }])
 .controller('OrderCtrl', ['$scope', '$routeParams', function(sc, rp) {
