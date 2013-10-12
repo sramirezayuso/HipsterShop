@@ -182,20 +182,16 @@ angular.module('myApp.controllers', [])
 
     ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey'} ).then(function(response) {
       $scope.authToken = response.data.authenticationToken;
-      ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', id: 6, authentication_token: $scope.authToken} ).then(function(response) {
-        console.log(response);
-        $scope.products = response.data.order.items;
+      ajaxService.async('Account', {method: 'GetPreferences', username: 'MattHarvey', authentication_token:$scope.authToken} ).then(function(response) {
+        $scope.preferences = JSON.parse(response.data.preferences);
+        $scope.cartId = $scope.preferences.cartId;
+        ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', authentication_token: $scope.authToken, id: $scope.cartId} ).then(function(response) {
+          $scope.products = response.data.order.items;
+        });
       });
     });
 
     $scope.products = [];
-    /*sc.products = [
-      { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
-      { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
-      { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
-      { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
-      { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
-    ];*/
 
     $scope.runningTotal = function(){
       var runningTotal = 0;
@@ -207,6 +203,8 @@ angular.module('myApp.controllers', [])
 
     $scope.remove = function( idx ) {
       $scope.products.splice(idx, 1);
+      ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: 'MattHarvey', authentication_token: $scope.authToken, id: $scope.products[idx].id} ).then(function(response) {
+      });
     };
 
   })
