@@ -93,8 +93,34 @@ angular.module('myApp.controllers', [])
 
   }])
 
-  .controller('ProductCtrl', ['$scope', '$routeParams', function(sc, rp) {
+  .controller('ProductCtrl', function($scope, $routeParams, ajaxService) {
+	var sc = $scope, rp = $routeParams;
+	
+	ajaxService.async('Catalog', {method: 'GetProductById', id: rp.productId} ).then(function(response) {
+		sc.product = {
+			  id: rp.productId,
+			  title: response.data.product.name,
+			  price: response.data.product.price,
+			  imageUrl: response.data.product.imageUrl,
+			  category: response.data.product.category,
+			  subcategory: response.data.product.subcategory
+		}
+		
+		var att = response.data.product.attributes;
+		
+		for(var i = 0; i < att.length ; i++) {
+			switch(att[i].id) {
+				case 4: sc.product.color = att[i].values[0]; break;
+				case 9: sc.product.brand = att[i].values[0]; break;
+				case 8: sc.product.matter = att[i].values[0]; break;
+				case 7: sc.product.size = att[i].values; break;
+			}
+		}
 
+	})
+	
+
+	
     sc.categories = [
       { title: "Pantalones", active: false },
       { title: "Remeras", active: true },
@@ -102,16 +128,7 @@ angular.module('myApp.controllers', [])
       { title: "Anteojos", active: false }
     ];
 
-    sc.product = {
-      id: rp.productId,
-      title: "Remeras Verdes",
-      price: 40,
-      brand: "Printashirt",
-      color: "Verde",
-      imageUrl: "http://rlv.zcache.com/omg_hipster_triangle_t_shirt-r9ec715764a9c4a4c840fc9de6bc978e3_8041a_512.jpg?bg=0xffffff"
-    }
-
-  }])
+  })
 
   .controller('CartCtrl', function($scope, ajaxService) {
 
