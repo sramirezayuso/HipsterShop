@@ -38,7 +38,7 @@
     </form>
     <div class="row">
       <div class="col-md-4" ng-repeat="product in products | orderBy: order">
-        <a href="#/products/{{ product.id }}" class="thumbnail thumbnail-infinite">
+        <a href="#/product/{{ product.id }}" class="thumbnail thumbnail-infinite">
           <img src="http://placehold.it/250x250" alt="...">
           <span class=caption>{{ product.title }} - ${{ product.price }} Marca: {{ product.brand }}</span>
         </a>

@@ -46,11 +46,11 @@ angular.module('myApp.controllers', [])
 		//Add available categories to each genre-array
 		for(i = 0; i < categories.length; i++) {
 			if(j <= maxCategories && genreInCategory('Femenino',categories[i])) {
-				sc.categoriesM[j++] = categories[i].name;
+				sc.categoriesM[j++] = categories[i];
 			}
 
 			if(k <= maxCategories && genreInCategory('Masculino',categories[i])) {
-				sc.categoriesH[k++] = categories[i].name;
+				sc.categoriesH[k++] = categories[i];
 			}
 		}
 
@@ -96,15 +96,7 @@ angular.module('myApp.controllers', [])
 	var sc = $scope, rp = $routeParams;
 	
 	ajaxService.async('Catalog', {method: 'GetProductById', id: rp.productId} ).then(function(response) {
-		sc.product = {
-			  id: rp.productId,
-			  title: response.data.product.name,
-			  price: response.data.product.price,
-			  imageUrl: response.data.product.imageUrl,
-			  category: response.data.product.category,
-			  subcategory: response.data.product.subcategory
-		}
-		
+		sc.product = response.data.product;
 		var att = response.data.product.attributes;
 		
 		for(var i = 0; i < att.length ; i++) {
