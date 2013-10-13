@@ -16,6 +16,7 @@ angular.module('myApp.controllers', [])
     });
     sc.$emit('refreshUser');
   }])
+  
   .controller('HomeCtrl', function($scope, ajaxService){
 	var sc = $scope;
 
@@ -61,14 +62,12 @@ angular.module('myApp.controllers', [])
 		sc.categories2H = sc.categoriesH.slice(div);
     });
 
-	sc.products = [
-      { title: "Camisa Leńadoras Abercrombie", price: 210.00 },
-      { title: "Vestido Minifalda Negro de Encaje y Jersey", price: 170.00 },
-      { title: "Jean Elastizado Chupín Tiro Medio Óxido", price: 120.00 },
-      { title: "Cartera Gamuza Multicolor Con Dos Bolsillos", price: 450.00 },
-      { title: "Buzo Gap Hombre", price: 320.00 },
-      { title: "Zapato Punta Priamo", price: 500.00 },
-    ];
+	var filt = [ { "id": 5, "value": "Oferta" } ];
+	
+	ajaxService.async('Catalog', {method: 'GetAllProducts', filters: filt} ).then(function(response) {
+		sc.products = response.data.products;
+	});
+	
   })
 
   .controller('ProductsCtrl', ['$scope', function(sc) {
