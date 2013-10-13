@@ -12,31 +12,31 @@
       </div>
       <div class=panel-body>
         <form novalidate class="form-horizontal" name=signupForm ng-submit="signUp()">
-          <div class=form-group ng-class="{'has-error': submitted && signupForm.username.$invalid}">
+          <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.username.$invalid}">
             <label class="col-md-3 control-label" for="signup-username-input">Usuario</label>
             <div class="col-md-9">
               <input type="text" name=username id="signup-username-input" ng-model="signup.username" class="form-control" required>
             </div>
           </div>
-          <div class=form-group ng-class="{'has-error': submitted && signupForm.password.$invalid}">
+          <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.password.$invalid}">
             <label class="col-md-3 control-label" for="signup-password-input">Contraseña</label>
             <div class="col-md-9">
               <input type="password" id="signup-password-input" name=password ng-model=signup.password class="form-control" required>
             </div>
           </div>
-          <div class=form-group ng-class="{'has-error': submitted && signupForm.firstName.$invalid}">
+          <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.firstName.$invalid}">
           <label class="col-md-3 control-label" for="signup-firstName-input">Nombre/s</label>
           <div class="col-md-9">
             <input type="text" id="signup-firstName-input" name=firstName ng-model=signup.firstName class="form-control" required>
           </div>
           </div>
-          <div class=form-group ng-class="{'has-error': submitted && signupForm.lastName.$invalid}">
+          <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.lastName.$invalid}">
           <label class="col-md-3 control-label" for="signup-lastName-input">Apellido/s</label>
           <div class="col-md-9">
             <input type="text" id="signup-lastName-input" name=lastName ng-model=signup.lastName  class="form-control" required>
           </div>
           </div>
-          <div class=form-group ng-class="{'has-error': submitted && signupForm.gender.$invalid}">
+          <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.gender.$invalid}">
             <label class="col-md-3 control-label" for="signup-gender-input">Género</label>
             <div class="col-md-9" >
               <select class="form-control" id="signup-gender-input" name=gender ng-model=signup.gender required>
@@ -45,13 +45,13 @@
               </select>
             </div>
           </div>
-          <div class=form-group ng-class="{'has-error': submitted && signupForm.identityCard.$invalid}">
+          <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.identityCard.$invalid}">
           <label class="col-md-3 control-label" for="signup-identityCard-input">DNI</label>
           <div class="col-md-9">
             <input type="text" id="signup-identityCard-input" name=identityCard ng-model=signup.identityCard class="form-control" required>
           </div>
           </div>
-          <div class=form-group ng-class="{'has-error': submitted && signupForm.email.$invalid}">
+          <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.email.$invalid}">
             <label class="col-md-3 control-label" for="signup-email-input">Email</label>
             <div class="col-md-9">
               <input type="email" id="signup-email-input" ng-model=signup.email class="form-control" name=email required>
@@ -88,24 +88,25 @@
       <div class="panel-heading">
         <h3>Iniciar sesión</h3>
       </div>
+
       <div class=panel-body>
-        <form class="form-horizontal">
-          <div class="form-group">
-            <label class="col-md-3 control-label" for="user-sign">Usuario</label>
+        <form novalidate name=signinForm class="form-horizontal" ng-submit="signIn()">
+          <div class="form-group" ng-class="{'has-error': submittedSignIn && signinForm.username.$invalid}">
+            <label class="col-md-3 control-label" for="signin-username-input">Usuario</label>
             <div class="col-md-9">
-              <input type="text" id="user-sign" class="form-control">
+              <input type="text" ng-model="signin.username" id="signin-username-input" name=username class="form-control" required>
+            </div>
+          </div>
+          <div class="form-group" ng-class="{'has-error': submittedSignIn && signinForm.password.$invalid}">
+            <label class="col-md-3 control-label" for="signin-password-input">Contraseña</label>
+            <div class="col-md-9">
+              <input type="password" ng-model="signin.password" id="signin-password-input" name=password class="form-control" required>
             </div>
           </div>
           <div class="form-group">
-          <label class="col-md-3 control-label" for="pass-sign">Contraseña</label>
-          <div class="col-md-9">
-            <input type="password" id="pass-sign" class="form-control">
-          </div>
-          </div>
-          <div class="form-group">
-          <div class="col-md-offset-3 col-md-9">
-            <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-          </div>
+            <div class="col-md-offset-3 col-md-9">
+              <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+            </div>
           </div>
         </form>
       </div>

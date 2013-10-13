@@ -2,21 +2,23 @@
 
 /* Controllers */
 
-angular.module('myApp.controllers', []).
-controller('PageHeaderCtrl', ['$scope', '$cookieStore', function(sc, cs) {
-    sc.loggedIn = false;
+angular.module('myApp.controllers', [])
+  .controller('PageHeaderCtrl', ['$scope', '$cookieStore', function(sc, cs) {
 
-    if (cs.get('authToken')) {
-      sc.loggedIn = true;
-      // sc.user.firstName = cs.get('user.firstName');
-      sc.user ={}
-      sc.user.firstName = 'carlos';
-    }
+    sc.loggedIn = false;
+    sc.$on('refreshUser', function() {
+      console.log('refreshUser')
+      if (cs.get('authToken')) {
+        sc.loggedIn = true;
+        sc.user ={}
+        sc.user.firstName = cs.get('user.firstName');
+      }
+    });
+    sc.$emit('refreshUser');
   }])
-  
   .controller('HomeCtrl', function($scope, ajaxService){
 	var sc = $scope;
-	
+
 	function genreInCategory(genre, category){
 		for(var i = 0; i < category.attributes.length; i++){
 			var att = category.attributes[i];
@@ -30,27 +32,27 @@ controller('PageHeaderCtrl', ['$scope', '$cookieStore', function(sc, cs) {
 		}
 		return true;
 	}
-	
+
   	ajaxService.async('Catalog', {method: 'GetAllCategories'} ).then(function(response) {
 		var categories = response.data.categories;
 		var i, j=0, k=0;
 		var maxCategories = 12;
-		
+
 		//Initialize Arrays
 		sc.categoriesM = new Array();
 		sc.categoriesH = new Array();
-		
+
 		//Add available categories to each genre-array
 		for(i = 0; i < categories.length; i++) {
 			if(j <= maxCategories && genreInCategory('Femenino',categories[i])) {
 				sc.categoriesM[j++] = categories[i].name;
 			}
-			
+
 			if(k <= maxCategories && genreInCategory('Masculino',categories[i])) {
 				sc.categoriesH[k++] = categories[i].name;
 			}
 		}
-		
+
 		//Divide each category into 2
 		var div = sc.categoriesM.length/2 + 1;
 		sc.categories1M = sc.categoriesM.slice(0, div);
@@ -58,7 +60,7 @@ controller('PageHeaderCtrl', ['$scope', '$cookieStore', function(sc, cs) {
 		sc.categories1H = sc.categoriesH.slice(0, div);
 		sc.categories2H = sc.categoriesH.slice(div);
     });
-	
+
 	sc.products = [
       { title: "Camisa Leńadoras Abercrombie", price: 210.00 },
       { title: "Vestido Minifalda Negro de Encaje y Jersey", price: 170.00 },
@@ -217,24 +219,42 @@ controller('PageHeaderCtrl', ['$scope', '$cookieStore', function(sc, cs) {
     };
 
   }])
-.controller('AccessCtrl', ['$scope', '$routeParams', 'ajaxService', '$cookieStore', '$location', function(sc, rp, as, cs, lc) {
+.controller('AccessCtrl', ['$rootScope', '$scope', '$routeParams', 'ajaxService', '$cookieStore', '$location', function(rt, sc, rp, as, cs, lc) {
+    sc.submittedSignUp = false;
+    sc.submittedSignIn = false;
 
-    sc.submitted = false;
+    sc.signIn = function() {
+      sc.submittedSignIn = true;
+      if (sc.signinForm.$valid) {
+        as.async('Account', { method: 'SignIn', username: sc.signin.username, password: sc.signin.password }).then(function(response) {
+          console.log("submitted")
+          if (response.data.error) {
+
+          } else {
+            cs.put('authToken', response.data.authenticationToken);
+            cs.put('user.id', response.data.account.id);
+            cs.put('user.firstName', response.data.account.firstName);
+            console.log('new cookie authToken:' + response.data.authenticationToken);
+            rt.$emit('refreshUser');
+            lc.path('#products')
+          }
+        });
+      }
+
+    }
 
     sc.signUp = function() {
-      sc.submitted = true;
+      sc.submittedSignUp = true;
 
       var params = { account: sc.signup || {}};
       params.account["birthDate"] = "1980-01-01";
 
       params.method = 'CreateAccount';
       as.async('Account', params).then(function(response) {
-        // console.log(response)
         if (response.data.error) {
           console.log(response.data.error);
         } else {
           // Need to sign in after account creation.
-          console.log("Sign in");
           as.async('Account', { method: 'SignIn', username: sc.signup.username, password: sc.signup.password }).then(function(response) {
             // We assume everything went okay.
             if (!response.data.error) {
@@ -242,6 +262,7 @@ controller('PageHeaderCtrl', ['$scope', '$cookieStore', function(sc, cs) {
               cs.put('user.id', response.data.account.id);
               cs.put('user.firstName', response.data.account.firstName);
               console.log('new cookie authToken:' + response.data.authenticationToken);
+              sc.$emit('refreshUser');
               lc.path('#products')
             }
           });
