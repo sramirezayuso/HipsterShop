@@ -116,30 +116,31 @@ angular.module('myApp.controllers', [])
     var categoryFilters = addGenderFilter(rp, []);
 
     sc.categories = [ ];
-	
+
   	as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
       response.data.categories.forEach(function(category) {
         var url = '#/products?gender=' + rp.gender + '&categoryId=' + category.id;
         var active = category.id == rp.categoryId;
         var subcategories = [];
 
-        if (active) { 
+        if (active) {
 			subcategories = loadSubcategories(category, categoryFilters);
-			sc.breadcrumb.push({url:url, name:category.name}); 
+			sc.breadcrumb.push({url:url, name:category.name});
 		}
 
         sc.categories.push({ id: category.id, title: category.name, active: active, url: url, subcategories: subcategories});
-		
+
       });
 	  if(sc.breadcrumb.length == 1)
 		sc.breadcrumbLast = sc.breadcrumb.pop();
     });
-	
+
     sc.changeProductsCategory = function(category) {
       sc.$emit('productsChange', rp.gender, category.id, 0);
       sc.categories.forEach(function(cat){ cat.active = false;});
       category.active = true;
-      lc.search({categoryId: category.id});
+      lc.search('categoryId', category.id);
+      lc.search('subcategoryId', 0);
       if (category.subcategories.length == 0) {
         category.subcategories = loadSubcategories(category, [])
       }
