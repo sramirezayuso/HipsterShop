@@ -82,13 +82,14 @@ angular.module('myApp.controllers', [])
   .controller('ProductsCtrl', ['$scope', '$routeParams', 'ajaxService', function(sc, rp, as) {
     var categoryFilters = [ ];
     var productFilters = [];
-
     switch(rp.gender) {
-      case "F" :
+      case "f" :
         categoryFilters.push({"id":1,"value":"Femenino"});
         productFilters.push({"id":1,"value":"Femenino"});
+        console.log("mujeres")
       break;
-      case "M":
+      case "m":
+        console.log("hombres")
         categoryFilters.push({"id":1,"value":"Masculino"});
         productFilters.push({"id":1,"value":"Masculino"});
       break;
@@ -97,21 +98,23 @@ angular.module('myApp.controllers', [])
     sc.categories = [ ];
   	as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
       response.data.categories.forEach(function(category) {
-        var url = '#/products/' + rp.gender + '/' + category.id + '/0/';
+        var url = '#/products?gender=' + rp.gender + '&categoryId=' + category.id;
         sc.categories.push({ title: category.name, active: category.id == rp.categoryId, url: url});
       });
     });
 
 
     // This search depends if there is a category, or a subcategory, or a search by name
-    sc.products = [ ];
-  	as.async('Catalog', {method: 'GetProductsByCategoryId', id: rp.categoryId, filters: productFilters}).then(function(response) {
-      response.data.products.forEach(function(product) {
-        var brand = product.attributes.filter(function(attr) { return attr.id == 9; })[0].values[0];
-        sc.products.push({ id: product.id, title: product.name, price: product.price, brand: brand, imageUrl: product.imageUrl[0]});
-        console.log(product)
+    if (rp.categoryId) {
+      sc.products = [ ];
+      as.async('Catalog', {method: 'GetProductsByCategoryId', id: rp.categoryId, filters: productFilters}).then(function(response) {
+        response.data.products.forEach(function(product) {
+          var brand = product.attributes.filter(function(attr) { return attr.id == 9; })[0].values[0];
+          sc.products.push({ id: product.id, title: product.name, price: product.price, brand: brand, imageUrl: product.imageUrl[0]});
+          console.log(product)
+        });
       });
-    });
+    }
 
     sc.order = "brand";
   }])
