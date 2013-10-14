@@ -27,55 +27,55 @@ angular.module('myApp.controllers', [])
   }])
 
   .controller('HomeCtrl', function($scope, ajaxService){
-	var sc = $scope;
+        var sc = $scope;
 
-	function genreInCategory(genre, category){
-		for(var i = 0; i < category.attributes.length; i++){
-			var att = category.attributes[i];
-			if(att.name == "Genero") {
-				for(var j = 0; j < att.values.length; j++) {
-					if(att.values[j] == genre)
-						return true;
-				}
-				return false;
-			}
-		}
-		return true;
-	}
+        function genreInCategory(genre, category){
+                for(var i = 0; i < category.attributes.length; i++){
+                        var att = category.attributes[i];
+                        if(att.name == "Genero") {
+                                for(var j = 0; j < att.values.length; j++) {
+                                        if(att.values[j] == genre)
+                                                return true;
+                                }
+                                return false;
+                        }
+                }
+                return true;
+        }
 
-  	ajaxService.async('Catalog', {method: 'GetAllCategories'} ).then(function(response) {
-		var categories = response.data.categories;
-		var i, j=0, k=0;
-		var maxCategories = 12;
+        ajaxService.async('Catalog', {method: 'GetAllCategories'} ).then(function(response) {
+                var categories = response.data.categories;
+                var i, j=0, k=0;
+                var maxCategories = 12;
 
-		//Initialize Arrays
-		sc.categoriesM = new Array();
-		sc.categoriesH = new Array();
+                //Initialize Arrays
+                sc.categoriesM = new Array();
+                sc.categoriesH = new Array();
 
-		//Add available categories to each genre-array
-		for(i = 0; i < categories.length; i++) {
-			if(j <= maxCategories && genreInCategory('Femenino',categories[i])) {
-				sc.categoriesM[j++] = categories[i];
-			}
+                //Add available categories to each genre-array
+                for(i = 0; i < categories.length; i++) {
+                        if(j <= maxCategories && genreInCategory('Femenino',categories[i])) {
+                                sc.categoriesM[j++] = categories[i];
+                        }
 
-			if(k <= maxCategories && genreInCategory('Masculino',categories[i])) {
-				sc.categoriesH[k++] = categories[i];
-			}
-		}
+                        if(k <= maxCategories && genreInCategory('Masculino',categories[i])) {
+                                sc.categoriesH[k++] = categories[i];
+                        }
+                }
 
-		//Divide each category into 2
-		var div = sc.categoriesM.length/2 + 1;
-		sc.categories1M = sc.categoriesM.slice(0, div);
-		sc.categories2M = sc.categoriesM.slice(div);
-		sc.categories1H = sc.categoriesH.slice(0, div);
-		sc.categories2H = sc.categoriesH.slice(div);
+                //Divide each category into 2
+                var div = sc.categoriesM.length/2 + 1;
+                sc.categories1M = sc.categoriesM.slice(0, div);
+                sc.categories2M = sc.categoriesM.slice(div);
+                sc.categories1H = sc.categoriesH.slice(0, div);
+                sc.categories2H = sc.categoriesH.slice(div);
     });
 
-	var filt = [ { "id": 5, "value": "Oferta" } ];
+        var filt = [ { "id": 5, "value": "Oferta" } ];
 
-	ajaxService.async('Catalog', {method: 'GetAllProducts', filters: filt} ).then(function(response) {
-		sc.products = response.data.products;
-	});
+        ajaxService.async('Catalog', {method: 'GetAllProducts', filters: filt} ).then(function(response) {
+                sc.products = response.data.products;
+        });
 
   })
 
@@ -96,7 +96,7 @@ angular.module('myApp.controllers', [])
     }
 
     sc.categories = [ ];
-  	as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
+        as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
       response.data.categories.forEach(function(category) {
         var url = '#/products?gender=' + rp.gender + '&categoryId=' + category.id;
         var active = category.id == rp.categoryId;
@@ -156,7 +156,7 @@ angular.module('myApp.controllers', [])
         }
       }
 
-	})
+        })
 
     sc.categories = [
       { title: "Pantalones", active: false },
@@ -180,18 +180,15 @@ angular.module('myApp.controllers', [])
       birthDate: "1980-01-01"
     };*/
 
+    $scope.products = [];
+
     ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey'} ).then(function(response) {
       $scope.authToken = response.data.authenticationToken;
-      ajaxService.async('Account', {method: 'GetPreferences', username: 'MattHarvey', authentication_token:$scope.authToken} ).then(function(response) {
-        $scope.preferences = JSON.parse(response.data.preferences);
-        $scope.cartId = $scope.preferences.cartId;
-        ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', authentication_token: $scope.authToken, id: $scope.cartId} ).then(function(response) {
-          $scope.products = response.data.order.items;
-        });
+      ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', id: 6, authentication_token: $scope.authToken} ).then(function(response) {
+        console.log(response);
+        $scope.products = response.data.order.items;
       });
     });
-
-    $scope.products = [];
 
     $scope.runningTotal = function(){
       var runningTotal = 0;
@@ -203,12 +200,10 @@ angular.module('myApp.controllers', [])
 
     $scope.remove = function( idx ) {
       $scope.products.splice(idx, 1);
-      ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: 'MattHarvey', authentication_token: $scope.authToken, id: $scope.products[idx].id} ).then(function(response) {
-      });
     };
 
   })
-
+  
   .controller('OrdersCtrl', function($scope, $location, ajaxService) {
 
     ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey'} ).then(function(response) {
@@ -258,8 +253,9 @@ angular.module('myApp.controllers', [])
       });
       return runningTotal;
     };
-  }])
+  })
 
+  
 .controller('AccessCtrl', ['$rootScope', '$scope', '$routeParams', 'ajaxService', '$cookieStore', '$location', function(rt, sc, rp, as, cs, lc) {
     sc.submittedSignUp = false;
     sc.submittedSignIn = false;
@@ -280,6 +276,7 @@ angular.module('myApp.controllers', [])
           }
         });
       }
+
     }
 
     sc.signUp = function() {
@@ -310,76 +307,28 @@ angular.module('myApp.controllers', [])
     }
 
 }])
-.controller('OrderCtrl', ['$scope', '$routeParams', function(sc, rp) {
+.controller('OrderCtrl', function($scope, $routeParams, ajaxService) {
 
-    sc.orderno = rp.orderno;
+    $scope.orderno = $routeParams.orderno;
+    $scope.products = [];
 
-    sc.products = function(){
-      var products =[]
-      angular.forEach(sc.orders, function(order, index){
-        if (order.orderno == sc.orderno) {
-          products = order.products;
-        };
+    ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey'} ).then(function(response) {
+      $scope.authToken = response.data.authenticationToken;
+      ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', id: $routeParams.orderno, authentication_token: $scope.authToken} ).then(function(response) {
+        console.log(response);
+        $scope.products = response.data.order.items;
       });
-      return products;
-    };
+    });
 
-    sc.orders = [
-      { orderno: 21343,
-        products: [
-        { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
-        { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
-        { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
-        { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
-        { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
-      ]},
-      { orderno: 34644,
-        products: [
-        { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
-        { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
-        { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
-        { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
-        { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
-      ]},
-      { orderno: 23483,
-        products: [
-        { title: "Zapatos", price: 24.50, size: 12, color: 'Rojo' },
-        { title: "Zapatillas", price: 12.50, size: 12, color: 'Azul' },
-        { title: "Ojotas", price: 21.90, size: 12, color: 'Amarillo' },
-        { title: "Mocasines", price: 41.20, size: 12, color: 'Verde' },
-        { title: "Botas", price: 54.50, size: 12, color: 'Violeta' },
-      ]},
-      { orderno: 18442,
-        products: [
-        { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
-        { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
-        { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
-        { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
-        { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
-      ]},
-      { orderno: 78073,
-        products: [
-        { title: "Zapatos", price: 41.50, size: 12, color: 'Rojo' },
-        { title: "Zapatillas", price: 21.70, size: 12, color: 'Azul' },
-        { title: "Ojotas", price: 23.50, size: 12, color: 'Amarillo' },
-        { title: "Mocasines", price: 24.50, size: 12, color: 'Verde' },
-        { title: "Botas", price: 31.50, size: 12, color: 'Violeta' },
-      ]},
-    ];
-
-    sc.runningTotal = function(){
+    $scope.runningTotal = function(){
       var runningTotal = 0;
-      angular.forEach(sc.orders, function(order, index){
-        if (order.orderno == sc.orderno) {
-          angular.forEach(order.products, function(product, index){
-            runningTotal += product.price;
-          })
-        };
+      angular.forEach($scope.products, function(product, index){
+        runningTotal += product.price;
       });
       return runningTotal;
     };
 
-  }])
+  })
 
   .controller('CheckoutCtrl', ['$scope', function(sc) {
 
@@ -413,3 +362,5 @@ angular.module('myApp.controllers', [])
 
   }])
 ;
+
+
