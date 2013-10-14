@@ -125,7 +125,7 @@ angular.module('myApp.controllers', [])
     });
 
     sc.changeProductsCategory = function(category) {
-      sc.$emit('productsChange', rp.gender, category.id, rp.subcategoryId);
+      sc.$emit('productsChange', rp.gender, category.id, 0);
       sc.categories.forEach(function(cat){ cat.active = false;});
       category.active = true;
       lc.search({categoryId: category.id});
@@ -148,7 +148,11 @@ angular.module('myApp.controllers', [])
 
       var productFilters = addGenderFilter(rp, []);
 
-      if (categoryId) {
+      if (subcategoryId != 0) {
+        as.async('Catalog', {method: 'GetProductsBySubcategoryId', id: subcategoryId, filters: productFilters}).then(function(response) {
+          response.data.products.forEach(showProduct);
+        });
+      } else if (categoryId) {
         as.async('Catalog', {method: 'GetProductsByCategoryId', id: categoryId, filters: productFilters}).then(function(response) {
           response.data.products.forEach(showProduct);
         });
