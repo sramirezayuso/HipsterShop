@@ -27,6 +27,15 @@ angular.module('myApp.controllers', [])
     }
   }])
 
+  .controller('PageNavCtrl', ['$location', '$scope',  '$rootScope', function(lc, sc, rc){
+      sc.search = function() {
+        lc.path('products').search('search', sc.searchTerm );
+        lc.path('products').search('categoryId', 0);
+        lc.path('products').search('subcategoryId', 0);
+        rc.$emit('productsChange', 0, 0, sc.searchTerm);
+      }
+  }])
+
   .controller('HomeCtrl', function($scope, ajaxService){
         var sc = $scope;
 
@@ -86,14 +95,14 @@ angular.module('myApp.controllers', [])
 
   })
 
-  .controller('ProductsCtrl', ['$scope', '$routeParams', 'ajaxService', '$location', function(sc, rp, as, lc) {
+  .controller('ProductsCtrl', ['$scope', '$routeParams', 'ajaxService', '$location', '$rootScope', function(sc, rp, as, lc, rs) {
 
     function addGenderFilter(rp, filters){
       var filters = [ ];
 	  sc.breadcrumb = [ ];
-	  
+
       switch(rp.gender) {
-        case "f" : filters.push({"id":1,"value":"Femenino"}); 
+        case "f" : filters.push({"id":1,"value":"Femenino"});
 				   sc.breadcrumb.push({url:"#/products?gender=f", name:"Mujeres"}); break;
         case "m" : filters.push({"id":1,"value":"Masculino"});
 				   sc.breadcrumb.push({url:"#/products?gender=m", name:"Hombres"}); break;
@@ -143,11 +152,12 @@ angular.module('myApp.controllers', [])
     });
 
     sc.changeProductsCategory = function(category) {
-      sc.$emit('productsChange', rp.gender, category.id, 0);
-      sc.categories.forEach(function(cat){ cat.active = false;});
+      rs.$emit('productsChange', category.id, 0, "");
+      sc.categories.forEach(function(cat){ cat.active = false; cat.subcategories.forEach(function(subcat){ subcat.active = false;});});
       category.active = true;
       lc.search('categoryId', category.id);
       lc.search('subcategoryId', 0);
+      lc.search('search', '');
       if (category.subcategories.length == 0) {
         category.subcategories = loadSubcategories(category, [])
       }
@@ -158,16 +168,22 @@ angular.module('myApp.controllers', [])
       category.subcategories.forEach(function(subcat){subcat.active = false;});
 
       subcategory.active = true;
-      sc.$emit('productsChange', rp.gender, rp.categoryId, subcategory.id);
+      rs.$emit('productsChange', rp.categoryId, subcategory.id, "");
     }
 
     // This search depends if there is a category, or a subcategory, or a search by name
-    sc.$on('productsChange', function(ev, gender, categoryId, subcategoryId) {
+    rs.$on('productsChange', function(ev, categoryId, subcategoryId, search) {
       sc.products = [ ];
 
       var productFilters = addGenderFilter(rp, []);
 
-      if (subcategoryId != 0) {
+      if (search.length > 0) {
+        sc.categories.forEach(function(cat){cat.active=false;});
+        as.async('Catalog', {method: 'GetProductsByName', name: search, filters: productFilters}).then(function(response) {
+          console.log(response.data.products)
+          response.data.products.forEach(showProduct);
+        });
+      } else if (subcategoryId != 0) {
         as.async('Catalog', {method: 'GetProductsBySubcategoryId', id: subcategoryId, filters: productFilters}).then(function(response) {
           console.log(response.data.products)
           response.data.products.forEach(showProduct);
@@ -184,7 +200,7 @@ angular.module('myApp.controllers', [])
       }
     });
 
-    sc.$emit('productsChange', rp.gender, rp.categoryId, rp.subcategoryId || 0);
+    rs.$emit('productsChange', rp.categoryId, rp.subcategoryId || 0, rp.search || "");
 
     sc.order = "brand";
   }])
