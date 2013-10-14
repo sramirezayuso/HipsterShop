@@ -101,10 +101,9 @@ angular.module('myApp.controllers', [])
 
   }])
 
-  .controller('ProductCtrl', function($scope, $routeParams, ajaxService) {
-	var sc = $scope, rp = $routeParams;
+  .controller('ProductCtrl', ['$scope', '$routeParams', 'ajaxService', function(sc, rp, as) {
 
-	ajaxService.async('Catalog', {method: 'GetProductById', id: rp.productId} ).then(function(response) {
+    as.async('Catalog', {method: 'GetProductById', id: rp.productId} ).then(function(response) {
 		sc.product = response.data.product;
 		var att = response.data.product.attributes;
 
@@ -119,8 +118,6 @@ angular.module('myApp.controllers', [])
 
 	})
 
-
-
     sc.categories = [
       { title: "Pantalones", active: false },
       { title: "Remeras", active: true },
@@ -128,7 +125,7 @@ angular.module('myApp.controllers', [])
       { title: "Anteojos", active: false }
     ];
 
-  })
+  }])
 
   .controller('CartCtrl', function($scope, ajaxService) {
 
