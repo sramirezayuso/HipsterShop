@@ -11,9 +11,11 @@
 <body>
   <nav class="topbar" ng-controller=PageHeaderCtrl>
     <div class="container">
-      <ul class="topbar-links list-inline pull-left" ui-if=loggedIn>
-        <li><a href="#">{{ user.firstName }}</a></li>
-        <li><a href="#">Salir</a></li>
+      <ul class="topbar-links list-inline pull-left">
+        <li ui-if=loggedIn><a href="#">{{ user.firstName }}</a></li>
+        <li ui-if=loggedIn><a href="#" ng-click="logOut()">Salir</a></li>
+        <li ui-if=!loggedIn><a href="#/access">Iniciá sesión</a></li>
+        <li ui-if=!loggedIn><a href="#/access">Registrate</a></li>
         <li>|</li>
       </ul>
 

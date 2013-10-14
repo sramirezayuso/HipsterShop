@@ -3,20 +3,28 @@
 /* Controllers */
 
 angular.module('myApp.controllers', [])
-  .controller('PageHeaderCtrl', ['$scope', '$cookieStore', function(sc, cs) {
+  .controller('PageHeaderCtrl', ['$rootScope', '$scope', '$cookieStore', function(rt, sc, cs) {
 
     sc.loggedIn = false;
-    sc.$on('refreshUser', function() {
-      console.log('refreshUser')
+    rt.$on('refreshUser', function() {
       if (cs.get('authToken')) {
         sc.loggedIn = true;
-        sc.user ={}
+        sc.user = {}
         sc.user.firstName = cs.get('user.firstName');
       }
     });
-    sc.$emit('refreshUser');
+
+    rt.$emit('refreshUser');
+
+    sc.logOut = function() {
+      sc.loggedIn = false;
+      cs.remove('authToken');
+      cs.remove('user.id');
+      cs.remove('user.firstName');
+      rt.$emit('refreshUser');
+    }
   }])
-  
+
   .controller('HomeCtrl', function($scope, ajaxService){
 	var sc = $scope;
 
@@ -63,11 +71,11 @@ angular.module('myApp.controllers', [])
     });
 
 	var filt = [ { "id": 5, "value": "Oferta" } ];
-	
+
 	ajaxService.async('Catalog', {method: 'GetAllProducts', filters: filt} ).then(function(response) {
 		sc.products = response.data.products;
 	});
-	
+
   })
 
   .controller('ProductsCtrl', ['$scope', function(sc) {
@@ -94,11 +102,11 @@ angular.module('myApp.controllers', [])
 
   .controller('ProductCtrl', function($scope, $routeParams, ajaxService) {
 	var sc = $scope, rp = $routeParams;
-	
+
 	ajaxService.async('Catalog', {method: 'GetProductById', id: rp.productId} ).then(function(response) {
 		sc.product = response.data.product;
 		var att = response.data.product.attributes;
-		
+
 		for(var i = 0; i < att.length ; i++) {
 			switch(att[i].id) {
 				case 4: sc.product.color = att[i].values[0]; break;
@@ -109,9 +117,9 @@ angular.module('myApp.controllers', [])
 		}
 
 	})
-	
 
-	
+
+
     sc.categories = [
       { title: "Pantalones", active: false },
       { title: "Remeras", active: true },
@@ -235,7 +243,6 @@ angular.module('myApp.controllers', [])
       sc.submittedSignIn = true;
       if (sc.signinForm.$valid) {
         as.async('Account', { method: 'SignIn', username: sc.signin.username, password: sc.signin.password }).then(function(response) {
-          console.log("submitted")
           if (response.data.error) {
 
           } else {
@@ -270,7 +277,7 @@ angular.module('myApp.controllers', [])
               cs.put('user.id', response.data.account.id);
               cs.put('user.firstName', response.data.account.firstName);
               console.log('new cookie authToken:' + response.data.authenticationToken);
-              sc.$emit('refreshUser');
+              rt.$emit('refreshUser');
               lc.path('#products')
             }
           });
