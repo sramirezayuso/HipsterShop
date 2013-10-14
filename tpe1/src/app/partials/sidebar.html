@@ -4,7 +4,7 @@
       {{ category.title }}
     </a>
 
-    <ul ui-if="category.active">
+    <ul class=sub-nav ui-if="category.active">
       <li ng-repeat="subcategory in category.subcategories"  ng-class="{active: subcategory.active }">
         <a href="" ng-click="changeProductsSubcategory(category, subcategory)">
           {{subcategory.title}}
