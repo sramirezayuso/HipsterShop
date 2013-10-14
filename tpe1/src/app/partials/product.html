@@ -4,8 +4,7 @@
 
 <ol class="breadcrumb">
   <li><a href="#/home">Inicio</a></li>
-  <li><a href="#">{{ product.category.name }}</a></li>
-  <li><a href="#">{{ product.subcategory.name }}</a></li>
+  <li ng-repeat="each in breadcrumb"><a href="{{each.url}}">{{ each.name }}</a></li>
   <li class="active">{{ product.name }}</li>
 </ol>
 
@@ -44,12 +43,6 @@
                 <label class="col-md-3 control-label">Color:</label>
                 <div class=col-md-7>
                   <p class=form-control-static>{{ product.color }}</p>
-                </div>
-              </div>
-              <div class=form-group>
-                <label class="col-md-3 control-label">Material:</label>
-                <div class=col-md-7>
-                  <p class=form-control-static>{{ product.matter }}</p>
                 </div>
               </div>
               <div class=form-group>

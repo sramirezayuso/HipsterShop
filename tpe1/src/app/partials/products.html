@@ -3,9 +3,9 @@
 </div>
 
 <ol class="breadcrumb">
-  <li><a href="#">Inicio</a></li>
-  <li><a href="#">Remeras</a></li>
-  <li class="active">Manga corta</li>
+  <li><a href="#/home">Inicio</a></li>
+  <li ng-repeat="each in breadcrumb"><a href="{{each.url}}">{{ each.name }}</a></li>
+  <li class="active">{{ breadcrumbLast.name }}</li>
 </ol>
 
 <div class=row>

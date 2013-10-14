@@ -83,14 +83,16 @@ angular.module('myApp.controllers', [])
 
     function addGenderFilter(rp, filters){
       var filters = [ ];
-
+	  sc.breadcrumb = [ ];
+	  
       switch(rp.gender) {
-        case "f" : filters.push({"id":1,"value":"Femenino"}); break;
-        case "m" : filters.push({"id":1,"value":"Masculino"}); break;
+        case "f" : filters.push({"id":1,"value":"Femenino"}); 
+				   sc.breadcrumb.push({url:"#/products?gender=f", name:"Mujeres"}); break;
+        case "m" : filters.push({"id":1,"value":"Masculino"});
+				   sc.breadcrumb.push({url:"#/products?gender=m", name:"Hombres"}); break;
       }
       return filters;
     }
-
 
     function loadSubcategories(category, filters) {
       var subcategories = [ ];
@@ -98,8 +100,10 @@ angular.module('myApp.controllers', [])
         response.data.subcategories.forEach(function(subcategory) {
           var subUrl = '#/products?gender=' + rp.gender + '&categoryId=' + category.id + '&subcategoryId=' + subcategory.id;
           subcategories.push({ id: subcategory.id, title: subcategory.name, active: rp.subcategoryId == subcategory.id, url: subUrl});
+		  if(rp.subcategoryId == subcategory.id)
+			sc.breadcrumb.push({url:subUrl, name:subcategory.name});
         });
-
+		sc.breadcrumbLast = sc.breadcrumb.pop();
       });
       return subcategories;
     }
@@ -112,18 +116,25 @@ angular.module('myApp.controllers', [])
     var categoryFilters = addGenderFilter(rp, []);
 
     sc.categories = [ ];
+	
   	as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
       response.data.categories.forEach(function(category) {
         var url = '#/products?gender=' + rp.gender + '&categoryId=' + category.id;
         var active = category.id == rp.categoryId;
         var subcategories = [];
 
-        if (active) { subcategories = loadSubcategories(category, categoryFilters); }
+        if (active) { 
+			subcategories = loadSubcategories(category, categoryFilters);
+			sc.breadcrumb.push({url:url, name:category.name}); 
+		}
 
         sc.categories.push({ id: category.id, title: category.name, active: active, url: url, subcategories: subcategories});
+		
       });
+	  if(sc.breadcrumb.length == 1)
+		sc.breadcrumbLast = sc.breadcrumb.pop();
     });
-
+	
     sc.changeProductsCategory = function(category) {
       sc.$emit('productsChange', rp.gender, category.id, 0);
       sc.categories.forEach(function(cat){ cat.active = false;});
@@ -185,12 +196,19 @@ angular.module('myApp.controllers', [])
         switch(att[i].id) {
           case 4: sc.product.color = att[i].values[0]; break;
           case 9: sc.product.brand = att[i].values[0]; break;
-          case 8: sc.product.matter = att[i].values[0]; break;
           case 7: sc.product.size = att[i].values; break;
+          case 1: sc.product.genre = att[i].values[0]=='Femenino'?{id:'f', name:'Mujeres'}:{id:'m', name:'Hombres'}; break;
         }
       }
 
-        })
+	  sc.breadcrumb = [];
+	  var url = '#/products?gender=' + sc.product.genre.id;
+	  sc.breadcrumb.push({name: sc.product.genre.name, url: url});
+	  url += '&categoryId=' + sc.product.category.id;
+  	  sc.breadcrumb.push({name: sc.product.category.name, url: url});
+	  url += '&subcategoryId=' + sc.product.subcategory.id;
+  	  sc.breadcrumb.push({name: sc.product.subcategory.name, url: url});
+    })
 
     sc.categories = [
       { title: "Pantalones", active: false },
