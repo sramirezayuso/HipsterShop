@@ -4,15 +4,21 @@
 
 
 <div class="order-container">
-  <div class="order" ng-repeat="order in orders">
-    <h6>Pedido nro: {{ order.orderno }}</h6>
-    <div class="order-elem" ng-repeat="product in order.products" ng-click="goOrder( order.orderno )">
-      <span class="order-elem-title">{{ product.title }}</span>
+  <div class="order" ng-repeat="order in orders" ng-click="goOrder( order.id )">
+    <h6>Pedido nro: {{ order.id }}</h6>
+    <div class="order-elem" ng-repeat="product in order.items">
+      <span class="order-elem-title">{{ product.name }}</span>
       <span class="order-elem-size">Talle: {{ product.size }}</span>
       <span class="order-elem-color">Color: {{ product.color }}</span>
       <span class="order-elem-price">Precio: ${{ product.price }}</span>
     </div>
     <span class="order-total">Total: {{runningTotal(order.orderno)}}</span>
+    <div class="order-information">
+      <span class="order-info">Estado: {{ getStatus(order.status) }}</span>
+      <span class="order-info">Dirección de Envío: {{ order.address }}</span>
+      <span class="order-info">Fecha de Envío: {{ order.processedDate }}</span>
+      <span class="order-info">Fecha de Entrega: {{ order.deliveredDate }}</span>
+    </div>
   </div>
 </div>
 

@@ -209,58 +209,47 @@ angular.module('myApp.controllers', [])
 
   })
 
-  .controller('OrdersCtrl', ['$scope', '$location', function(sc, loc) {
+  .controller('OrdersCtrl', function($scope, $location, ajaxService) {
 
-    sc.orders = [
-      { orderno: 21343,
-        products: [
-        { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
-        { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
-        { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
-        { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
-        { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
-      ]},
-      { orderno: 34644,
-        products: [
-        { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
-        { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
-        { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
-        { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
-        { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
-      ]},
-      { orderno: 23483,
-        products: [
-        { title: "Zapatos", price: 24.50, size: 12, color: 'Rojo' },
-        { title: "Zapatillas", price: 12.50, size: 12, color: 'Azul' },
-        { title: "Ojotas", price: 21.90, size: 12, color: 'Amarillo' },
-        { title: "Mocasines", price: 41.20, size: 12, color: 'Verde' },
-        { title: "Botas", price: 54.50, size: 12, color: 'Violeta' },
-      ]},
-      { orderno: 18442,
-        products: [
-        { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
-        { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
-        { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
-        { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
-        { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
-      ]},
-      { orderno: 78073,
-        products: [
-        { title: "Zapatos", price: 41.50, size: 12, color: 'Rojo' },
-        { title: "Zapatillas", price: 21.70, size: 12, color: 'Azul' },
-        { title: "Ojotas", price: 23.50, size: 12, color: 'Amarillo' },
-        { title: "Mocasines", price: 24.50, size: 12, color: 'Verde' },
-        { title: "Botas", price: 31.50, size: 12, color: 'Violeta' },
-      ]},
-    ];
-
-    sc.goOrder = function ( orderno ) {
-      loc.path( '/orders/' + orderno );
+    ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey'} ).then(function(response) {
+      $scope.authToken = response.data.authenticationToken;
+      ajaxService.async('Account', {method: 'GetPreferences', username: 'MattHarvey', authentication_token:$scope.authToken} ).then(function(response) {
+        $scope.preferences = JSON.parse(response.data.preferences);
+        $scope.cartId = $scope.preferences.cartId;
+        $scope.ordernumbers = $scope.preferences.orders;
+        $scope.orders = [];
+        angular.forEach($scope.ordernumbers,function(number, index) {
+          ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', authentication_token:$scope.authToken, id: number}).then(function(response) {
+            $scope.orders.push(response.data.order);
+          });
+        })
+        ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', authentication_token: $scope.authToken, id: $scope.cartId} ).then(function(response) {
+          $scope.products = response.data.order.items;
+        });
+      });
+    });
+    
+    $scope.getStatus = function( statusCode ) {
+      switch( statusCode ) {
+        case '1':
+          return 'Creado';
+        case '2':
+          return 'Confirmado';
+        case '3':
+          return 'Envíado';
+        case '4':
+          return 'Entregado';
+        default:
+      }
     };
 
-    sc.runningTotal = function(orderno){
+    $scope.goOrder = function ( orderno ) {
+      $location.path( '/orders/' + orderno );
+    };
+
+    $scope.runningTotal = function(orderno){
       var runningTotal = 0;
-      angular.forEach(sc.orders, function(order, index){
+      angular.forEach($scope.orders, function(order, index){
         if (order.orderno == orderno) {
           angular.forEach(order.products, function(product, index){
             runningTotal += product.price;
@@ -269,8 +258,8 @@ angular.module('myApp.controllers', [])
       });
       return runningTotal;
     };
-
   }])
+
 .controller('AccessCtrl', ['$rootScope', '$scope', '$routeParams', 'ajaxService', '$cookieStore', '$location', function(rt, sc, rp, as, cs, lc) {
     sc.submittedSignUp = false;
     sc.submittedSignIn = false;
@@ -291,7 +280,6 @@ angular.module('myApp.controllers', [])
           }
         });
       }
-
     }
 
     sc.signUp = function() {
