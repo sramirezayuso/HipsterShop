@@ -54,10 +54,10 @@
     </div>
 	</div>
 
-  <div class=featured>
-    <h2>Productos destacados</h2>
+  <div class=featured ng-repeat="section in sections">
+    <h2>{{ section.name }}</h2>
     <div class="row">
-      <div class="col-md-4 text-center" ng-repeat="product in products">
+      <div class="col-md-4 text-center" ng-repeat="product in section.products">
         <a href="#/products/{{ product.id }}" class="thumbnail thumbnail-infinite featured-thumbnail">
           <img src="{{ product.imageUrl[0] }}" alt="{{ product.name }}">
           <span class="caption">{{ product.name }}</span>

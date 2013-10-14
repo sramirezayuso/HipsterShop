@@ -72,10 +72,16 @@ angular.module('myApp.controllers', [])
                 sc.categories2H = sc.categoriesH.slice(div);
     });
 
-        var filt = [ { "id": 5, "value": "Oferta" } ];
-
+		sc.sections = [ ];
+		
+		var filt = [ { "id": 6, "value": "Nuevo" } ];
         ajaxService.async('Catalog', {method: 'GetAllProducts', filters: filt} ).then(function(response) {
-                sc.products = response.data.products;
+            sc.sections.push({name: "Productos nuevos", products: response.data.products.slice(0,10)});
+        });
+		
+        var filt = [ { "id": 5, "value": "Oferta" } ];
+        ajaxService.async('Catalog', {method: 'GetAllProducts', filters: filt} ).then(function(response) {
+            sc.sections.push({name: "Ofertas", products: response.data.products.slice(0,10)});
         });
 
   })
