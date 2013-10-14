@@ -150,6 +150,7 @@ angular.module('myApp.controllers', [])
 
       if (subcategoryId != 0) {
         as.async('Catalog', {method: 'GetProductsBySubcategoryId', id: subcategoryId, filters: productFilters}).then(function(response) {
+          console.log(response.data.products)
           response.data.products.forEach(showProduct);
         });
       } else if (categoryId) {
@@ -163,7 +164,8 @@ angular.module('myApp.controllers', [])
         });
       }
     });
-    sc.$emit('productsChange', rp.gender, rp.categoryId, rp.subcategoryId);
+
+    sc.$emit('productsChange', rp.gender, rp.categoryId, rp.subcategoryId || 0);
 
     sc.order = "brand";
   }])
