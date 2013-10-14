@@ -79,42 +79,61 @@ angular.module('myApp.controllers', [])
 
   })
 
-  .controller('ProductsCtrl', ['$scope', function(sc) {
-    sc.products = [
-      { id: 1, title: "Zapato Rojo", price: 21.50, brand: "A"},
-      { id: 2, title: "Azul el zapato", price: 26.00, brand: "A"},
-      { id: 3, title: "Zapato Azul", price: 24.50, brand: "E"},
-      { id: 4, title: "Verde la camiseta", price: 24.50, brand: "A"},
-      { id: 5, title: "Zapato Azul", price: 14.50, brand: "B"},
-      { id: 6, title: "Zapato Azul", price: 25.50, brand: "C"},
-    ];
+  .controller('ProductsCtrl', ['$scope', '$routeParams', 'ajaxService', function(sc, rp, as) {
+    var categoryFilters = [ ];
+    var productFilters = [];
 
-    sc.categories = [
-      { title: "Pantalones", active: false },
-      { title: "Remeras", active: true },
-      { title: "Zapatos", active: false },
-      { title: "Anteojos", active: false }
-    ];
+    switch(rp.gender) {
+      case "F" :
+        categoryFilters.push({"id":1,"value":"Femenino"});
+        productFilters.push({"id":1,"value":"Femenino"});
+      break;
+      case "M":
+        categoryFilters.push({"id":1,"value":"Masculino"});
+        productFilters.push({"id":1,"value":"Masculino"});
+      break;
+    }
+
+    sc.categories = [ ];
+  	as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
+      response.data.categories.forEach(function(category) {
+        sc.categories.push({ title: category.name, active: category.id == rp.categoryId });
+      });
+    });
+
+
+    // This search depends if there is a category, or a subcategory, or a search by name
+    sc.products = [ ];
+  	as.async('Catalog', {method: 'GetProductsByCategoryId', id: rp.categoryId, filters: productFilters}).then(function(response) {
+      response.data.products.forEach(function(product) {
+        var brand = product.attributes.filter(function(attr) { return attr.id == 9; })[0].values[0];
+        sc.products.push({ id: product.id, title: product.name, price: product.price, brand: brand, imageUrl: product.imageUrl[0]});
+        console.log(product)
+      });
+    });
 
     sc.order = "brand";
-
-
   }])
 
   .controller('ProductCtrl', ['$scope', '$routeParams', 'ajaxService', function(sc, rp, as) {
+    sc.changeImage = function(imgUrl) {
+      sc.currentImage = imgUrl;
+    }
 
     as.async('Catalog', {method: 'GetProductById', id: rp.productId} ).then(function(response) {
-		sc.product = response.data.product;
-		var att = response.data.product.attributes;
+      sc.product = response.data.product;
+      var att = response.data.product.attributes;
 
-		for(var i = 0; i < att.length ; i++) {
-			switch(att[i].id) {
-				case 4: sc.product.color = att[i].values[0]; break;
-				case 9: sc.product.brand = att[i].values[0]; break;
-				case 8: sc.product.matter = att[i].values[0]; break;
-				case 7: sc.product.size = att[i].values; break;
-			}
-		}
+      sc.currentImage = sc.product.imageUrl[0];
+
+      for(var i = 0; i < att.length ; i++) {
+        switch(att[i].id) {
+          case 4: sc.product.color = att[i].values[0]; break;
+          case 9: sc.product.brand = att[i].values[0]; break;
+          case 8: sc.product.matter = att[i].values[0]; break;
+          case 7: sc.product.size = att[i].values; break;
+        }
+      }
 
 	})
 
