@@ -21,6 +21,7 @@ angular.module('myApp.controllers', [])
       cs.remove('authToken');
       cs.remove('user.id');
       cs.remove('user.firstName');
+      cs.remove('user.username');
       rt.$emit('refreshUser');
       as.async('Account', { method: 'SignOut' }).then(function(response) {});
     }
@@ -220,7 +221,7 @@ angular.module('myApp.controllers', [])
 
   }])
 
-  .controller('CartCtrl', function($scope, ajaxService) {
+  .controller('CartCtrl', function($scope, $cookieStore, ajaxService) {
 
     /*$scope.testUser = {
       username: "MattHarvey",
@@ -234,14 +235,12 @@ angular.module('myApp.controllers', [])
     };*/
 
     $scope.products = [];
-
-    ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey'} ).then(function(response) {
-      $scope.authToken = response.data.authenticationToken;
-      ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', id: 6, authentication_token: $scope.authToken} ).then(function(response) {
-        console.log(response);
+    ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
+      ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).cartId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
         $scope.products = response.data.order.items;
       });
     });
+
 
     $scope.runningTotal = function(){
       var runningTotal = 0;
@@ -259,22 +258,15 @@ angular.module('myApp.controllers', [])
 
   .controller('OrdersCtrl', function($scope, $location, ajaxService) {
 
-    ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey'} ).then(function(response) {
-      $scope.authToken = response.data.authenticationToken;
-      ajaxService.async('Account', {method: 'GetPreferences', username: 'MattHarvey', authentication_token:$scope.authToken} ).then(function(response) {
-        $scope.preferences = JSON.parse(response.data.preferences);
-        $scope.cartId = $scope.preferences.cartId;
-        $scope.ordernumbers = $scope.preferences.orders;
-        $scope.orders = [];
-        angular.forEach($scope.ordernumbers,function(number, index) {
-          ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', authentication_token:$scope.authToken, id: number}).then(function(response) {
-            $scope.orders.push(response.data.order);
-          });
-        })
-        ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', authentication_token: $scope.authToken, id: $scope.cartId} ).then(function(response) {
-          $scope.products = response.data.order.items;
+    ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
+      $scope.preferences = JSON.parse(response.data.preferences);
+      $scope.ordernumbers = $scope.preferences.orders;
+      $scope.orders = [];
+      angular.forEach($scope.ordernumbers,function(number, index) {
+        ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: number}).then(function(response) {
+          $scope.orders.push(response.data.order);
         });
-      });
+      })
     });
 
     $scope.getStatus = function( statusCode ) {
@@ -322,6 +314,7 @@ angular.module('myApp.controllers', [])
           } else {
             cs.put('authToken', response.data.authenticationToken);
             cs.put('user.id', response.data.account.id);
+            cs.put('user.username', response.data.account.username);
             cs.put('user.firstName', response.data.account.firstName);
             console.log('new cookie authToken:' + response.data.authenticationToken);
             rt.$emit('refreshUser');
@@ -349,6 +342,7 @@ angular.module('myApp.controllers', [])
             if (!response.data.error) {
               cs.put('authToken', response.data.authenticationToken);
               cs.put('user.id', response.data.account.id);
+              cs.put('user.username', response.data.account.username);
               cs.put('user.firstName', response.data.account.firstName);
               console.log('new cookie authToken:' + response.data.authenticationToken);
               rt.$emit('refreshUser');
