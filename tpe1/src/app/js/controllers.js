@@ -79,59 +79,87 @@ angular.module('myApp.controllers', [])
 
   })
 
-  .controller('ProductsCtrl', ['$scope', '$routeParams', 'ajaxService', function(sc, rp, as) {
-    var categoryFilters = [ ];
-    var productFilters = [];
-    switch(rp.gender) {
-      case "f" :
-        categoryFilters.push({"id":1,"value":"Femenino"});
-        productFilters.push({"id":1,"value":"Femenino"});
-        console.log("mujeres")
-      break;
-      case "m":
-        console.log("hombres")
-        categoryFilters.push({"id":1,"value":"Masculino"});
-        productFilters.push({"id":1,"value":"Masculino"});
-      break;
+  .controller('ProductsCtrl', ['$scope', '$routeParams', 'ajaxService', '$location', function(sc, rp, as, lc) {
+
+    function addGenderFilter(rp, filters){
+      var filters = [ ];
+
+      switch(rp.gender) {
+        case "f" : filters.push({"id":1,"value":"Femenino"}); break;
+        case "m" : filters.push({"id":1,"value":"Masculino"}); break;
+      }
+      return filters;
     }
 
-    sc.categories = [ ];
-        as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
-      response.data.categories.forEach(function(category) {
-        var url = '#/products?gender=' + rp.gender + '&categoryId=' + category.id;
-        var active = category.id == rp.categoryId;
-        var subcategories = [];
-        if (active) {
-          as.async('Catalog', {method: 'GetAllSubcategories', id: category.id, filters: categoryFilters}).then(function(response) {
-            response.data.subcategories.forEach(function(subcategory) {
-              var subUrl = '#/products?gender=' + rp.gender + '&categoryId=' + category.id + '&subcategoryId=' + subcategory.id;
-              subcategories.push({ title: subcategory.name, active: rp.subcategoryId == subcategory.id, url: subUrl});
-            });
 
-          });
-        }
+    function loadSubcategories(category, filters) {
+      var subcategories = [ ];
+      as.async('Catalog', {method: 'GetAllSubcategories', id: category.id, filters: filters}).then(function(response) {
+        response.data.subcategories.forEach(function(subcategory) {
+          var subUrl = '#/products?gender=' + rp.gender + '&categoryId=' + category.id + '&subcategoryId=' + subcategory.id;
+          subcategories.push({ id: subcategory.id, title: subcategory.name, active: rp.subcategoryId == subcategory.id, url: subUrl});
+        });
 
-        sc.categories.push({ title: category.name, active: active, url: url, subcategories: subcategories});
       });
-    });
+      return subcategories;
+    }
 
     function showProduct(product) {
       var brand = product.attributes.filter(function(attr) { return attr.id == 9; })[0].values[0];
       sc.products.push({ id: product.id, title: product.name, price: product.price, brand: brand, imageUrl: product.imageUrl[0]});
     }
 
-    // This search depends if there is a category, or a subcategory, or a search by name
-    sc.products = [ ];
-    if (rp.categoryId) {
-      as.async('Catalog', {method: 'GetProductsByCategoryId', id: rp.categoryId, filters: productFilters}).then(function(response) {
-        response.data.products.forEach(showProduct);
+    var categoryFilters = addGenderFilter(rp, []);
+
+    sc.categories = [ ];
+  	as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
+      response.data.categories.forEach(function(category) {
+        var url = '#/products?gender=' + rp.gender + '&categoryId=' + category.id;
+        var active = category.id == rp.categoryId;
+        var subcategories = [];
+
+        if (active) { subcategories = loadSubcategories(category, categoryFilters); }
+
+        sc.categories.push({ id: category.id, title: category.name, active: active, url: url, subcategories: subcategories});
       });
-    } else {
-      // Show all products
-      as.async('Catalog', {method: 'GetAllProducts', filters: productFilters}).then(function(response) {
-        response.data.products.forEach(showProduct);
-      });
+    });
+
+    sc.changeProductsCategory = function(category) {
+      sc.$emit('productsChange', rp.gender, category.id, rp.subcategoryId);
+      sc.categories.forEach(function(cat){ cat.active = false;});
+      category.active = true;
+      lc.search({categoryId: category.id});
+      if (category.subcategories.length == 0) {
+        category.subcategories = loadSubcategories(category, [])
+      }
     }
+
+    sc.changeProductsSubcategory = function(category, subcategory) {
+      lc.search('subcategoryId', subcategory.id);
+      category.subcategories.forEach(function(subcat){subcat.active = false;});
+
+      subcategory.active = true;
+      sc.$emit('productsChange', rp.gender, rp.categoryId, subcategory.id);
+    }
+
+    // This search depends if there is a category, or a subcategory, or a search by name
+    sc.$on('productsChange', function(ev, gender, categoryId, subcategoryId) {
+      sc.products = [ ];
+
+      var productFilters = addGenderFilter(rp, []);
+
+      if (categoryId) {
+        as.async('Catalog', {method: 'GetProductsByCategoryId', id: categoryId, filters: productFilters}).then(function(response) {
+          response.data.products.forEach(showProduct);
+        });
+      } else {
+        // Show all products
+        as.async('Catalog', {method: 'GetAllProducts', filters: productFilters}).then(function(response) {
+          response.data.products.forEach(showProduct);
+        });
+      }
+    });
+    sc.$emit('productsChange', rp.gender, rp.categoryId, rp.subcategoryId);
 
     sc.order = "brand";
   }])
@@ -203,7 +231,7 @@ angular.module('myApp.controllers', [])
     };
 
   })
-  
+
   .controller('OrdersCtrl', function($scope, $location, ajaxService) {
 
     ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey'} ).then(function(response) {
@@ -223,7 +251,7 @@ angular.module('myApp.controllers', [])
         });
       });
     });
-    
+
     $scope.getStatus = function( statusCode ) {
       switch( statusCode ) {
         case '1':
@@ -255,7 +283,7 @@ angular.module('myApp.controllers', [])
     };
   })
 
-  
+
 .controller('AccessCtrl', ['$rootScope', '$scope', '$routeParams', 'ajaxService', '$cookieStore', '$location', function(rt, sc, rp, as, cs, lc) {
     sc.submittedSignUp = false;
     sc.submittedSignIn = false;

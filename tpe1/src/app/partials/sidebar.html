@@ -1,12 +1,12 @@
 <ul class="nav nav-pills nav-stacked">
   <li ng-repeat="category in categories" ng-class="{active: category.active }">
-    <a href="{{ category.url }}">
+  <a href="" ng-click="changeProductsCategory(category)">
       {{ category.title }}
     </a>
 
     <ul ui-if="category.active">
-      <li ng-repeat="subcategory in category.subcategories">
-        <a href="{{ subcategory.url }}">
+      <li ng-repeat="subcategory in category.subcategories"  ng-class="{active: subcategory.active }">
+        <a href="" ng-click="changeProductsSubcategory(category, subcategory)">
           {{subcategory.title}}
         </a>
       </li>

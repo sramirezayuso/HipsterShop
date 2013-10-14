@@ -5,7 +5,7 @@
 angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'myApp.controllers', 'ngCookies']).
   config(['$routeProvider', function($routeProvider) {
     $routeProvider.when('/home', {templateUrl: 'partials/home.html', controller: 'HomeCtrl'});
-    $routeProvider.when('/products', {templateUrl: 'partials/products.html', controller: 'ProductsCtrl'});
+    $routeProvider.when('/products', {templateUrl: 'partials/products.html', controller: 'ProductsCtrl', reloadOnSearch: false});
     $routeProvider.when('/products/:productId', {templateUrl: 'partials/product.html', controller: 'ProductCtrl'});
     $routeProvider.when('/cart', {templateUrl: 'partials/cart.html', controller: 'CartCtrl'});
     $routeProvider.when('/access', {templateUrl: 'partials/access.html', controller: 'AccessCtrl'});
