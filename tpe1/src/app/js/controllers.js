@@ -99,20 +99,37 @@ angular.module('myApp.controllers', [])
   	as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
       response.data.categories.forEach(function(category) {
         var url = '#/products?gender=' + rp.gender + '&categoryId=' + category.id;
-        sc.categories.push({ title: category.name, active: category.id == rp.categoryId, url: url});
+        var active = category.id == rp.categoryId;
+        var subcategories = [];
+        if (active) {
+          as.async('Catalog', {method: 'GetAllSubcategories', id: category.id, filters: categoryFilters}).then(function(response) {
+            response.data.subcategories.forEach(function(subcategory) {
+              var subUrl = '#/products?gender=' + rp.gender + '&categoryId=' + category.id + '&subcategoryId=' + subcategory.id;
+              subcategories.push({ title: subcategory.name, active: rp.subcategoryId == subcategory.id, url: subUrl});
+            });
+
+          });
+        }
+
+        sc.categories.push({ title: category.name, active: active, url: url, subcategories: subcategories});
       });
     });
 
+    function showProduct(product) {
+      var brand = product.attributes.filter(function(attr) { return attr.id == 9; })[0].values[0];
+      sc.products.push({ id: product.id, title: product.name, price: product.price, brand: brand, imageUrl: product.imageUrl[0]});
+    }
 
     // This search depends if there is a category, or a subcategory, or a search by name
+    sc.products = [ ];
     if (rp.categoryId) {
-      sc.products = [ ];
       as.async('Catalog', {method: 'GetProductsByCategoryId', id: rp.categoryId, filters: productFilters}).then(function(response) {
-        response.data.products.forEach(function(product) {
-          var brand = product.attributes.filter(function(attr) { return attr.id == 9; })[0].values[0];
-          sc.products.push({ id: product.id, title: product.name, price: product.price, brand: brand, imageUrl: product.imageUrl[0]});
-          console.log(product)
-        });
+        response.data.products.forEach(showProduct);
+      });
+    } else {
+      // Show all products
+      as.async('Catalog', {method: 'GetAllProducts', filters: productFilters}).then(function(response) {
+        response.data.products.forEach(showProduct);
       });
     }
 
