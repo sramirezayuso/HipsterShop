@@ -3,7 +3,7 @@
 /* Controllers */
 
 angular.module('myApp.controllers', [])
-  .controller('PageHeaderCtrl', ['$rootScope', '$scope', '$cookieStore', function(rt, sc, cs) {
+  .controller('PageHeaderCtrl', ['$rootScope', '$scope', '$cookieStore', 'ajaxService',  function(rt, sc, cs, as) {
 
     sc.loggedIn = false;
     rt.$on('refreshUser', function() {
@@ -22,6 +22,7 @@ angular.module('myApp.controllers', [])
       cs.remove('user.id');
       cs.remove('user.firstName');
       rt.$emit('refreshUser');
+      as.async('Account', { method: 'SignOut' }).then(function(response) {});
     }
   }])
 
