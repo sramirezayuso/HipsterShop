@@ -97,7 +97,8 @@ angular.module('myApp.controllers', [])
     sc.categories = [ ];
   	as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
       response.data.categories.forEach(function(category) {
-        sc.categories.push({ title: category.name, active: category.id == rp.categoryId });
+        var url = '#/products/' + rp.gender + '/' + category.id + '/0/';
+        sc.categories.push({ title: category.name, active: category.id == rp.categoryId, url: url});
       });
     });
 
