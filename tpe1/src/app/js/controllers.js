@@ -85,12 +85,12 @@ angular.module('myApp.controllers', [])
 
 		var filt = [ { "id": 5, "value": "Oferta" } ];
         ajaxService.async('Catalog', {method: 'GetAllProducts', filters: filt} ).then(function(response) {
-            sc.sections.push({name: "Ofertas", products: response.data.products.slice(0,4)});
+            sc.sections[1] = {name: "Ofertas", products: response.data.products.slice(0,4)};
         });
 		
 		var filt = [ { "id": 6, "value": "Nuevo" } ];
         ajaxService.async('Catalog', {method: 'GetAllProducts', filters: filt} ).then(function(response) {
-            sc.sections.push({name: "Productos nuevos", products: response.data.products.slice(0,4)});
+            sc.sections[0] = {name: "Productos nuevos", products: response.data.products.slice(0,4)};
         });
 
   })
