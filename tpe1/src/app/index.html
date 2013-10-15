@@ -27,23 +27,23 @@
     </div>
   </nav>
   <nav class="navbar navbar-default" role="navigation">
-  <div ng-controller=PageNavCtrl class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Hipster Shop</a>
+    <div ng-controller=PageNavCtrl class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Hipster Shop</a>
+      </div>
+
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="" ng-click="changeGender('f')">Mujeres</a></li>
+          <li><a href="" ng-click="changeGender('m')">Hombres</a></li>
+        </ul>
+
+        <form class="navbar-form navbar-left pull-right" ng-submit="search()">
+          <div class="form-group">
+            <input type="text" class="form-control" ng-model=searchTerm placeholder="Tu búsqueda">
+          </div>
+          <button type="submit" class="btn btn-default">Buscar</button>
+        </form>
     </div>
-
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#/products?gender=f">Mujeres</a></li>
-        <li><a href="#/products?gender=m">Hombres</a></li>
-      </ul>
-
-      <form class="navbar-form navbar-left pull-right" ng-submit="search()">
-        <div class="form-group">
-          <input type="text" class="form-control" ng-model=searchTerm placeholder="Tu búsqueda">
-        </div>
-        <button type="submit" class="btn btn-default">Buscar</button>
-      </form>
-  </div>
   </nav>
 
   <div class="container">
