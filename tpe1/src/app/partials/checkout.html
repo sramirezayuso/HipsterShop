@@ -14,6 +14,24 @@
 			</div>
 			<span class="checkout-summary-total">Total: {{runningTotal()}}</span>
 		</div>
+		<div class="credit-card-information">
+			<div class="col-md-8">
+				<div class="saved-cards">
+					<div class=panel-heading>
+	        			<h3>Ingresá</h3>
+	        			<small>Todos.</small>
+	      			</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="new-card">
+					<div class=panel-heading>
+	        			<h3>Ingresá</h3>
+	        			<small>Todos.</small>
+	      			</div>
+				</div>
+			</div>
+		</div>
 		<div class="saved-address-container">
 			<div class="saved-address" ng-repeat="address in addresses" ng-click="loadSavedAddress($index)">
 				<span class="saved-address-data">Nombre: {{ address.name }}</span>
@@ -26,43 +44,52 @@
 	</div>
 
 	<div class="address">
-		<form role="form">
-			<div class="addrForm-elem-group">
-				<label class="form-label" for="name">Nombre</label>
-				<input class="addrForm-elem" id="name" ng-model="currentAddr.name" type="text" required="required">
+		<div class="panel panel-default">
+			<div class=panel-heading>
+        		<h3>Ingresá tu Dirección</h3>
+        		<small>Todos los campos son obligatorios.</small>
+      		</div>
+      		<div class=panel-body>
+				<form role="form">
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="name">Nombre</label>
+						<input class="addrForm-elem" id="name" ng-model="currentAddr.name" type="text" required="required">
+					</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="street">Calle</label>
+						<input class="addrForm-elem" id="street" ng-model="currentAddr.street" type="text" required="required">
+						</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="door">Puerta</label>
+						<input class="addrForm-elem" id="door" ng-model="currentAddr.door" type="text" required="required">
+					</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="floor">Piso</label>
+						<input class="addrForm-elem" id="floor" ng-model="currentAddr.floor" type="text" required="required">
+					</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="apartment">Departamento</label>
+						<input class="addrForm-elem" id="apartment" ng-model="currentAddr.apartment" type="text" required="required">
+					</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="province">Provincia</label>
+						<input class="addrForm-elem" id="province" ng-model="currentAddr.province" type="text" required="required">
+					</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="city">Ciudad</label>
+						<input class="addrForm-elem" id="city" ng-model="currentAddr.city" type="text" required="required">
+					</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="zipCode">Código Postal</label>
+						<input class="addrForm-elem" id="zipCode" ng-model="currentAddr.zipCode" type="text" required="required">
+					</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="phone">Teléfono</label>
+						<input class="addrForm-elem" id="phone" ng-model="currentAddr.phone" type="tel" required="required">
+					</div>
+					<button type="submit" class="btn btn-primary">Checkout</button>
+				</form>
 			</div>
-			<div class="addrForm-elem-group">
-				<label class="form-label" for="street">Calle</label>
-				<input class="addrForm-elem" id="street" ng-model="currentAddr.street" type="text" required="required">
-				</div>
-			<div class="addrForm-elem-group">
-				<label class="form-label" for="door">Puerta</label>
-				<input class="addrForm-elem" id="door" ng-model="currentAddr.door" type="text" required="required">
-			</div>
-			<div class="addrForm-elem-group">
-				<label class="form-label" for="floor">Piso</label>
-				<input class="addrForm-elem" id="floor" ng-model="currentAddr.floor" type="text" required="required">
-			</div>
-			<div class="addrForm-elem-group">
-				<label class="form-label" for="apartment">Departamento</label>
-				<input class="addrForm-elem" id="apartment" ng-model="currentAddr.apartment" type="text" required="required">
-			</div>
-			<div class="addrForm-elem-group">
-				<label class="form-label" for="province">Provincia</label>
-				<input class="addrForm-elem" id="province" ng-model="currentAddr.province" type="text" required="required">
-			</div>
-			<div class="addrForm-elem-group">
-				<label class="form-label" for="city">Ciudad</label>
-				<input class="addrForm-elem" id="city" ng-model="currentAddr.city" type="text" required="required">
-			</div>
-			<div class="addrForm-elem-group">
-				<label class="form-label" for="zipCode">Código Postal</label>
-				<input class="addrForm-elem" id="zipCode" ng-model="currentAddr.zipCode" type="text" required="required">
-			</div>
-			<div class="addrForm-elem-group">
-				<label class="form-label" for="phone">Teléfono</label>
-				<input class="addrForm-elem" id="phone" ng-model="currentAddr.phone" type="tel" required="required">
-			</div>
-		</form>
+		</div>
 	</div>
 </div>

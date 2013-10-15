@@ -2,22 +2,32 @@
   <h1>Pedidos</h1>
 </div>
 
-
-<div class="order-container">
-  <div class="order" ng-repeat="order in orders" ng-click="goOrder( order.id )">
-    <h6>Pedido nro: {{ order.id }}</h6>
-    <div class="order-elem" ng-repeat="product in order.items">
-      <span class="order-elem-title">{{ product.name }}</span>
-      <span class="order-elem-size">Talle: {{ product.size }}</span>
-      <span class="order-elem-color">Color: {{ product.color }}</span>
-      <span class="order-elem-price">Precio: ${{ product.price }}</span>
-    </div>
-    <span class="order-total">Total: {{runningTotal(order.orderno)}}</span>
-    <div class="order-information">
-      <span class="order-info">Estado: {{ getStatus(order.status) }}</span>
-      <span class="order-info">Dirección de Envío: {{ order.address }}</span>
-      <span class="order-info">Fecha de Envío: {{ order.processedDate }}</span>
-      <span class="order-info">Fecha de Entrega: {{ order.deliveredDate }}</span>
+<div class="orders-page-container">
+  <div class="order-container">
+    <div class="order" ng-repeat="order in orders" ng-click="goOrder( order.id )">
+      <h6>Pedido nro: {{ order.id }}</h6>
+      <div class="left-products">
+        <div class="order-elem" ng-repeat="product in order.items">
+          <span class="order-elem-title">{{ product.product.name }}</span>
+          <div class="info-line">
+            <span class="order-elem-data">Talle: {{ product.size }}</span>
+            <span class="order-elem-data">Color: {{ product.color }}</span>
+            <span class="order-elem-data">Marca: {{ product.brand }}</span>
+          </div>
+          <div class="info-line">
+            <span class="order-elem-data">Cantidad: {{ product.quantity }}</span>
+            <span class="order-elem-data">Precio: ${{ product.price }}</span>
+            <span class="order-elem-data">Precio Subtotal: ${{ product.price * product.quantity }}</span>
+          </div>
+        </div>
+        <span class="order-total">Total: {{runningTotal(order.orderno)}}</span>
+      </div>
+      <div class="order-information">
+        <span class="order-info-elem">Estado: {{ getStatus(order.status) }}</span>
+        <span class="order-info-elem">Dirección de Envío: {{ order.address }}</span>
+        <span class="order-info-elem">Fecha de Envío: {{ order.processedDate }}</span>
+        <span class="order-info-elem">Fecha de Entrega: {{ order.deliveredDate }}</span>
+      </div>
     </div>
   </div>
 </div>

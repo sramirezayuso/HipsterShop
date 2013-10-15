@@ -243,7 +243,7 @@ angular.module('myApp.controllers', [])
 
   }])
 
-  .controller('CartCtrl', function($scope, $cookieStore, ajaxService) {
+  .controller('CartCtrl', function($scope, $location, $cookieStore, ajaxService) {
 
     /*$scope.testUser = {
       username: "MattHarvey",
@@ -276,9 +276,16 @@ angular.module('myApp.controllers', [])
       $scope.products.splice(idx, 1);
     };
 
+    $scope.go = function ( path ) {
+      $location.path( path );
+    };
+
   })
 
-  .controller('OrdersCtrl', function($scope, $location, ajaxService) {
+  .controller('OrdersCtrl', function($scope, $location, $cookieStore, ajaxService) {
+
+    //ajaxService.async('Order', {method: 'AddItemToOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order_item: {order: {id:8}, product: {id:45}, quantity: 1 }  } ).then(function(response) {
+    //});
 
     ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
       $scope.preferences = JSON.parse(response.data.preferences);

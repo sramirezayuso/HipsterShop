@@ -2,22 +2,24 @@
   <h1>Pedido nro: {{ orderno }}</h1>
 </div>
 
-<div class="order-product-container">
-  <div class="order-product" ng-repeat="product in products">
-    <img class="order-product-img" ng-src="{{product.product.imageUrl}}" alt="...">
-    <div class="product-info-container">
-      <h2 class="order-product-title">{{ product.title }}</h2>
-      <div class="order-data-row">
-        <span class="order-product-size">Talle: {{ product.size }}</span>
-        <span class="order-product-color">Color: {{ product.color }}</span>
-        <span class="order-product-price">Marca: {{ product.brand }}</span>
-      </div>
-      <div class="order-data-row">
-        <span class="order-product-quantity">Cantidad: {{ product.quantity }}</span>
-        <span class="order-product-price">Precio por Unidad: ${{ product.price }}</span>
-        <span class="order-product-totalprice">Precio Total: ${{ product.price * product.quantity }}</span>
+<div class="order-page-container">
+  <div class="order-product-container">
+    <div class="order-product" ng-repeat="product in products">
+      <img class="order-product-img" ng-src="{{product.product.imageUrl}}" alt="...">
+      <div class="product-info-container">
+        <h2 class="order-product-title">{{ product.title }}</h2>
+        <div class="order-data-row">
+          <span class="order-product-size">Talle: {{ product.size }}</span>
+          <span class="order-product-color">Color: {{ product.color }}</span>
+          <span class="order-product-price">Marca: {{ product.brand }}</span>
+        </div>
+        <div class="order-data-row">
+          <span class="order-product-quantity">Cantidad: {{ product.quantity }}</span>
+          <span class="order-product-price">Precio por Unidad: ${{ product.price }}</span>
+          <span class="order-product-totalprice">Precio Total: ${{ product.price * product.quantity }}</span>
+        </div>
       </div>
     </div>
+    <span class="order-product-total">Total: ${{ runningTotal() }}</span>
   </div>
-  <span class="order-product-total">Total: ${{ runningTotal() }}</span>
 </div>
