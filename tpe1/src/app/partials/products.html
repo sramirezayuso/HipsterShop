@@ -36,16 +36,15 @@
         </div>
       </div>
     </form>
+    <div class="text-center" ui-if="products.length == 0">
+      <small>No encontramos ningún producto con las características que buscabas.<br> Probá otra búsqueda o seleccioná otra categoría.</small>
+    </div>
     <div class="row">
-      <div class="text-center" ui-if="products.length == 0">
-        <small>No encontramos ningún producto con las características que buscabas.<br> Probá otra búsqueda o seleccioná otra categoría.</small>
-      </div>
       <div class="col-md-4" ng-repeat="product in products | orderBy: order">
         <div class="thumbnail thumbnail-infinite">
           <a href="#/products/{{ product.id }}" class=thumbnail>
             <img src="{{ product.imageUrl }}" alt="{{ product.title }}">
           </a>
-        </a>
           <div class=caption>
             <h4><a href="#/products/{{ product.id }}">{{ product.title }}</a></h4>
             <p><small>${{ product.price }} - {{ product.brand }} </small></p>
