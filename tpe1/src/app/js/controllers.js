@@ -87,7 +87,7 @@ angular.module('myApp.controllers', [])
         ajaxService.async('Catalog', {method: 'GetAllProducts', filters: filt} ).then(function(response) {
             sc.sections[1] = {name: "Ofertas", products: response.data.products.slice(0,4)};
         });
-		
+
 		var filt = [ { "id": 6, "value": "Nuevo" } ];
         ajaxService.async('Catalog', {method: 'GetAllProducts', filters: filt} ).then(function(response) {
             sc.sections[0] = {name: "Productos nuevos", products: response.data.products.slice(0,4)};
@@ -116,10 +116,12 @@ angular.module('myApp.controllers', [])
         response.data.subcategories.forEach(function(subcategory) {
           var subUrl = '#/products?gender=' + rp.gender + '&categoryId=' + category.id + '&subcategoryId=' + subcategory.id;
           subcategories.push({ id: subcategory.id, title: subcategory.name, active: rp.subcategoryId == subcategory.id, url: subUrl});
-		  if(rp.subcategoryId == subcategory.id)
-			sc.breadcrumb.push({url:subUrl, name:subcategory.name});
+
+          if(rp.subcategoryId == subcategory.id) {
+            sc.breadcrumb.push({url:subUrl, name:subcategory.name});
+          }
         });
-		sc.breadcrumbLast = sc.breadcrumb.pop();
+        sc.breadcrumbLast = sc.breadcrumb.pop();
       });
       return subcategories;
     }
@@ -140,15 +142,17 @@ angular.module('myApp.controllers', [])
         var subcategories = [];
 
         if (active) {
-			subcategories = loadSubcategories(category, categoryFilters);
-			sc.breadcrumb.push({url:url, name:category.name});
-		}
+          subcategories = loadSubcategories(category, categoryFilters);
+          sc.breadcrumb.push({url:url, name:category.name});
+        }
 
         sc.categories.push({ id: category.id, title: category.name, active: active, url: url, subcategories: subcategories});
 
       });
-	  if(sc.breadcrumb.length == 1)
-		sc.breadcrumbLast = sc.breadcrumb.pop();
+
+      if(sc.breadcrumb.length == 1){
+        sc.breadcrumbLast = sc.breadcrumb.pop();
+      }
     });
 
     sc.changeProductsCategory = function(category) {
