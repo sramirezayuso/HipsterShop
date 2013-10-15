@@ -27,7 +27,11 @@ angular.module('myApp.controllers', [])
     }
   }])
 
-  .controller('PageNavCtrl', ['$location', '$scope',  '$rootScope', function(lc, sc, rc){
+  .controller('PageNavCtrl', ['$location', '$scope',  '$rootScope', '$routeParams', function(lc, sc, rc, rp){
+      sc.$on('$routeChangeSuccess', function (ev, current, prev) {
+        sc.gender = current.params.gender;
+       });
+
       sc.search = function() {
         lc.path('products').search('search', sc.searchTerm );
         lc.path('products').search('categoryId', 0);
@@ -35,6 +39,7 @@ angular.module('myApp.controllers', [])
         rc.$emit('productsChange', rp.gender, 0, 0, sc.searchTerm);
       }
       sc.changeGender = function(gender){
+        sc.gender = gender;
         lc.path('products').search('search', '');
         lc.path('products').search('categoryId', 0);
         lc.path('products').search('subcategoryId', 0);
