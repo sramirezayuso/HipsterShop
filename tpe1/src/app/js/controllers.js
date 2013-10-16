@@ -436,9 +436,6 @@ angular.module('myApp.controllers', [])
 
     ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
       $scope.preferences = JSON.parse(response.data.preferences)
-          /*$scope.preferences.cartId = 6;
-            ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {
-            });*/
       ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).cartId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
         $scope.products = response.data.order.items;
       });
@@ -478,20 +475,40 @@ angular.module('myApp.controllers', [])
     }
 
     $scope.checkout = function() {
-      console.log('test');
-      if($scope.isAddressSaved && $scope.isCardSaved && $scope.paymentMethod == 'card'){
-        ajaxService.async('Order', {method: 'ConfirmOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order: {id: $scope.preferences.cartId, address:{id: $scope.currentAddr.id}, creditCard: {id: $scope.currentCard.id}}} ).then(function(response) {
-          ajaxService.async('Order', {method: 'CreateOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
-            $scope.preferences.orders.push($scope.preferences.cartId);
-            $scope.preferences.cartId = response.data.order.id;
-            ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {
+      if ($scope.paymentMethod == 'card') {
+        if ($scope.isAddressSaved && $scope.isCardSaved) {
+          ajaxService.async('Order', {method: 'ConfirmOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order: {id: $scope.preferences.cartId, address:{id: $scope.currentAddr.id}, creditCard: {id: $scope.currentCard.id}}} ).then(function(response) {
+            ajaxService.async('Order', {method: 'CreateOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+              $scope.preferences.orders.push($scope.preferences.cartId);
+              $scope.preferences.cartId = response.data.order.id;
+              ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {});
             });
           });
-        });
+        }
+      } else if ($scope.paymentMethod == 'cash') {
+        if($scope.isAddressSaved){
+          ajaxService.async('Order', {method: 'ConfirmOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order: {id: $scope.preferences.cartId, address:{id: $scope.currentAddr.id}}} ).then(function(response) {
+            ajaxService.async('Order', {method: 'CreateOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+              $scope.preferences.orders.push($scope.preferences.cartId);
+              $scope.preferences.cartId = response.data.order.id;
+              ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {});
+            });
+          });
+        } else {
+          ajaxService.async('Account', {method: 'CreateAddress', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), address: $scope.createAddress()} ).then(function(response) {
+            ajaxService.async('Order', {method: 'ConfirmOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order: {id: $scope.preferences.cartId, address:{id: response.data.address.id}}} ).then(function(response) {
+              ajaxService.async('Order', {method: 'CreateOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+                if($scope.addresses.length > 2)
+                  ajaxService.async('Account', {method: 'DeleteAddress', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), id: $scope.addresses[0].id} ).then(function(response) {});
+                $scope.preferences.orders.push($scope.preferences.cartId);
+                $scope.preferences.cartId = response.data.order.id;
+                ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {});
+              });
+            });
+          });
+        }
       }
     };
-
-
   });
 
 
