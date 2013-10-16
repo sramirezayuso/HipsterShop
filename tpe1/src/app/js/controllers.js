@@ -424,16 +424,25 @@ angular.module('myApp.controllers', [])
 
     $scope.paymentMethod = 'cash';
     $scope.cardType = "amex";
-
+    $scope.currentAddr = {};
+    $scope.currentCard = {};
+    $scope.addresses = [];
+    $scope.cards = [];
     $scope.products = [];
+    $scope.isAddressSaved = false;
+    $scope.isCardSaved = false;
+
+
+
     ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
+      $scope.preferences = JSON.parse(response.data.preferences)
+          /*$scope.preferences.cartId = 6;
+            ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {
+            });*/
       ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).cartId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
         $scope.products = response.data.order.items;
       });
     });
-
-    $scope.addresses = [];
-    $scope.cards = [];
 
     ajaxService.async('Account', {method: 'GetAllAddresses', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
       $scope.addresses = response.data.addresses;
@@ -441,9 +450,6 @@ angular.module('myApp.controllers', [])
     ajaxService.async('Account', {method: 'GetAllCreditCards', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
       $scope.cards = response.data.creditCards;
     });
-
-    $scope.currentAddr = {};
-    $scope.currentCard = {};
 
     $scope.runningTotal = function(){
       var runningTotal = 0;
@@ -455,15 +461,36 @@ angular.module('myApp.controllers', [])
 
     $scope.loadSavedAddress = function( idx ) {
       $scope.currentAddr = JSON.parse(JSON.stringify($scope.addresses[idx]));
+      $scope.isAddressSaved = true;
     };
 
     $scope.loadSavedCard = function( idx ) {
       $scope.currentCard = JSON.parse(JSON.stringify($scope.cards[idx]));
+      $scope.isCardSaved = true;
     };
+
+    $scope.changeCardState = function( newState ) {
+      $scope.isCardSaved = newState;
+    }
+
+    $scope.changeAddressState = function( newState ) {
+      $scope.isAddressSaved = newState;
+    }
 
     $scope.checkout = function() {
       console.log('test');
+      if($scope.isAddressSaved && $scope.isCardSaved && $scope.paymentMethod == 'card'){
+        ajaxService.async('Order', {method: 'ConfirmOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order: {id: $scope.preferences.cartId, address:{id: $scope.currentAddr.id}, creditCard: {id: $scope.currentCard.id}}} ).then(function(response) {
+          ajaxService.async('Order', {method: 'CreateOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+            $scope.preferences.orders.push($scope.preferences.cartId);
+            $scope.preferences.cartId = response.data.order.id;
+            ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {
+            });
+          });
+        });
+      }
     };
+
 
   });
 

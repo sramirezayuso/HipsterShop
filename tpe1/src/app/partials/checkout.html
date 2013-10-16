@@ -44,41 +44,41 @@
 						<div class="address-form-column">
 							<div class="addrForm-elem-group">
 								<label class="form-label" for="name">Nombre</label>
-								<input class="addrForm-elem" id="name" ng-model="currentAddr.name" type="text" required="required">
+								<input class="addrForm-elem" id="name" ng-model="currentAddr.name" ng-change="changeAddressState(false)" type="text" required="required">
 							</div>
 							<div class="addrForm-elem-group">
 								<label class="form-label" for="street">Calle</label>
-								<input class="addrForm-elem" id="street" ng-model="currentAddr.street" type="text" required="required">
+								<input class="addrForm-elem" id="street" ng-model="currentAddr.street" ng-change="changeAddressState(false)" type="text" required="required">
 							</div>
 							<div class="addrForm-elem-group">
 								<label class="form-label" for="door">Altura</label>
-								<input class="addrForm-elem" id="door" ng-model="currentAddr.number" type="text" required="required">
+								<input class="addrForm-elem" id="door" ng-model="currentAddr.number" ng-change="changeAddressState(false)" type="text" required="required">
 							</div>
 							<div class="addrForm-elem-group">
 								<label class="form-label" for="floor">Piso</label>
-								<input class="addrForm-elem" id="floor" ng-model="currentAddr.floor" type="text" required="required">
+								<input class="addrForm-elem" id="floor" ng-model="currentAddr.floor" ng-change="changeAddressState(false)" type="text" required="required">
 							</div>
 							<div class="addrForm-elem-group">
 								<label class="form-label" for="apartment">Departamento</label>
-								<input class="addrForm-elem" id="apartment" ng-model="currentAddr.gate" type="text" required="required">
+								<input class="addrForm-elem" id="apartment" ng-model="currentAddr.gate" ng-change="changeAddressState(false)" type="text" required="required">
 							</div>
 						</div>
 						<div class="address-form-column">
 							<div class="addrForm-elem-group">
 								<label class="form-label" for="province">Provincia</label>
-								<input class="addrForm-elem" id="province" ng-model="currentAddr.province" type="text" required="required">
+								<input class="addrForm-elem" id="province" ng-model="currentAddr.province" ng-change="changeAddressState(false)" type="text" required="required">
 							</div>
 							<div class="addrForm-elem-group">
 								<label class="form-label" for="city">Ciudad</label>
-								<input class="addrForm-elem" id="city" ng-model="currentAddr.city" type="text" required="required">
+								<input class="addrForm-elem" id="city" ng-model="currentAddr.city" ng-change="changeAddressState(false)" type="text" required="required">
 							</div>
 							<div class="addrForm-elem-group">
 								<label class="form-label" for="zipCode">Código Postal</label>
-								<input class="addrForm-elem" id="zipCode" ng-model="currentAddr.zipCode" type="text" required="required">
+								<input class="addrForm-elem" id="zipCode" ng-model="currentAddr.zipCode" ng-change="changeAddressState(false)" type="text" required="required">
 							</div>
 							<div class="addrForm-elem-group">
 								<label class="form-label" for="phone">Teléfono</label>
-								<input class="addrForm-elem" id="phone" ng-model="currentAddr.phoneNumber" type="tel" required="required">
+								<input class="addrForm-elem" id="phone" ng-model="currentAddr.phoneNumber" ng-change="changeAddressState(false)" type="tel" required="required">
 							</div>
 						</div>
 					</div>
@@ -124,25 +124,25 @@
       				<label class="form-label">Tipo de Tarjeta</label>
       				<div class="card-type">
       					<div class="col-md-6">
-      						<input ng-model="cardType" type="radio" value="amex">American Express<br/>
-							<input ng-model="cardType" type="radio" value="mcard">Master Card<br/>
+      						<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="amex">American Express<br/>
+							<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="mcard">Master Card<br/>
 						</div>
 						<div class="col-md-6">
-							<input ng-model="cardType" type="radio" value="visa">Visa<br/>
-							<input ng-model="cardType" type="radio" value="diners">Diners<br/>
+							<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="visa">Visa<br/>
+							<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="diners">Diners<br/>
 						</div>
       				</div>
 					<div class="addrForm-elem-group">
 						<label class="form-label" for="phone">Número de Tarjeta</label>
-						<input class="addrForm-elem" id="phone" ng-model="currentCard.number" type="text" required="required">
+						<input class="addrForm-elem" id="phone" ng-model="currentCard.number" ng-change="changeCardState(false)" type="text" required="required">
 					</div>
 					<div class="addrForm-elem-group">
 						<label class="form-label" for="phone">Fecha de Expiración</label>
-						<input class="addrForm-elem" id="phone" ng-model="currentCard.expirationDate" type="text" required="required">
+						<input class="addrForm-elem" id="phone" ng-model="currentCard.expirationDate" ng-change="changeCardState(false)" type="text" required="required">
 					</div>
 					<div class="addrForm-elem-group">
 						<label class="form-label" for="phone">Código de Seguridad</label>
-						<input class="addrForm-elem" id="phone" ng-model="currentCard.securityCode" type="text" required="required">
+						<input class="addrForm-elem" id="phone" ng-model="currentCard.securityCode" ng-change="changeCardState(false)" type="text" required="required">
 					</div>
       			</div>
 			</div>
