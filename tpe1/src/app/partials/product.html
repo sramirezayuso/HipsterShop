@@ -14,10 +14,10 @@
   <div class="col-md-9">
     <div class=row>
       <div class=col-md-6>
-        <img src="{{ currentImage }}" class="img-rounded img-responsive" alt="{{ product.name }}">
+        <img ng-src="{{ currentImage }}" class="img-rounded img-responsive" alt="{{ product.name }}">
         <div>
           <div class=col-md-3 ng-repeat="imgUrl in product.imageUrl">
-            <img src="{{ imgUrl }}" ng-click="changeImage(imgUrl)"class="img-thumbnail img-responsive" alt="{{ product.name }}">
+            <img ng-src="{{ imgUrl }}" ng-click="changeImage(imgUrl)"class="img-thumbnail img-responsive" alt="{{ product.name }}">
           </div>
         </div>
       </div>

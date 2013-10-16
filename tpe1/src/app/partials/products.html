@@ -43,7 +43,7 @@
       <div class="col-md-4" ng-repeat="product in products | orderBy: order">
         <div class="thumbnail thumbnail-infinite">
           <a href="#/products/{{ product.id }}" class=thumbnail>
-            <img src="{{ product.imageUrl }}" alt="{{ product.title }}">
+            <img ng-src="{{ product.imageUrl }}" alt="{{ product.title }}">
           </a>
           <div class=caption>
             <h4><a href="#/products/{{ product.id }}">{{ product.title }}</a></h4>
