@@ -4,41 +4,30 @@
 
 <div class="checkout-container">
 
-	<div class="left-container">
-		<div class="checkout-summary">
-			<div class="checkout-product" ng-repeat="product in products">
-				<span class="checkout-product-title">{{ product.title }}</span>
-	         	<span class="checkout-product-size">Talle: {{ product.size }}</span>
-	          	<span class="checkout-product-color">Color: {{ product.color }}</span>
-	          	<span class="checkout-product-price">Precio: ${{ product.price }}</span>
-			</div>
-			<span class="checkout-summary-total">Total: {{runningTotal()}}</span>
+	<div class="checkout-summary">
+		<div class="checkout-product" ng-repeat="product in products">
+			<span class="checkout-product-title">{{ product.product.name }}</span>
+         	<span class="checkout-product-data">Talle: {{ product.size }}</span>
+          	<span class="checkout-product-data">Color: {{ product.color }}</span>
+          	<span class="checkout-product-data">Cantidad: {{ product.quantity }}</span>
+          	<span class="checkout-product-data">Precio Unitario: ${{ product.price }}</span>
 		</div>
-		<div class="credit-card-information">
-			<div class="col-md-8">
-				<div class="saved-cards">
-					<div class=panel-heading>
-	        			<h3>Ingresá</h3>
-	        			<small>Todos.</small>
-	      			</div>
+		<span class="checkout-summary-total">Total: {{runningTotal()}}</span>
+	</div>
+
+	<div class="saved-address-container">
+		<div class="panel panel-default">
+			<div class=panel-heading>
+        		<h3>Elegí una Dirección</h3>
+      		</div>
+      		<div class=panel-body>
+				<div class="saved-address" ng-repeat="address in addresses" ng-click="loadSavedAddress($index)">
+					<span class="saved-address-data">Nombre: {{ address.name }}</span>
+					<span class="saved-address-data">Dirección: {{ address.street }} {{ address.number }}, {{ address.floor }} {{ address.gate }}</span>
+					<span class="saved-address-data">Ciudad: {{ address.city }}, {{ address.province }}</span>
+					<span class="saved-address-data">Código Postal: {{ address.zipCode }}</span>
+					<span class="saved-address-data">Teléfono: {{ address.phoneNumber }}</span>
 				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="new-card">
-					<div class=panel-heading>
-	        			<h3>Ingresá</h3>
-	        			<small>Todos.</small>
-	      			</div>
-				</div>
-			</div>
-		</div>
-		<div class="saved-address-container">
-			<div class="saved-address" ng-repeat="address in addresses" ng-click="loadSavedAddress($index)">
-				<span class="saved-address-data">Nombre: {{ address.name }}</span>
-				<span class="saved-address-data">Dirección: {{ address.street }} {{ address.door }}, {{ address.floor }} {{ address.apartment }}</span>
-				<span class="saved-address-data">Ciudad: {{ address.city }}, {{ address.province }}</span>
-				<span class="saved-address-data">Código Postal: {{ address.zipCode }}</span>
-				<span class="saved-address-data">Teléfono: {{ address.phone }}</span>
 			</div>
 		</div>
 	</div>
@@ -46,50 +35,119 @@
 	<div class="address">
 		<div class="panel panel-default">
 			<div class=panel-heading>
-        		<h3>Ingresá tu Dirección</h3>
+        		<h3>o Ingresá una Nueva</h3>
         		<small>Todos los campos son obligatorios.</small>
       		</div>
       		<div class=panel-body>
 				<form role="form">
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="name">Nombre</label>
-						<input class="addrForm-elem" id="name" ng-model="currentAddr.name" type="text" required="required">
-					</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="street">Calle</label>
-						<input class="addrForm-elem" id="street" ng-model="currentAddr.street" type="text" required="required">
+					<div class="address-form-body">
+						<div class="address-form-column">
+							<div class="addrForm-elem-group">
+								<label class="form-label" for="name">Nombre</label>
+								<input class="addrForm-elem" id="name" ng-model="currentAddr.name" type="text" required="required">
+							</div>
+							<div class="addrForm-elem-group">
+								<label class="form-label" for="street">Calle</label>
+								<input class="addrForm-elem" id="street" ng-model="currentAddr.street" type="text" required="required">
+							</div>
+							<div class="addrForm-elem-group">
+								<label class="form-label" for="door">Altura</label>
+								<input class="addrForm-elem" id="door" ng-model="currentAddr.number" type="text" required="required">
+							</div>
+							<div class="addrForm-elem-group">
+								<label class="form-label" for="floor">Piso</label>
+								<input class="addrForm-elem" id="floor" ng-model="currentAddr.floor" type="text" required="required">
+							</div>
+							<div class="addrForm-elem-group">
+								<label class="form-label" for="apartment">Departamento</label>
+								<input class="addrForm-elem" id="apartment" ng-model="currentAddr.gate" type="text" required="required">
+							</div>
 						</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="door">Puerta</label>
-						<input class="addrForm-elem" id="door" ng-model="currentAddr.door" type="text" required="required">
+						<div class="address-form-column">
+							<div class="addrForm-elem-group">
+								<label class="form-label" for="province">Provincia</label>
+								<input class="addrForm-elem" id="province" ng-model="currentAddr.province" type="text" required="required">
+							</div>
+							<div class="addrForm-elem-group">
+								<label class="form-label" for="city">Ciudad</label>
+								<input class="addrForm-elem" id="city" ng-model="currentAddr.city" type="text" required="required">
+							</div>
+							<div class="addrForm-elem-group">
+								<label class="form-label" for="zipCode">Código Postal</label>
+								<input class="addrForm-elem" id="zipCode" ng-model="currentAddr.zipCode" type="text" required="required">
+							</div>
+							<div class="addrForm-elem-group">
+								<label class="form-label" for="phone">Teléfono</label>
+								<input class="addrForm-elem" id="phone" ng-model="currentAddr.phoneNumber" type="tel" required="required">
+							</div>
+						</div>
 					</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="floor">Piso</label>
-						<input class="addrForm-elem" id="floor" ng-model="currentAddr.floor" type="text" required="required">
-					</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="apartment">Departamento</label>
-						<input class="addrForm-elem" id="apartment" ng-model="currentAddr.apartment" type="text" required="required">
-					</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="province">Provincia</label>
-						<input class="addrForm-elem" id="province" ng-model="currentAddr.province" type="text" required="required">
-					</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="city">Ciudad</label>
-						<input class="addrForm-elem" id="city" ng-model="currentAddr.city" type="text" required="required">
-					</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="zipCode">Código Postal</label>
-						<input class="addrForm-elem" id="zipCode" ng-model="currentAddr.zipCode" type="text" required="required">
-					</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="phone">Teléfono</label>
-						<input class="addrForm-elem" id="phone" ng-model="currentAddr.phone" type="tel" required="required">
-					</div>
-					<button type="submit" class="btn btn-primary">Checkout</button>
 				</form>
 			</div>
 		</div>
 	</div>
+
+	<div class="payment-choice">
+		<div class="panel panel-default">
+			<div class=panel-heading>
+				<h3>Elegí un Método de Pago</h3>
+			</div>
+			<div class=panel-body>
+				<input ng-model="paymentMethod" type="radio" value="cash">Efectivo<br/>
+				<input ng-model="paymentMethod" type="radio" value="card">Tarjeta de Crédito<br/>
+			</div>
+		</div>
+	</div>
+
+	<div class="credit-card-information" ng-show="paymentMethod=='card'">
+		<div class="col-md-8">
+			<div class="saved-cards">
+				<div class=panel-heading>
+        			<h3>Elegí una tarjeta</h3>
+      			</div>
+      			<div class=panel-body>
+      				<div class="saved-card" ng-repeat="card in cards" ng-click="loadSavedCard($index)">
+					<span class="saved-card-data">Número: {{ card.number }}</span>
+					<span class="saved-card-data">Código de Seguridad: {{ card.securityCode }}</span>
+					<span class="saved-card-data">Fecha de Expiración: {{ card.expirationDate }}</span>
+				</div>
+      			</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="new-card">
+				<div class=panel-heading>
+        			<h3>o Ingresá una Nueva</h3>
+        			<small>Todos los campos son obligatorios.</small>
+      			</div>
+      			<div class=panel-body>
+      				<label class="form-label">Tipo de Tarjeta</label>
+      				<div class="card-type">
+      					<div class="col-md-6">
+      						<input ng-model="cardType" type="radio" value="amex">American Express<br/>
+							<input ng-model="cardType" type="radio" value="mcard">Master Card<br/>
+						</div>
+						<div class="col-md-6">
+							<input ng-model="cardType" type="radio" value="visa">Visa<br/>
+							<input ng-model="cardType" type="radio" value="diners">Diners<br/>
+						</div>
+      				</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="phone">Número de Tarjeta</label>
+						<input class="addrForm-elem" id="phone" ng-model="currentCard.number" type="text" required="required">
+					</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="phone">Fecha de Expiración</label>
+						<input class="addrForm-elem" id="phone" ng-model="currentCard.expirationDate" type="text" required="required">
+					</div>
+					<div class="addrForm-elem-group">
+						<label class="form-label" for="phone">Código de Seguridad</label>
+						<input class="addrForm-elem" id="phone" ng-model="currentCard.securityCode" type="text" required="required">
+					</div>
+      			</div>
+			</div>
+		</div>
+	</div>
+
+	<button type="button" class="checkout-submit" ng-click="checkout()"> Finalizar Compra </button>
 </div>

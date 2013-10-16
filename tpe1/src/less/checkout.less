@@ -8,6 +8,28 @@
 	.panel-default;
 }
 
+.saved-card {
+	.make-md-column(4);
+	.border-radius(8px);
+	.transition(0.2s);
+	color: #696969;
+	
+
+	&:hover {
+		background-color: #D3D3D3;
+		color: #000000;
+		cursor: pointer;
+	}
+}
+
+.saved-card-data {
+	.make-row();
+	font-size: 1em;
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	color: inherit;
+}
+
 .credit-card-information {
 	.make-row();
 	margin-top: 1em;
@@ -19,7 +41,7 @@
 
 .saved-address-container {
 	.make-row();
-	margin-top: 7em;
+	margin-top: 1em;
 	text-align: left;
 }
 
@@ -39,7 +61,6 @@
 
 .saved-address-data {
 	.make-row();
-	margin-top: 4em;
 	font-size: 1em;
 	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
@@ -47,14 +68,20 @@
 }
 
 .address {
-	.make-md-column(4);
-	.make-md-column-offset(1);
+	.make-row();
 	margin-top: 2em;
+}
+
+.address-form-body {
+	.make-row();
+}
+
+.address-form-column {
+	.make-md-column(6);
 }
 
 .addrForm-elem-group {
 	.form-group;
-
 }
 
 .form-label {
@@ -65,19 +92,15 @@
 	.form-control;
 }
 
-.left-container {
-	.make-md-column(7);
-	margin-top: 2em;
-}
-
 .checkout-summary {
 	.make-row();
 	border-style: solid;
 	border-width: 0.1em;
 	border-color: #DDDDDD;
-	.border-radius(10px);
+	.border-radius(5px);
 	padding: 0.5em;
 	padding-left: 1em;
+	margin-top: 1em;
 }
 
 .checkout-product {
@@ -85,27 +108,18 @@
 }
 
 .checkout-product-data {
-	.make-md-column(3);
+	.make-md-column(2);
 	font-size: 1em;
 	font-family: Arial, Helvetica, sans-serif;
 	color: #696969;
 }
 
 .checkout-product-title {
-	.checkout-product-data;
+	.make-md-column(4);
+	font-size: 1em;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #696969;
 	font-size: 1.5em;
-}
-
-.checkout-product-size {
-	.checkout-product-data;
-}
-
-.checkout-product-color {
-	.checkout-product-data;
-}
-
-.checkout-product-price {
-	.checkout-product-data;
 }
 
 .checkout-summary-total {
@@ -113,4 +127,25 @@
 	color: #696969;
 	.make-md-column(3);
 	.make-md-column-offset(9);
+}
+
+.payment-choice {
+	.make-row();
+}
+
+.payment-panel {
+	.panel;
+	.panel-default;
+}
+
+.card-type {
+	.make-row();
+	margin-bottom: 1em;
+}
+
+.checkout-submit {
+	.btn; 
+	.btn-primary; 
+	.make-row();
+	margin-bottom: 1em;
 }

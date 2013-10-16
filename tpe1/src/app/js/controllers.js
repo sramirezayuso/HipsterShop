@@ -284,7 +284,7 @@ angular.module('myApp.controllers', [])
     $scope.runningTotal = function(){
       var runningTotal = 0;
       angular.forEach($scope.products, function(product, index){
-        runningTotal += product.price;
+        runningTotal += product.price * product.quantity;
       });
       return runningTotal;
     };
@@ -300,9 +300,6 @@ angular.module('myApp.controllers', [])
   })
 
   .controller('OrdersCtrl', function($scope, $location, $cookieStore, ajaxService) {
-
-    //ajaxService.async('Order', {method: 'AddItemToOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order_item: {order: {id:8}, product: {id:45}, quantity: 1 }  } ).then(function(response) {
-    //});
 
     ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
       $scope.preferences = JSON.parse(response.data.preferences);
@@ -416,44 +413,58 @@ angular.module('myApp.controllers', [])
     $scope.runningTotal = function(){
       var runningTotal = 0;
       angular.forEach($scope.products, function(product, index){
-        runningTotal += product.price;
+        runningTotal += product.price * product.quantity;
       });
       return runningTotal;
     };
 
   })
 
-  .controller('CheckoutCtrl', ['$scope', function(sc) {
+  .controller('CheckoutCtrl', function($scope, $cookieStore, ajaxService) {
 
-    sc.products = [
-      { title: "Zapatos", price: 21.50, size: 12, color: 'Rojo' },
-      { title: "Zapatillas", price: 21.50, size: 12, color: 'Azul' },
-      { title: "Ojotas", price: 21.50, size: 12, color: 'Amarillo' },
-      { title: "Mocasines", price: 21.50, size: 12, color: 'Verde' },
-      { title: "Botas", price: 21.50, size: 12, color: 'Violeta' },
-    ];
+    $scope.paymentMethod = 'cash';
+    $scope.cardType = "amex";
 
-    sc.addresses = [
-      { name: "Juan", street: "Rivadavia", door: 4060, floor: 1, apartment: "E", province: "Buenos Aires", city: "Capital Federal", zipCode: "13324", phone: "4892-2343" },
-      { name: "Pedro", street: "Rivadavia", door: 4060, floor: 1, apartment: "E", province: "Buenos Aires", city: "Capital Federal", zipCode: "13324", phone: "4243-2343" },
-      { name: "Juan", street: "Rivadavia", door: 4060, floor: 1, apartment: "E", province: "Buenos Aires", city: "Capital Federal", zipCode: "13324", phone: "4892-2343" }
-    ];
+    $scope.products = [];
+    ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
+      ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).cartId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+        $scope.products = response.data.order.items;
+      });
+    });
 
-    sc.currentAddr = {};
+    $scope.addresses = [];
+    $scope.cards = [];
 
-    sc.runningTotal = function(){
+    ajaxService.async('Account', {method: 'GetAllAddresses', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+      $scope.addresses = response.data.addresses;
+    });
+    ajaxService.async('Account', {method: 'GetAllCreditCards', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+      $scope.cards = response.data.creditCards;
+    });
+
+    $scope.currentAddr = {};
+    $scope.currentCard = {};
+
+    $scope.runningTotal = function(){
       var runningTotal = 0;
-      angular.forEach(sc.products, function(product, index){
-        runningTotal += product.price;
+      angular.forEach($scope.products, function(product, index){
+        runningTotal += (product.price * product.quantity);
       });
       return runningTotal;
     };
 
-    sc.loadSavedAddress = function( idx ) {
-      sc.currentAddr = JSON.parse(JSON.stringify(sc.addresses[idx]));
+    $scope.loadSavedAddress = function( idx ) {
+      $scope.currentAddr = JSON.parse(JSON.stringify($scope.addresses[idx]));
     };
 
-  }])
-;
+    $scope.loadSavedCard = function( idx ) {
+      $scope.currentCard = JSON.parse(JSON.stringify($scope.cards[idx]));
+    };
+
+    $scope.checkout = function() {
+      console.log('test');
+    };
+
+  });
 
 
