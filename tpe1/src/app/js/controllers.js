@@ -52,48 +52,54 @@ angular.module('myApp.controllers', [])
 
   .controller('HomeCtrl', function($scope, ajaxService){
         var sc = $scope;
-
+		var div = 12, columns = 4;
+		var lim = (2*div)/columns;
+		
+		ajaxService.async('Catalog', {method: 'GetAllSubcategories', id: 1} ).then(function(response) {
+			var iM = 0, iH = 0;
+			sc.categories1M = [ ];
+			sc.categories1H = [ ];
+			
+			for(var i = 0; iM < lim || iH < lim; i++) {
+				var each = response.data.subcategories[i];
+				
+				if(genreInCategory('Femenino', each) && iM++ < lim)
+					sc.categories1M.push({name: each.name, categoryId: 1, subcategoryId: each.id});
+					
+				if(genreInCategory('Masculino', each) && iH++ < lim)
+					sc.categories1H.push({name: each.name, categoryId: 1, subcategoryId: each.id});
+			}
+		});
+		
+		ajaxService.async('Catalog', {method: 'GetAllSubcategories', id: 2} ).then(function(response) {
+			var iM = 0, iH = 0;
+			sc.categories2M = [ ];
+			sc.categories2H = [ ];
+			
+			for(var i = 0; iM < lim || iH < lim; i++) {
+				var each = response.data.subcategories[i];
+				
+				if(genreInCategory('Femenino', each) && iM++ < lim)
+					sc.categories2M.push({name: each.name, categoryId: 2, subcategoryId: each.id});
+				
+				if(genreInCategory('Masculino', each) && iH++ < lim)
+					sc.categories2H.push({name: each.name, categoryId: 2, subcategoryId: each.id});
+			}
+		});
+		
         function genreInCategory(genre, category){
-                for(var i = 0; i < category.attributes.length; i++){
-                        var att = category.attributes[i];
-                        if(att.name == "Genero") {
-                                for(var j = 0; j < att.values.length; j++) {
-                                        if(att.values[j] == genre)
-                                                return true;
-                                }
-                                return false;
-                        }
-                }
-                return true;
+			for(var i = 0; i < category.attributes.length; i++){
+				var att = category.attributes[i];
+				if(att.name == "Genero") {
+					for(var j = 0; j < att.values.length; j++) {
+						if(att.values[j] == genre)
+							return true;
+					}
+					return false;
+				}
+			}
+			return true;
         }
-
-        ajaxService.async('Catalog', {method: 'GetAllCategories'} ).then(function(response) {
-                var categories = response.data.categories;
-                var i, j=0, k=0;
-                var maxCategories = 12;
-
-                //Initialize Arrays
-                sc.categoriesM = new Array();
-                sc.categoriesH = new Array();
-
-                //Add available categories to each genre-array
-                for(i = 0; i < categories.length; i++) {
-                        if(j <= maxCategories && genreInCategory('Femenino',categories[i])) {
-                                sc.categoriesM[j++] = categories[i];
-                        }
-
-                        if(k <= maxCategories && genreInCategory('Masculino',categories[i])) {
-                                sc.categoriesH[k++] = categories[i];
-                        }
-                }
-
-                //Divide each category into 2
-                var div = sc.categoriesM.length/2 + 1;
-                sc.categories1M = sc.categoriesM.slice(0, div);
-                sc.categories2M = sc.categoriesM.slice(div);
-                sc.categories1H = sc.categoriesH.slice(0, div);
-                sc.categories2H = sc.categoriesH.slice(div);
-    });
 
 		sc.sections = [ ];
 
