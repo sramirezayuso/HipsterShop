@@ -8,6 +8,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     $routeProvider.when('/products', {templateUrl: 'partials/products.html', controller: 'ProductsCtrl', reloadOnSearch: false});
     $routeProvider.when('/products/:productId', {templateUrl: 'partials/product.html', controller: 'ProductCtrl'});
     $routeProvider.when('/cart', {templateUrl: 'partials/cart.html', controller: 'CartCtrl'});
+    $routeProvider.when('/wishlist', {templateUrl: 'partials/wishlist.html', controller: 'WishlistCtrl'});
     $routeProvider.when('/access', {templateUrl: 'partials/access.html', controller: 'AccessCtrl'});
     $routeProvider.when('/orders', {templateUrl: 'partials/orders.html', controller: 'OrdersCtrl'});
     $routeProvider.when('/orders/:orderno', {templateUrl: 'partials/order.html', controller: 'OrderCtrl'});

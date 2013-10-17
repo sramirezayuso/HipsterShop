@@ -24,7 +24,7 @@
       </div>
       <div class="order-information">
         <span class="order-info-elem">Estado: {{ getStatus(order.status) }}</span>
-        <span class="order-info-elem">Dirección de Envío: {{ order.address }}</span>
+        <span class="order-info-elem">Dirección de Envío: {{ order.address.name}}</span>
         <span class="order-info-elem">Fecha de Envío: {{ order.processedDate }}</span>
         <span class="order-info-elem">Fecha de Entrega: {{ order.deliveredDate }}</span>
       </div>

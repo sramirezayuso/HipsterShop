@@ -269,6 +269,14 @@ angular.module('myApp.controllers', [])
       });
     }
 
+    sc.addToWishlist = function() {
+      console.log('test');
+      as.async('Account', {method: 'GetPreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
+        as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).wishId}, product: {id: sc.product.id}, quantity: sc.quantity}} ).then(function(response) {
+        });
+      });
+    }
+
   }])
 
   .controller('CartCtrl', function($scope, $location, $cookieStore, ajaxService) {
@@ -301,7 +309,57 @@ angular.module('myApp.controllers', [])
     };
 
     $scope.remove = function( idx ) {
+      ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].id } ).then(function(response) {
+      });
       $scope.products.splice(idx, 1);
+    };
+
+    $scope.go = function ( path ) {
+      $location.path( path );
+    };
+
+  })
+
+  .controller('WishlistCtrl', function($scope, $location, $cookieStore, ajaxService) {
+
+    /*ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
+      $scope.pref = JSON.parse(response.data.preferences);
+      ajaxService.async('Order', {method: 'CreateOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+        $scope.pref.wishId = response.data.order.id;
+        ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), value: JSON.stringify($scope.pref)} ).then(function(response) {
+        });
+      });
+    });*/
+
+    $scope.products = [];
+    ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
+      $scope.cartId = JSON.parse(response.data.preferences).cartId;
+      ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).wishId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+        $scope.products = response.data.order.items;
+      });
+    });
+
+
+    $scope.runningTotal = function(){
+      var runningTotal = 0;
+      angular.forEach($scope.products, function(product, index){
+        runningTotal += product.price * product.quantity;
+      });
+      return runningTotal;
+    };
+
+    $scope.remove = function( idx ) {
+      ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].id } ).then(function(response) {
+      });
+      $scope.products.splice(idx, 1);
+    };
+
+    $scope.addToCart = function( idx ) {
+      ajaxService.async('Order', {method: 'AddItemToOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order_item: {order: {id: $scope.cartId}, product: {id: $scope.products[idx].product.id}, quantity: $scope.products[idx].quantity}} ).then(function(response) {
+        ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].id } ).then(function(response) {
+          $scope.products.splice(idx, 1);
+        });
+      });
     };
 
     $scope.go = function ( path ) {
@@ -401,9 +459,12 @@ angular.module('myApp.controllers', [])
               cs.put('user.firstName', response.data.account.firstName);
               console.log('new cookie authToken:' + response.data.authenticationToken);
               as.async('Order', {method: 'CreateOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
-                as.async('Account', {method: 'UpdatePreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken'), value: JSON.stringify({cartId: response.data.order.id, orders: []}) } ).then(function(response) {
-                  rt.$emit('refreshUser');
-                  lc.path('#products')
+                sc.wishlist = response.data.order.id;
+                as.async('Order', {method: 'CreateOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
+                  as.async('Account', {method: 'UpdatePreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken'), value: JSON.stringify({cartId: response.data.order.id, wishId: sc.wishlist, orders: []}) } ).then(function(response) {
+                    rt.$emit('refreshUser');
+                    lc.path('#products')
+                  });
                 });
               });
             }

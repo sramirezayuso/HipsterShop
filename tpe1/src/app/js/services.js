@@ -14,6 +14,9 @@ angular.module('myApp.services', []).
 				var promise = $http({method: 'JSONP', url: 'http://eiffel.itba.edu.ar/hci/service3/'+domain+'.groovy', params: params })
 				.success(function(data) {
 					console.log(data);
+					if(data.error) {
+						alert('¡Perdón! Tenemos un problema técnico. Por favor, volvé a intentar en unos instantes.')
+					}
                 	return data;
             	})
             	.error(function(data, status, headers, config) {
