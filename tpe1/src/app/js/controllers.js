@@ -393,14 +393,19 @@ angular.module('myApp.controllers', [])
           // Need to sign in after account creation.
           as.async('Account', { method: 'SignIn', username: sc.signup.username, password: sc.signup.password }).then(function(response) {
             // We assume everything went okay.
+
             if (!response.data.error) {
               cs.put('authToken', response.data.authenticationToken);
               cs.put('user.id', response.data.account.id);
               cs.put('user.username', response.data.account.username);
               cs.put('user.firstName', response.data.account.firstName);
               console.log('new cookie authToken:' + response.data.authenticationToken);
-              rt.$emit('refreshUser');
-              lc.path('#products')
+              as.async('Order', {method: 'CreateOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
+                as.async('Account', {method: 'UpdatePreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken'), value: JSON.stringify({cartId: response.data.order.id, orders: []}) } ).then(function(response) {
+                  rt.$emit('refreshUser');
+                  lc.path('#products')
+                });
+              });
             }
           });
         }
