@@ -19,6 +19,7 @@
 		<div class="panel panel-default">
 			<div class=panel-heading>
         		<h3>Elegí una Dirección</h3>
+        		<small>Se muestran las direcciones más recientemente utilizadas</small>
       		</div>
       		<div class=panel-body>
 				<div class="saved-address" ng-repeat="address in addresses" ng-click="loadSavedAddress($index)">
@@ -104,6 +105,7 @@
 			<div class="saved-cards">
 				<div class=panel-heading>
         			<h3>Elegí una tarjeta</h3>
+        			<small>Se muestran las tarjetas más recientemente utilizadas</small>
       			</div>
       			<div class=panel-body>
       				<div class="saved-card" ng-repeat="card in cards" ng-click="loadSavedCard($index)">
