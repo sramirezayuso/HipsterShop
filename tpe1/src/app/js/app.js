@@ -14,5 +14,6 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     $routeProvider.when('/orders/:orderno', {templateUrl: 'partials/order.html', controller: 'OrderCtrl'});
     $routeProvider.when('/checkout', {templateUrl: 'partials/checkout.html', controller: 'CheckoutCtrl'});
     $routeProvider.when('/help', {templateUrl: 'partials/help.html'});
+    $routeProvider.when('/user', {templateUrl: 'partials/user.html', controller: 'UserCtrl'});
     $routeProvider.otherwise({redirectTo: '/home'});
   }]);

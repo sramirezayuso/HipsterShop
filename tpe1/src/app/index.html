@@ -19,7 +19,7 @@
   <nav class="topbar" ng-controller=PageHeaderCtrl>
     <div class="container">
       <ul class="topbar-links list-inline pull-left">
-        <li ui-if="loggedIn"><a href="#">{{ user.firstName }}</a></li>
+        <li ui-if="loggedIn"><a href="#/user">{{ user.firstName }}</a></li>
         <li ui-if="loggedIn"><a href="#" ng-click="logOut()">Salir</a></li>
         <li ui-if="!loggedIn"><a href="#/access">Iniciá sesión</a></li>
         <li ui-if="!loggedIn"><a href="#/access">Registrate</a></li>
