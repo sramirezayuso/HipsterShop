@@ -13,6 +13,7 @@
           	<span class="checkout-product-data">Precio Unitario: ${{ product.price }}</span>
 		</div>
 		<span class="checkout-summary-total">Total: {{(runningTotal()).toFixed(2)}}</span>
+		<span class="error-label" ng-show="products.length == 0 && isSubmitted">No puede finalizar su compra sin productos en el carrito!</span>
 	</div>
 
 	<div class="saved-address-container">
@@ -25,7 +26,7 @@
 				<div class="saved-address" ng-repeat="address in addresses" ng-click="loadSavedAddress($index)">
 					<span class="saved-address-data">Nombre: {{ address.name }}</span>
 					<span class="saved-address-data">Dirección: {{ address.street }} {{ address.number }}, {{ address.floor }} {{ address.gate }}</span>
-					<span class="saved-address-data">Ciudad: {{ address.city }}, {{ address.province }}</span>
+					<span class="saved-address-data">Ciudad: {{ address.city }}</span>
 					<span class="saved-address-data">Código postal: {{ address.zipCode }}</span>
 					<span class="saved-address-data">Teléfono: {{ address.phoneNumber }}</span>
 				</div>

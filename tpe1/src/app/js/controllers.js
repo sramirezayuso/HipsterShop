@@ -730,8 +730,8 @@ angular.module('myApp.controllers', [])
               $scope.preferences.orders.push($scope.preferences.cartId);
               $scope.preferences.cartId = response.data.order.id;
               ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {
-			    $location.path('home').search('checkout', 1);
-			  });
+                $location.path('home').search('checkout', 1);
+              });
             });
           });
         } else if (!$scope.isAddressSaved && $scope.isCardSaved){
@@ -743,8 +743,8 @@ angular.module('myApp.controllers', [])
                 $scope.preferences.orders.push($scope.preferences.cartId);
                 $scope.preferences.cartId = response.data.order.id;
                 ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {
-				  $location.path('home').search('checkout', 1);
-				});
+                  $location.path('home').search('checkout', 1);
+                });
               });
             });
           });
@@ -757,8 +757,8 @@ angular.module('myApp.controllers', [])
                 $scope.preferences.orders.push($scope.preferences.cartId);
                 $scope.preferences.cartId = response.data.order.id;
                 ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {
-				  $location.path('home').search('checkout', 1);
-				});
+                  $location.path('home').search('checkout', 1);
+                });
               });
             });
           });
@@ -775,8 +775,8 @@ angular.module('myApp.controllers', [])
                   $scope.preferences.orders.push($scope.preferences.cartId);
                   $scope.preferences.cartId = response.data.order.id;
                   ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {
-				    $location.path('home').search('checkout', 1);
-				  });
+                    $location.path('home').search('checkout', 1);
+                  });
                 });
               });
             });
@@ -789,8 +789,8 @@ angular.module('myApp.controllers', [])
               $scope.preferences.orders.push($scope.preferences.cartId);
               $scope.preferences.cartId = response.data.order.id;
               ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {
-			    $location.path('home').search('checkout', 1);
-			  });
+                $location.path('home').search('checkout', 1);
+              });
             });
           });
         } else {
@@ -802,14 +802,13 @@ angular.module('myApp.controllers', [])
                 $scope.preferences.orders.push($scope.preferences.cartId);
                 $scope.preferences.cartId = response.data.order.id;
                 ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), value: JSON.stringify($scope.preferences)} ).then(function(response) {
-				  $location.path('home').search('checkout', 1);
-				});
+                  $location.path('home').search('checkout', 1);
+                });
               });
             });
           });
         }
       }
-	  
     };
   });
 
