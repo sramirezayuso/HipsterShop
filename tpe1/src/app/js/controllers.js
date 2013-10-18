@@ -256,6 +256,7 @@ angular.module('myApp.controllers', [])
         }
       }
 
+	  sc.header = sc.product.genre.id=='f'?"header-image-women":"header-image-men";
 	  sc.breadcrumb = [];
 	  var url = '#/products?gender=' + sc.product.genre.id;
 	  sc.breadcrumb.push({name: sc.product.genre.name, url: url});
