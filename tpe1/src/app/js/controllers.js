@@ -525,7 +525,7 @@ angular.module('myApp.controllers', [])
       if (sc.signinForm.$valid) {
         as.async('Account', { method: 'SignIn', username: sc.signin.username, password: sc.signin.password }).then(function(response) {
           if (response.data.error) {
-
+			sc.error = true;
           } else {
             cs.put('authToken', response.data.authenticationToken);
             cs.put('user.id', response.data.account.id);

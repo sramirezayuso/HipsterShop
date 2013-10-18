@@ -1,7 +1,12 @@
-<div class="header-image">
+<div class="header-image header-image-shopping">
   <h1>Un paso más</h1>
 </div>
 <br>
+
+<div class="alert alert-danger alert-dismissable" ng-show="error" ng-hide="!error">
+  <button type="button" class="close" data-dismiss="alert" ng-click="error = false">&times;</button>
+  Los datos ingresados son incorrectos.
+</div>
 
 <div class="row">
 	<div class="col-md-6">
