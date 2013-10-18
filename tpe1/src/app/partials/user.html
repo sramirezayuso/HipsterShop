@@ -3,9 +3,14 @@
 </div>
 <br>
 
+<div class="alert alert-danger alert-dismissable" ng-show="error" ng-hide="!error">
+  <button type="button" class="close" data-dismiss="alert" ng-click="error = false">&times;</button>
+  Los datos ingresados son incorrectos.
+</div>
+
 <div class="row">
   <div class="col-md-6">
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-hide="isModifying">
       <div class="panel-heading">
         <h3>Datos de usuario</h3>
       </div>
@@ -15,48 +20,48 @@
           <div class="form-group">
             <label class="col-md-5 control-label">Nombre/s</label>
             <div class="col-md-7">
-              <label class="control-label">PONER NOMBRE</label>
+              <label class="control-label">{{ account.firstName }}</label>
             </div>
           </div>
 		  
           <div class="form-group">
             <label class="col-md-5 control-label">Apellido/s</label>
             <div class="col-md-7">
-              <label class="control-label">PONER APELLIDO</label>
+              <label class="control-label">{{ account.lastName }}</label>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-md-5 control-label">E-mail</label>
             <div class="col-md-7">
-              <label class="control-label">PONER MAIL</label>
+              <label class="control-label">{{ account.email }}</label>
             </div>
           </div>
 		  
           <div class="form-group">
             <label class="col-md-5 control-label">Fecha de nacimiento</label>
             <div class="col-md-7">
-              <label class="control-label">PONER FECHA NACIMIENTO</label>
+              <label class="control-label">{{ account.birthDate }}</label>
             </div>
           </div>
 		  
           <div class="form-group">
             <label class="col-md-5 control-label">Fecha de creacion</label>
             <div class="col-md-7">
-              <label class="control-label">PONER FECHA CREACION</label>
+              <label class="control-label">{{ account.createdDate }}</label>
             </div>
           </div>
 		  
           <div class="form-group">
-            <label class="col-md-5 control-label">Último inicio de sesión</label>
+            <label class="col-md-5 control-label">Ãšltimo inicio de sesiÃ³n</label>
             <div class="col-md-7">
-              <label class="control-label">PONER ULTIMA SESION</label>
+              <label class="control-label">{{ account.lastLoginDate }}</label>
             </div>
           </div>
 
           <div class="form-group">
             <div class="col-md-offset-5 col-md-7">
-              <button type="submit" class="btn btn-primary">Modificar datos</button>
+              <button type="submit" class="btn btn-primary" ng-click="isModifying = true">Modificar datos</button>
             </div>
           </div>
 		  
@@ -64,7 +69,7 @@
       </div>
     </div>
 	
-	 <div class="panel panel-default">
+	 <div class="panel panel-default" ng-show="isModifying">
       <div class="panel-heading">
         <h3>Modificar datos</h3>
       </div>
@@ -74,21 +79,21 @@
           <div class="form-group">
             <label class="col-md-5 control-label" for="change-name-input">Nombre/s</label>
             <div class="col-md-7">
-              <input type="text" id="change-name-input" name=username class="form-control" required>
+              <input type="text" id="change-name-input" ng-model="account.firstName" name=username class="form-control" required>
             </div>
           </div>
 		  
           <div class="form-group">
             <label class="col-md-5 control-label" for="change-surname-input">Apellido/s</label>
             <div class="col-md-7">
-              <input type="text" id="change-surname-input" name=username class="form-control" required>
+              <input type="text" id="change-surname-input" ng-model="account.lastName" name=username class="form-control" required>
             </div>
           </div>
 
           <div class="form-group">
             <label class="col-md-5 control-label" for="change-mail-input">E-mail</label>
             <div class="col-md-7">
-              <input type="text" id="change-mail-input" name=username class="form-control" required>
+              <input type="text" id="change-mail-input" ng-model="account.email" name=username class="form-control" required>
             </div>
           </div>
 		  
@@ -97,13 +102,13 @@
             <div class="col-md-7">
               <div class=row>
                 <div class="col-md-4">
-                  <input type="text" class="form-control" maxlength="2" placeholder="DD">
+                  <input type="text" class="form-control" ng-model="date3" maxlength="2" placeholder="DD">
                 </div>
                 <div class="col-md-4">
-                  <input type="text" class="form-control" maxlength="2" placeholder="MM">
+                  <input type="text" class="form-control" ng-model="date2"  maxlength="2" placeholder="MM">
                 </div>
                 <div class="col-md-4">
-                  <input type="text" class="form-control" maxlength="4" placeholder="AAAA">
+                  <input type="text" class="form-control" ng-model="date1" maxlength="4" placeholder="AAAA">
                 </div>
               </div>
             </div>
@@ -111,7 +116,7 @@
 
           <div class="form-group">
             <div class="col-md-offset-5 col-md-7">
-              <button type="submit" class="btn btn-primary">Modificar datos</button>
+              <button type="submit" class="btn btn-primary" ng-click="saveChanges()">Guardar cambios</button>
             </div>
           </div>
 		  
@@ -124,7 +129,7 @@
   <div class="col-md-5 col-md-offset-1">
     <div class="panel panel-default">
       <div class="panel-heading">
-        <h3>Cambiar contraseña</h3>
+        <h3>Cambiar contraseÃ±a</h3>
       </div>
 
       <div class=panel-body>
@@ -132,24 +137,24 @@
           <div class="form-group">
             <label class="col-md-5 control-label" for="change-username-input">Usuario</label>
             <div class="col-md-7">
-              <input type="text" id="change-username-input" name=username class="form-control" required>
+              <input type="text" id="change-username-input" ng-model="user" name=username class="form-control" required>
             </div>
           </div>
           <div class="form-group">
-            <label class="col-md-5 control-label" for="change-password-input">Contraseña actual</label>
+            <label class="col-md-5 control-label" for="change-password-input">ContraseÃ±a actual</label>
             <div class="col-md-7">
-              <input type="password" id="change-password-input" name=password class="form-control" required>
+              <input type="password" id="change-password-input" ng-model="oldPass" name=password class="form-control" required>
             </div>
           </div>
 		  <div class="form-group">
-            <label class="col-md-5 control-label" for="change-newpassword-input">Nueva contraseña</label>
+            <label class="col-md-5 control-label" for="change-newpassword-input">Nueva contraseÃ±a</label>
             <div class="col-md-7">
-              <input type="password" id="change-newpassword-input" name=password class="form-control" required>
+              <input type="password" id="change-newpassword-input" ng-model="newPass" name=password class="form-control" required>
             </div>
           </div>
           <div class="form-group">
             <div class="col-md-offset-5 col-md-7">
-              <button type="submit" class="btn btn-primary">Cambiar contraseña</button>
+              <button type="submit" class="btn btn-primary" ng-click="changePass()">Cambiar contraseÃ±a</button>
             </div>
           </div>
         </form>
