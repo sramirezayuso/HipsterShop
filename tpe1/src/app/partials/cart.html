@@ -4,9 +4,9 @@
 
 <div class="cart-container">
   <div class="cart-product-container">
-    <div class="cart-elem" ng-repeat="product in products" ng-click="goOrder(product.product.id)">
-      <img class="cart-elem-img" ng-src="{{product.product.imageUrl}}" alt="...">
-      <div class="cart-info-container">
+    <div class="cart-elem" ng-repeat="product in products">
+      <img class="cart-elem-img" ng-src="{{product.product.imageUrl}}" ng-click="goOrder(product.product.id)" alt="...">
+      <div class="cart-info-container" ng-click="goOrder(product.product.id)">
         <h2 class="cart-elem-title">{{ product.product.name }}</h2>
         <div class="cart-data-row">
           <span class="cart-elem-data">Color: {{ product.color }}</span>

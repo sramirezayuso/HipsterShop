@@ -235,7 +235,9 @@ angular.module('myApp.controllers', [])
 
   .controller('ProductCtrl', ['$scope', '$routeParams', '$cookieStore', 'ajaxService', function(sc, rp, cs, as) {
 
-    //cs.remove('fakeCart');
+    cs.remove('fakeCart');
+    cs.remove('fakeWish');
+
 
     sc.quantity = 1;
 
@@ -279,12 +281,12 @@ angular.module('myApp.controllers', [])
           });
         });
       } else if (!cs.get('fakeCart')) {
-        cs.put('fakeCart', {items: [{product: {id: sc.product.id}, quantity: sc.quantity}]})
+        cs.put('fakeCart', {items: [{product: {id: sc.product.id, name: sc.product.name}, quantity: sc.quantity}]})
         console.log(cs.get('fakeCart'));
         sc.showMsgCart = true;
       } else {
         var fCart = cs.get('fakeCart');
-        fCart.items.push({product: {id: sc.product.id}, quantity: sc.quantity});
+        fCart.items.push({product: {id: sc.product.id, name: sc.product.name}, quantity: sc.quantity});
         cs.put('fakeCart', fCart);
         console.log(cs.get('fakeCart'));
         sc.showMsgCart = true;
@@ -302,11 +304,11 @@ angular.module('myApp.controllers', [])
           });
         });
       } else if (!cs.get('fakeWish')) {
-        cs.put('fakeWish', {items: [{product: {id: sc.product.id}, quantity: sc.quantity}]})
+        cs.put('fakeWish', {items: [{product: {id: sc.product.id, name: sc.product.name}, quantity: sc.quantity}]})
         sc.showMsgWishlist = true;
       } else {
         var fCart = cs.get('fakeWish');
-        fCart.items.push({product: {id: sc.product.id}, quantity: sc.quantity});
+        fCart.items.push({product: {id: sc.product.id, name: sc.product.name}, quantity: sc.quantity});
         cs.put('fakeWish', fCart);
         sc.showMsgWishlist = true;
       }

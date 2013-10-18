@@ -37,51 +37,70 @@
 		<div class="panel panel-default">
 			<div class=panel-heading>
         		<h3>o ingresá una nueva</h3>
-        		<small>Todos los campos son obligatorios.</small>
+        		<small>Los campos obligatorios se marcan con un asterisco (*).</small>
       		</div>
       		<div class=panel-body>
 				<form name="addressForm" role="form">
 					<div class="address-form-body">
 						<div class="address-form-column">
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.name.$invalid}">
-								<label class="control-label" for="name">Nombre</label>
+								<label class="control-label" for="name">Nombre *</label>
 								<input class="form-control" name="name" ng-model="currentAddr.name" ng-change="changeAddressState(false)" type="text" required ng-maxlength=80 placeholder="Casa">
+								<span class="control-label" ng-show="isSubmitted && addressForm.name.$error.required">Campo Requerido</span>
+								<span class="control-label" ng-show="isSubmitted && addressForm.name.$error.maxlength">El nombre debe tener como máximo 80 caracteres</span>
 							</div>
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.street.$invalid}">
-								<label class="control-label" for="street">Calle</label>
+								<label class="control-label" for="street">Calle *</label>
 								<input class="form-control" name="street" ng-model="currentAddr.street" ng-change="changeAddressState(false)" type="text" required ng-maxlength=80 placeholder="Av. Rivadavia">
+								<span class="control-label" ng-show="isSubmitted && addressForm.street.$error.required">Campo Requerido</span>
+								<span class="control-label" ng-show="isSubmitted && addressForm.street.$error.maxlength">La calle debe tener como máximo 80 caracteres</span>
 							</div>
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.door.$invalid}">
-								<label class="control-label" for="door">Altura</label>
+								<label class="control-label" for="door">Altura *</label>
 								<input class="form-control" name="door" ng-model="currentAddr.number" ng-change="changeAddressState(false)" type="text" required ng-maxlength=6 ng-pattern="/^[a-zA-Z0-9]+$/" placeholder="2476">
+								<span class="control-label" ng-show="isSubmitted && addressForm.door.$error.required">Campo Requerido</span>
+								<span class="control-label" ng-show="isSubmitted && addressForm.door.$error.maxlength">La altura debe tener como máximo 6 caracteres</span>
+								<span class="control-label" ng-show="isSubmitted && addressForm.door.$error.pattern">La altura debe contener solo caracteres alfanuméricos</span>
 							</div>
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.floor.$invalid}">
 								<label class="control-label" for="floor">Piso</label>
 								<input class="form-control" name="floor" ng-model="currentAddr.floor" ng-change="changeAddressState(false)" type="text" ng-maxlength=3 ng-pattern="/^[a-zA-Z0-9]+$/" placeholder="1">
+								<span class="control-label" ng-show="isSubmitted && addressForm.floor.$error.maxlength">El piso debe tener como máximo 3 caracteres</span>
+								<span class="control-label" ng-show="isSubmitted && addressForm.floor.$error.pattern">El piso debe contener solo caracteres alfanuméricos</span>
 							</div>
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.apartment.$invalid}">
 								<label class="control-label" for="apartment">Departamento</label>
-								<input class="form-control" name="apartment" ng-model="currentAddr.gate" ng-change="changeAddressState(false)" type="text" ng-maxlength=2 placeholder="E">
+								<input class="form-control" name="apartment" ng-model="currentAddr.gate" ng-change="changeAddressState(false)" type="text" ng-maxlength=2 ng-pattern="/^[a-zA-Z0-9]+$/" placeholder="E">
+								<span class="control-label" ng-show="isSubmitted && addressForm.apartment.$error.maxlength">El departamento debe tener como máximo 2 caracteres</span>
+								<span class="control-label" ng-show="isSubmitted && addressForm.apartment.$error.pattern">El departamento debe contener solo caracteres alfanuméricos</span>
 							</div>
 						</div>
 						<div class="address-form-column">
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.province.$invalid}">
-								<label class="control-label" for="province">Provincia</label>
+								<label class="control-label" for="province">Provincia *</label>
 								<select class="form-control" name="province" ng-model="currentAddr.province" ng-options="s.stateId as s.name for s in states" ng-change="changeAddressState(false)" required>
 									<option value="">-- Elegí una provincia --</option>
 								</select><br>
+								<span class="control-label" ng-show="isSubmitted && addressForm.province.$error.required">Campo Requerido</span>
 							</div>
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.city.$invalid}">
 								<label class="control-label" for="city">Ciudad</label>
 								<input class="form-control" name="city" ng-model="currentAddr.city" ng-change="changeAddressState(false)" type="text" ng-maxlength=80 ng-pattern="/^[a-zA-Z]+$/" placeholder="Rosario">
+								<span class="control-label" ng-show="isSubmitted && addressForm.city.$error.maxlength">La ciudad debe tener como máximo 80 caracteres</span>
+								<span class="control-label" ng-show="isSubmitted && addressForm.city.$error.pattern">La ciudad debe contener solo caracteres alfabéticos</span>
 							</div>
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.zipCode.$invalid}">
-								<label class="control-label" for="zipCode">Código postal</label>
+								<label class="control-label" for="zipCode">Código postal *</label>
 								<input class="form-control" name="zipCode" ng-model="currentAddr.zipCode" ng-change="changeAddressState(false)" type="text" required ng-maxlength=10 ng-pattern="/^[a-zA-Z0-9]+$/" placeholder="C1198ABA">
+								<span class="control-label" ng-show="isSubmitted && addressForm.zipCode.$error.required">Campo Requerido</span>
+								<span class="control-label" ng-show="isSubmitted && addressForm.zipCode.$error.maxlength">El código postal debe tener como máximo 10 caracteres</span>
+								<span class="control-label" ng-show="isSubmitted && addressForm.zipCode.$error.pattern">El código postal debe contener solo caracteres alfanuméricos</span>
 							</div>
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.phone.$invalid}">
-								<label class="control-label" for="phone">Teléfono</label>
+								<label class="control-label" for="phone">Teléfono *</label>
 								<input class="form-control" name="phone" ng-model="currentAddr.phoneNumber" ng-change="changeAddressState(false)" type="tel" required ng-maxlength=25 placeholder="1234-5678">
+								<span class="control-label" ng-show="isSubmitted && addressForm.phone.$error.required">Campo Requerido</span>
+								<span class="control-label" ng-show="isSubmitted && addressForm.phone.$error.maxlength">El teléfono debe tener como máximo 25 caracteres</span>
 							</div>
 						</div>
 					</div>
@@ -139,15 +158,27 @@
 	      				</div>
 						<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && cardForm.number.$invalid}">
 							<label class="control-label" for="number">Número de tarjeta</label>
-							<input class="form-control" name="number" ng-model="currentCard.number" ng-change="changeCardState(false)" type="text" required ng-maxlength=16 ng-pattern="/^((34|37)(\d){13}|36(\d){14}|(51|52|53)(\d){14}|4(\d){12}|4(\d){15})$/" placeholder="3411111111111111">
+							<input class="form-control" name="number" ng-model="currentCard.number" ng-change="changeCardState(false)" type="text" required ng-maxlength=16 ng-minlength=13 ng-pattern="/^((34|37)(\d){13}|36(\d){14}|(51|52|53)(\d){14}|4(\d){12}|4(\d){15})$/" placeholder="3411111111111111">
+							<span class="control-label" ng-show="isSubmitted && cardForm.number.$error.required">Campo Requerido</span>
+							<span class="control-label" ng-show="isSubmitted && cardForm.number.$error.maxlength">El número de tarjeta debe tener como máximo 16 caracteres</span>
+							<span class="control-label" ng-show="isSubmitted && cardForm.number.$error.minlength">El número de tarjeta debe tener como mínimo 13 caracteres</span>
+							<span class="control-label" ng-show="isSubmitted && cardForm.number.$error.pattern">El número de tarjeta ingresado no tiene un formato válido</span>
 						</div>
 						<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && cardForm.expDate.$invalid}">
 							<label class="control-label" for="expDate">Fecha de expiración</label>
-							<input class="form-control" name="expDate" ng-model="currentCard.expirationDate" ng-change="changeCardState(false)" type="text" required ng-maxlength=4 ng-minlength=4 placeholder="MMYY">
+							<input class="form-control" name="expDate" ng-model="currentCard.expirationDate" ng-change="changeCardState(false)" type="text" required ng-maxlength=4 ng-minlength=4 placeholder="MMYY" ng-pattern="/^(0-9){4}$/">
+							<span class="control-label" ng-show="isSubmitted && cardForm.expDate.$error.required">Campo Requerido</span>
+							<span class="control-label" ng-show="isSubmitted && cardForm.expDate.$error.maxlength">La fecha de expiración debe tener 4 caracteres</span>
+							<span class="control-label" ng-show="isSubmitted && cardForm.expDate.$error.minlength">La fecha de expiración debe tener 4 caracteres</span>
+							<span class="control-label" ng-show="isSubmitted && cardForm.expDate.$error.pattern">La fecha de expiración debe tener formato MMYY</span>
 						</div>
 						<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && cardForm.code.$invalid}">
 							<label class="control-label" for="code">Código de seguridad</label>
-							<input class="form-control" name="code" ng-model="currentCard.securityCode" ng-change="changeCardState(false)" type="text" required ng-maxlength=4 ng-minlength=3 placeholder="123">
+							<input class="form-control" name="code" ng-model="currentCard.securityCode" ng-change="changeCardState(false)" type="text" required ng-maxlength=4 ng-minlength=3 ng-pattern="/^[0-9]*$/" placeholder="123">
+							<span class="control-label" ng-show="isSubmitted && cardForm.code.$error.required">Campo Requerido</span>
+							<span class="control-label" ng-show="isSubmitted && cardForm.code.$error.maxlength">El código de seguridad debe tener como máximo 4 caracteres</span>
+							<span class="control-label" ng-show="isSubmitted && cardForm.code.$error.minlength">El código de seguridad debe tener como mínimo 3 caracteres</span>
+							<span class="control-label" ng-show="isSubmitted && cardForm.code.$error.pattern">El código de seguridad debe tener solo caracteres numéricos</span>
 						</div>
 					</form>
       			</div>
