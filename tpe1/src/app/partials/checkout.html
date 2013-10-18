@@ -1,5 +1,5 @@
-<div class="header-image">
-  <h1>Checkout</h1>
+<div class="header-image header-image-shopping">
+  <h1>Retirar productos</h1>
 </div>
 
 <div class="checkout-container">
@@ -18,7 +18,7 @@
 	<div class="saved-address-container">
 		<div class="panel panel-default">
 			<div class=panel-heading>
-        		<h3>Elegí una Dirección</h3>
+        		<h3>Elegí una dirección</h3>
         		<small>Se muestran las direcciones más recientemente utilizadas</small>
       		</div>
       		<div class=panel-body>
@@ -26,7 +26,7 @@
 					<span class="saved-address-data">Nombre: {{ address.name }}</span>
 					<span class="saved-address-data">Dirección: {{ address.street }} {{ address.number }}, {{ address.floor }} {{ address.gate }}</span>
 					<span class="saved-address-data">Ciudad: {{ address.city }}, {{ address.province }}</span>
-					<span class="saved-address-data">Código Postal: {{ address.zipCode }}</span>
+					<span class="saved-address-data">Código postal: {{ address.zipCode }}</span>
 					<span class="saved-address-data">Teléfono: {{ address.phoneNumber }}</span>
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 	<div class="address">
 		<div class="panel panel-default">
 			<div class=panel-heading>
-        		<h3>o Ingresá una Nueva</h3>
+        		<h3>o ingresá una nueva</h3>
         		<small>Todos los campos son obligatorios.</small>
       		</div>
       		<div class=panel-body>
@@ -76,7 +76,7 @@
 								<input class="form-control" name="city" ng-model="currentAddr.city" ng-change="changeAddressState(false)" type="text" ng-maxlength=80 ng-pattern="/^[a-zA-Z]+$/" placeholder="Rosario">
 							</div>
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.zipCode.$invalid}">
-								<label class="control-label" for="zipCode">Código Postal</label>
+								<label class="control-label" for="zipCode">Código postal</label>
 								<input class="form-control" name="zipCode" ng-model="currentAddr.zipCode" ng-change="changeAddressState(false)" type="text" required ng-maxlength=10 ng-pattern="/^[a-zA-Z0-9]+$/" placeholder="C1198ABA">
 							</div>
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.phone.$invalid}">
@@ -93,11 +93,11 @@
 	<div class="payment-choice">
 		<div class="panel panel-default">
 			<div class=panel-heading>
-				<h3>Elegí un Método de Pago</h3>
+				<h3>Elegí un método de pago</h3>
 			</div>
 			<div class=panel-body>
 				<input ng-model="paymentMethod" type="radio" value="cash">Efectivo<br/>
-				<input ng-model="paymentMethod" type="radio" value="card">Tarjeta de Crédito<br/>
+				<input ng-model="paymentMethod" type="radio" value="card">Tarjeta de crédito<br/>
 			</div>
 		</div>
 	</div>
@@ -112,8 +112,8 @@
       			<div class=panel-body>
       				<div class="saved-card" ng-repeat="card in cards" ng-click="loadSavedCard($index)">
 					<span class="saved-card-data">Número: {{ card.number }}</span>
-					<span class="saved-card-data">Código de Seguridad: {{ card.securityCode }}</span>
-					<span class="saved-card-data">Fecha de Expiración: {{ card.expirationDate }}</span>
+					<span class="saved-card-data">Código de seguridad: {{ card.securityCode }}</span>
+					<span class="saved-card-data">Fecha de expiración: {{ card.expirationDate }}</span>
 				</div>
       			</div>
 			</div>
@@ -121,12 +121,12 @@
 		<div class="col-md-4">
 			<div class="new-card">
 				<div class=panel-heading>
-        			<h3>o Ingresá una Nueva</h3>
+        			<h3>o ingresá una nueva</h3>
         			<small>Todos los campos son obligatorios.</small>
       			</div>
       			<div class=panel-body>
       				<form name="cardForm" role="form">
-	      				<label class="form-label">Tipo de Tarjeta</label>
+	      				<label class="form-label">Tipo de tarjeta</label>
 	      				<div class="card-type">
 	      					<div class="col-md-6">
 	      						<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="amex">American Express<br/>
@@ -138,15 +138,15 @@
 							</div>
 	      				</div>
 						<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && cardForm.number.$invalid}">
-							<label class="control-label" for="number">Número de Tarjeta</label>
+							<label class="control-label" for="number">Número de tarjeta</label>
 							<input class="form-control" name="number" ng-model="currentCard.number" ng-change="changeCardState(false)" type="text" required ng-maxlength=16 ng-pattern="/^((34|37)(\d){13}|36(\d){14}|(51|52|53)(\d){14}|4(\d){12}|4(\d){15})$/" placeholder="3411111111111111">
 						</div>
 						<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && cardForm.expDate.$invalid}">
-							<label class="control-label" for="expDate">Fecha de Expiración</label>
+							<label class="control-label" for="expDate">Fecha de expiración</label>
 							<input class="form-control" name="expDate" ng-model="currentCard.expirationDate" ng-change="changeCardState(false)" type="text" required ng-maxlength=4 ng-minlength=4 placeholder="MMYY">
 						</div>
 						<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && cardForm.code.$invalid}">
-							<label class="control-label" for="code">Código de Seguridad</label>
+							<label class="control-label" for="code">Código de seguridad</label>
 							<input class="form-control" name="code" ng-model="currentCard.securityCode" ng-change="changeCardState(false)" type="text" required ng-maxlength=4 ng-minlength=3 placeholder="123">
 						</div>
 					</form>
@@ -155,5 +155,5 @@
 		</div>
 	</div>
 
-	<button type="button" class="checkout-submit" ng-click="checkout()"> Finalizar Compra </button>
+	<button type="button" class="checkout-submit" ng-click="checkout()"> Finalizar compra </button>
 </div>

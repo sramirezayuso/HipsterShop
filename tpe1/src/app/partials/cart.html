@@ -9,8 +9,8 @@
       <div class="cart-info-container">
         <h2 class="cart-elem-title">{{ product.product.name }}</h2>
         <div class="cart-data-row">
-          <span class="cart-elem-topData">Color: {{ product.color }}</span>
-          <span class="cart-elem-topData">Marca: {{ product.brand }}</span>
+          <span class="cart-elem-data">Color: {{ product.color }}</span>
+          <span class="cart-elem-data">Marca: {{ product.brand }}</span>
         </div>
         <div class="cart-data-row">
           <span class="cart-elem-data">Cantidad: {{ product.quantity }}</span>
@@ -21,7 +21,7 @@
       <button type="button" class="cart-elem-del" animate remove="remove($index)">x</button>
     </div>
     <span class="cart-total">Total: ${{ (runningTotal()).toFixed(2) }}</span>
-    <button type="button" class="cart-submit" ng-click="go('/checkout')">Checkout</button>
+    <button type="button" class="cart-submit" ng-click="go('/checkout')">Retirar productos</button>
   </div>
 </div>
 
