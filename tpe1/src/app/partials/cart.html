@@ -21,7 +21,7 @@
       <button type="button" class="cart-elem-del" animate remove="remove($index)">x</button>
     </div>
     <span class="cart-total">Total: ${{ (runningTotal()).toFixed(2) }}</span>
-    <button type="button" class="cart-submit" ng-click="go('/checkout')">Retirar productos</button>
+    <button type="button" class="cart-submit" ng-click="go(nextStep)">Retirar productos</button>
   </div>
 </div>
 

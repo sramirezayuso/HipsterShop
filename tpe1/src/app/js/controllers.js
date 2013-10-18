@@ -343,6 +343,7 @@ angular.module('myApp.controllers', [])
               }
             });
           });
+		  $scope.nextStep = '/checkout';
         });
       });
     } else if (!$cookieStore.get('fakeCart')) {
@@ -362,6 +363,7 @@ angular.module('myApp.controllers', [])
           }
         });
       });
+	  $scope.nextStep = '/access';
     }
 
     $scope.runningTotal = function(){
