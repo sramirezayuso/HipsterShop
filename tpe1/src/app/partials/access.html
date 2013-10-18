@@ -35,6 +35,10 @@
             <input type="text" id="signup-firstName-input" name=firstName class="form-control"
               ng-model=signup.firstName  required ng-pattern="/^[a-zA-ZáéíóúÁÉÍÓÚñÑ' ]+$/" ng-maxlength="80"
             >
+              <span ng-show="signupForm.firstName.$error.maxlength" class="help-block"><small>El nombre ingresado es muy largo.</small></span>
+              <span ng-show="submittedSignUp && signupForm.firstName.$error.required" class="help-block">
+                <small>Debés ingresar tu nombre.</small>
+              </span>
           </div>
           </div>
           <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.lastName.$invalid}">
@@ -43,6 +47,12 @@
             <input type="text" id="signup-lastName-input" name=lastName  class="form-control"
               ng-model=signup.lastName required ng-maxlength="80" ng-pattern="/^[a-zA-ZáéíóúÁÉÍÓÚñÑ' ]+$/"
             >
+            <span ng-show="signupForm.lastName.$error.maxlength" class="help-block">
+              <small>El apellido ingresado es muy largo.</small>
+            </span>
+            <span ng-show="submittedSignUp && signupForm.lastName.$error.required" class="help-block">
+              <small>Debés ingresar tu apellido.</small>
+            </span>
           </div>
           </div>
           <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.gender.$invalid}">
@@ -52,15 +62,21 @@
                 <option value="M">Hombre</option>
                 <option value="F">Mujer</option>
               </select>
+              <span ng-show="submittedSignUp && signupForm.gender.$error.required" class="help-block">
+                <small>Debés elegir un género.</small>
+              </span>
             </div>
           </div>
           <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.identityCard.$invalid}">
-          <label class="col-md-3 control-label" for="signup-identityCard-input">DNI</label>
-          <div class="col-md-9">
-            <input type="text" id="signup-identityCard-input" name=identityCard class="form-control"
-              ng-model=signup.identityCard required ng-pattern="/^\d+$/" ng-maxlength=10
-            >
-          </div>
+            <label class="col-md-3 control-label" for="signup-identityCard-input">DNI</label>
+            <div class="col-md-9">
+              <input type="text" id="signup-identityCard-input" name=identityCard class="form-control"
+                ng-model=signup.identityCard required ng-pattern="/^\d+$/" ng-maxlength=10
+              >
+              <span ng-show="submittedSignUp && signupForm.identityCard.$error.required" class="help-block">
+                <small>Debés ingresar tu número de DNI.</small>
+              </span>
+            </div>
           </div>
           <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.email.$invalid}">
             <label class="col-md-3 control-label" for="signup-email-input">Email</label>
@@ -68,6 +84,10 @@
               <input type="email" id="signup-email-input" class="form-control" name=email
                 ng-model=signup.email required ng-maxlength="128"
               >
+
+              <span ng-show="submittedSignUp && signupForm.email.$invalid " class="help-block">
+                <small>Debés ingresar un email válido.</small>
+              </span>
             </div>
           </div>
           <div class="form-group">
