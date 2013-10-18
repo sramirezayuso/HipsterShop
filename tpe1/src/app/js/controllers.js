@@ -519,8 +519,11 @@ angular.module('myApp.controllers', [])
     $scope.isAddressSaved = false;
     $scope.isCardSaved = false;
     $scope.isSubmitted = false;
+    $scope.states = [];
 
-
+    ajaxService.async('Common', {method: 'GetAllStates'} ).then(function(response) {
+      $scope.states = response.data.states;
+    });
 
     ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
       $scope.preferences = JSON.parse(response.data.preferences)
@@ -564,7 +567,6 @@ angular.module('myApp.controllers', [])
 
     $scope.checkout = function() {
       $scope.isSubmitted = true;
-      console.log($scope.addressForm.door.$error);
       if ($scope.paymentMethod == 'card') {
         if ($scope.isAddressSaved && $scope.isCardSaved) {
           ajaxService.async('Order', {method: 'ConfirmOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order: {id: $scope.preferences.cartId, address:{id: $scope.currentAddr.id}, creditCard: {id: $scope.currentCard.id}}} ).then(function(response) {

@@ -67,7 +67,9 @@
 						<div class="address-form-column">
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.province.$invalid}">
 								<label class="control-label" for="province">Provincia</label>
-								<input class="form-control" name="province" ng-model="currentAddr.province" ng-change="changeAddressState(false)" type="text" required>
+								<select class="form-control" name="province" ng-model="currentAddr.province" ng-options="s.stateId as s.name for s in states" ng-change="changeAddressState(false)" required>
+									<option value="">-- Elegí una provincia --</option>
+								</select><br>
 							</div>
 							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.city.$invalid}">
 								<label class="control-label" for="city">Ciudad</label>
