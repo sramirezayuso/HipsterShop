@@ -211,16 +211,16 @@ angular.module('myApp.controllers', [])
       sc.products = [ ];
       var productFilters = addGenderFilter(gender, []);
 
-      if (search.length > 0) {
+      if (search != null && search.length > 0) {
         sc.categories.forEach(function(cat){cat.active=false;});
         as.async('Catalog', {method: 'GetProductsByName', name: search, filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
         });
-      } else if (subcategoryId != 0) {
+      } else if (subcategoryId != null && subcategoryId != 0) {
         as.async('Catalog', {method: 'GetProductsBySubcategoryId', id: subcategoryId, filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
         });
-      } else if (categoryId != 0) {
+      } else if (categoryId != null && categoryId != 0) {
         as.async('Catalog', {method: 'GetProductsByCategoryId', id: categoryId, filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
         });
