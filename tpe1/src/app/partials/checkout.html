@@ -40,46 +40,46 @@
         		<small>Todos los campos son obligatorios.</small>
       		</div>
       		<div class=panel-body>
-				<form role="form">
+				<form name="addressForm" role="form">
 					<div class="address-form-body">
 						<div class="address-form-column">
-							<div class="addrForm-elem-group">
-								<label class="form-label" for="name">Nombre</label>
-								<input class="addrForm-elem" id="name" ng-model="currentAddr.name" ng-change="changeAddressState(false)" type="text" required="required">
+							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.name.$invalid}">
+								<label class="control-label" for="name">Nombre</label>
+								<input class="form-control" name="name" ng-model="currentAddr.name" ng-change="changeAddressState(false)" type="text" required ng-maxlength=80 placeholder="Casa">
 							</div>
-							<div class="addrForm-elem-group">
-								<label class="form-label" for="street">Calle</label>
-								<input class="addrForm-elem" id="street" ng-model="currentAddr.street" ng-change="changeAddressState(false)" type="text" required="required">
+							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.street.$invalid}">
+								<label class="control-label" for="street">Calle</label>
+								<input class="form-control" name="street" ng-model="currentAddr.street" ng-change="changeAddressState(false)" type="text" required ng-maxlength=80 placeholder="Av. Rivadavia">
 							</div>
-							<div class="addrForm-elem-group">
-								<label class="form-label" for="door">Altura</label>
-								<input class="addrForm-elem" id="door" ng-model="currentAddr.number" ng-change="changeAddressState(false)" type="text" required="required">
+							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.door.$invalid}">
+								<label class="control-label" for="door">Altura</label>
+								<input class="form-control" name="door" ng-model="currentAddr.number" ng-change="changeAddressState(false)" type="text" required ng-maxlength=6 ng-pattern="/^[a-zA-Z0-9]+$/" placeholder="2476">
 							</div>
-							<div class="addrForm-elem-group">
-								<label class="form-label" for="floor">Piso</label>
-								<input class="addrForm-elem" id="floor" ng-model="currentAddr.floor" ng-change="changeAddressState(false)" type="text" required="required">
+							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.floor.$invalid}">
+								<label class="control-label" for="floor">Piso</label>
+								<input class="form-control" name="floor" ng-model="currentAddr.floor" ng-change="changeAddressState(false)" type="text" ng-maxlength=3 ng-pattern="/^[a-zA-Z0-9]+$/" placeholder="1">
 							</div>
-							<div class="addrForm-elem-group">
-								<label class="form-label" for="apartment">Departamento</label>
-								<input class="addrForm-elem" id="apartment" ng-model="currentAddr.gate" ng-change="changeAddressState(false)" type="text" required="required">
+							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.apartment.$invalid}">
+								<label class="control-label" for="apartment">Departamento</label>
+								<input class="form-control" name="apartment" ng-model="currentAddr.gate" ng-change="changeAddressState(false)" type="text" ng-maxlength=2 placeholder="E">
 							</div>
 						</div>
 						<div class="address-form-column">
-							<div class="addrForm-elem-group">
-								<label class="form-label" for="province">Provincia</label>
-								<input class="addrForm-elem" id="province" ng-model="currentAddr.province" ng-change="changeAddressState(false)" type="text" required="required">
+							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.province.$invalid}">
+								<label class="control-label" for="province">Provincia</label>
+								<input class="form-control" name="province" ng-model="currentAddr.province" ng-change="changeAddressState(false)" type="text" required>
 							</div>
-							<div class="addrForm-elem-group">
-								<label class="form-label" for="city">Ciudad</label>
-								<input class="addrForm-elem" id="city" ng-model="currentAddr.city" ng-change="changeAddressState(false)" type="text" required="required">
+							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.city.$invalid}">
+								<label class="control-label" for="city">Ciudad</label>
+								<input class="form-control" name="city" ng-model="currentAddr.city" ng-change="changeAddressState(false)" type="text" ng-maxlength=80 ng-pattern="/^[a-zA-Z]+$/" placeholder="Rosario">
 							</div>
-							<div class="addrForm-elem-group">
-								<label class="form-label" for="zipCode">Código Postal</label>
-								<input class="addrForm-elem" id="zipCode" ng-model="currentAddr.zipCode" ng-change="changeAddressState(false)" type="text" required="required">
+							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.zipCode.$invalid}">
+								<label class="control-label" for="zipCode">Código Postal</label>
+								<input class="form-control" name="zipCode" ng-model="currentAddr.zipCode" ng-change="changeAddressState(false)" type="text" required ng-maxlength=10 ng-pattern="/^[a-zA-Z0-9]+$/" placeholder="C1198ABA">
 							</div>
-							<div class="addrForm-elem-group">
-								<label class="form-label" for="phone">Teléfono</label>
-								<input class="addrForm-elem" id="phone" ng-model="currentAddr.phoneNumber" ng-change="changeAddressState(false)" type="tel" required="required">
+							<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && addressForm.phone.$invalid}">
+								<label class="control-label" for="phone">Teléfono</label>
+								<input class="form-control" name="phone" ng-model="currentAddr.phoneNumber" ng-change="changeAddressState(false)" type="tel" required ng-maxlength=25 placeholder="1234-5678">
 							</div>
 						</div>
 					</div>
@@ -123,29 +123,31 @@
         			<small>Todos los campos son obligatorios.</small>
       			</div>
       			<div class=panel-body>
-      				<label class="form-label">Tipo de Tarjeta</label>
-      				<div class="card-type">
-      					<div class="col-md-6">
-      						<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="amex">American Express<br/>
-							<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="mcard">Master Card<br/>
+      				<form name="cardForm" role="form">
+	      				<label class="form-label">Tipo de Tarjeta</label>
+	      				<div class="card-type">
+	      					<div class="col-md-6">
+	      						<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="amex">American Express<br/>
+								<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="mcard">Master Card<br/>
+							</div>
+							<div class="col-md-6">
+								<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="visa">Visa<br/>
+								<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="diners">Diners<br/>
+							</div>
+	      				</div>
+						<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && cardForm.number.$invalid}">
+							<label class="control-label" for="number">Número de Tarjeta</label>
+							<input class="form-control" name="number" ng-model="currentCard.number" ng-change="changeCardState(false)" type="text" required ng-maxlength=16 ng-pattern="/^((34|37)(\d){13}|36(\d){14}|(51|52|53)(\d){14}|4(\d){12}|4(\d){15})$/" placeholder="3411111111111111">
 						</div>
-						<div class="col-md-6">
-							<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="visa">Visa<br/>
-							<input ng-model="cardType" ng-change="changeCardState(false)" type="radio" value="diners">Diners<br/>
+						<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && cardForm.expDate.$invalid}">
+							<label class="control-label" for="expDate">Fecha de Expiración</label>
+							<input class="form-control" name="expDate" ng-model="currentCard.expirationDate" ng-change="changeCardState(false)" type="text" required ng-maxlength=4 ng-minlength=4 placeholder="MMYY">
 						</div>
-      				</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="phone">Número de Tarjeta</label>
-						<input class="addrForm-elem" id="phone" ng-model="currentCard.number" ng-change="changeCardState(false)" type="text" required="required">
-					</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="phone">Fecha de Expiración</label>
-						<input class="addrForm-elem" id="phone" ng-model="currentCard.expirationDate" ng-change="changeCardState(false)" type="text" required="required">
-					</div>
-					<div class="addrForm-elem-group">
-						<label class="form-label" for="phone">Código de Seguridad</label>
-						<input class="addrForm-elem" id="phone" ng-model="currentCard.securityCode" ng-change="changeCardState(false)" type="text" required="required">
-					</div>
+						<div class="addrForm-elem-group" ng-class="{'has-error': isSubmitted && cardForm.code.$invalid}">
+							<label class="control-label" for="code">Código de Seguridad</label>
+							<input class="form-control" name="code" ng-model="currentCard.securityCode" ng-change="changeCardState(false)" type="text" required ng-maxlength=4 ng-minlength=3 placeholder="123">
+						</div>
+					</form>
       			</div>
 			</div>
 		</div>
