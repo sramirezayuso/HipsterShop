@@ -266,25 +266,45 @@ angular.module('myApp.controllers', [])
     })
 
     sc.addToCart = function() {
-      as.async('Account', {method: 'GetPreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
-        as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).cartId}, product: {id: sc.product.id, attributes: [{id:4, name:'Color', value:'Coral'}]}, quantity: sc.quantity}} ).then(function(ans) {
-		  if("error" in ans.data)
-		    sc.error = true;
-		  else
-			sc.showMsgCart = true;
+      if(cs.get('authToken')){
+        as.async('Account', {method: 'GetPreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
+          as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).cartId}, product: {id: sc.product.id, attributes: [{id:4, name:'Color', value:'Coral'}]}, quantity: sc.quantity}} ).then(function(ans) {
+  		  if("error" in ans.data)
+  		    sc.error = true;
+  		  else
+  			sc.showMsgCart = true;
+          });
         });
-      });
+      } else if (!cs.get('fakeCart')) {
+        cs.put('fakeCart', {items: [{id: sc.product.id, quantity: sc.quantity}]})
+        sc.showMsgCart = true;
+      } else {
+        var fCart = cs.get('fakeCart');
+        fCart.items.push({id: sc.product.id, quantity: sc.quantity});
+        cs.put('fakeCart', fCart);
+        sc.showMsgCart = true;
+      }
     }
 
     sc.addToWishlist = function() {
-      as.async('Account', {method: 'GetPreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
-        as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).wishId}, product: {id: sc.product.id}, quantity: sc.quantity}} ).then(function(ans) {
-		  if("error" in ans.data)
-		    sc.error = true;
-		  else
-			sc.showMsgWishlist = true;
+      if(cs.get('authToken')){
+        as.async('Account', {method: 'GetPreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
+          as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).wishId}, product: {id: sc.product.id}, quantity: sc.quantity}} ).then(function(ans) {
+  		  if("error" in ans.data)
+  		    sc.error = true;
+  		  else
+  			sc.showMsgWishlist = true;
+          });
         });
-      });
+      } else if (!cs.get('fakeWish')) {
+        cs.put('fakeWish', {items: [{id: sc.product.id, quantity: sc.quantity}]})
+        sc.showMsgWishlist = true;
+      } else {
+        var fCart = cs.get('fakeWish');
+        fCart.items.push({id: sc.product.id, quantity: sc.quantity});
+        cs.put('fakeWish', fCart);
+        sc.showMsgWishlist = true;
+      }
     }
 
   }])
@@ -303,22 +323,42 @@ angular.module('myApp.controllers', [])
     };*/
 
     $scope.products = [];
-    ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
-      ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).cartId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
-        $scope.products = response.data.order.items;
-        angular.forEach($scope.products, function(product, index){
-          ajaxService.async('Catalog', {method: 'GetProductById', id:product.product.id} ).then(function(response) {
-            var att = response.data.product.attributes;
-            for(var i = 0; i < att.length ; i++) {
-              switch(att[i].id) {
-                case 4: $scope.products[index].color = att[i].values[0]; break;
-                case 9: $scope.products[index].brand = att[i].values[0]; break;
+    if($cookieStore.get('authToken')){
+      ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
+        ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).cartId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+          $scope.products = response.data.order.items;
+          angular.forEach($scope.products, function(product, index){
+            ajaxService.async('Catalog', {method: 'GetProductById', id:product.product.id} ).then(function(response) {
+              var att = response.data.product.attributes;
+              for(var i = 0; i < att.length ; i++) {
+                switch(att[i].id) {
+                  case 4: $scope.products[index].color = att[i].values[0]; break;
+                  case 9: $scope.products[index].brand = att[i].values[0]; break;
+                }
               }
-            }
+            });
           });
         });
       });
-    });
+    } else if (!$cookieStore.get('fakeCart')) {
+      $cookieStore.put('fakeCart', {items: []});
+    } else {
+      $scope.products = $cookieStore.get('fakeCart').items;
+      angular.forEach($scope.products, function(product, index){
+        ajaxService.async('Catalog', {method: 'GetProductById', id:product.id} ).then(function(response) {
+          $scope.products[index].price = response.data.product.price;
+          $scope.products[index].product = {};
+          $scope.products[index].product.imageUrl = response.data.product.imageUrl[0];
+          var att = response.data.product.attributes;
+          for(var i = 0; i < att.length ; i++) {
+            switch(att[i].id) {
+              case 4: $scope.products[index].color = att[i].values[0]; break;
+              case 9: $scope.products[index].brand = att[i].values[0]; break;
+            }
+          }
+        });
+      });
+    }
 
     $scope.runningTotal = function(){
       var runningTotal = 0;
@@ -329,8 +369,14 @@ angular.module('myApp.controllers', [])
     };
 
     $scope.remove = function( idx ) {
-      ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].id } ).then(function(response) {
-      });
+      if($cookieStore.get('authToken')){
+        ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].id } ).then(function(response) {
+        });
+      } else {
+        var temp = $cookieStore.get('fakeCart');
+        temp.items.splice(idx, 1);
+        $cookieStore.put('fakeCart', temp);
+      }
       $scope.products.splice(idx, 1);
     };
 
@@ -343,23 +389,43 @@ angular.module('myApp.controllers', [])
   .controller('WishlistCtrl', function($scope, $location, $cookieStore, ajaxService) {
 
     $scope.products = [];
-    ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
-      $scope.cartId = JSON.parse(response.data.preferences).cartId;
-      ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).wishId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
-        $scope.products = response.data.order.items;
-        angular.forEach($scope.products, function(product, index){
-          ajaxService.async('Catalog', {method: 'GetProductById', id:product.product.id} ).then(function(response) {
-            var att = response.data.product.attributes;
-            for(var i = 0; i < att.length ; i++) {
-              switch(att[i].id) {
-                case 4: $scope.products[index].color = att[i].values[0]; break;
-                case 9: $scope.products[index].brand = att[i].values[0]; break;
+    if($cookieStore.get('authToken')){
+      ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
+        $scope.cartId = JSON.parse(response.data.preferences).cartId;
+        ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).wishId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+          $scope.products = response.data.order.items;
+          angular.forEach($scope.products, function(product, index){
+            ajaxService.async('Catalog', {method: 'GetProductById', id:product.product.id} ).then(function(response) {
+              var att = response.data.product.attributes;
+              for(var i = 0; i < att.length ; i++) {
+                switch(att[i].id) {
+                  case 4: $scope.products[index].color = att[i].values[0]; break;
+                  case 9: $scope.products[index].brand = att[i].values[0]; break;
+                }
               }
-            }
+            });
           });
         });
       });
-    });
+    } else if (!$cookieStore.get('fakeWish')) {
+      $cookieStore.put('fakeWish', {items: []});
+    } else {
+      $scope.products = $cookieStore.get('fakeWish').items;
+      angular.forEach($scope.products, function(product, index){
+        ajaxService.async('Catalog', {method: 'GetProductById', id:product.id} ).then(function(response) {
+          $scope.products[index].price = response.data.product.price;
+          $scope.products[index].product = {};
+          $scope.products[index].product.imageUrl = response.data.product.imageUrl[0];
+          var att = response.data.product.attributes;
+          for(var i = 0; i < att.length ; i++) {
+            switch(att[i].id) {
+              case 4: $scope.products[index].color = att[i].values[0]; break;
+              case 9: $scope.products[index].brand = att[i].values[0]; break;
+            }
+          }
+        });
+      });
+    }
 
 
     $scope.runningTotal = function(){
@@ -371,17 +437,32 @@ angular.module('myApp.controllers', [])
     };
 
     $scope.remove = function( idx ) {
-      ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].id } ).then(function(response) {
-      });
+      if($cookieStore.get('authToken')){
+        ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].id } ).then(function(response) {
+        });
+      } else {
+        var temp = $cookieStore.get('fakeWish');
+        temp.items.splice(idx, 1);
+        $cookieStore.put('fakeWish', temp);
+      }
       $scope.products.splice(idx, 1);
     };
 
     $scope.addToCart = function( idx ) {
-      ajaxService.async('Order', {method: 'AddItemToOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order_item: {order: {id: $scope.cartId}, product: {id: $scope.products[idx].product.id}, quantity: $scope.products[idx].quantity}} ).then(function(response) {
-        ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].id } ).then(function(response) {
-          $scope.products.splice(idx, 1);
+      if($cookieStore.get('authToken')){
+        ajaxService.async('Order', {method: 'AddItemToOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order_item: {order: {id: $scope.cartId}, product: {id: $scope.products[idx].product.id}, quantity: $scope.products[idx].quantity}} ).then(function(response) {
+          ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].id } ).then(function(response) {
+          });
         });
-      });
+      } else {
+        var tempWish = $cookieStore.get('fakeWish');
+        var tempCart = $cookieStore.get('fakeCart');
+        tempCart.items.push(tempWish.items[idx]);
+        tempWish.items.splice(idx, 1);
+        $cookieStore.put('fakeWish', tempWish);
+        $cookieStore.put('fakeCart', tempCart);
+      }
+      $scope.products.splice(idx, 1);
     };
 
     $scope.go = function ( path ) {
