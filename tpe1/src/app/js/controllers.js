@@ -555,20 +555,33 @@ angular.module('myApp.controllers', [])
           }
         });
       }
+    }
 
+    function parseDate(dateString) {
+      if (dateString == null || dateString == ""){ return ""; }
+
+      var parsedDate = dateString.replace(/(\/| )/g,'-').split("-").reverse().join("-")
+
+      return parsedDate;
     }
 
     sc.signUp = function() {
       sc.submittedSignUp = true;
 
       var params = { account: sc.signup || {}};
-      params.account["birthDate"] = "1980-01-01";
+
+      params.account.birthDate = parseDate(params.account.birthDateInput);
 
       params.method = 'CreateAccount';
       as.async('Account', params).then(function(response) {
         if (response.data.error) {
-          console.log(response.data.error);
+          sc.signupForm.birthDate.$setValidity("commonError", true);
+          sc.signupForm.username.$setValidity("alreadyRegistered", true);
+          sc.signupForm.identityCard.$setValidity("alreadyRegistered", true);
           switch(response.data.error.code) {
+            case 111:
+              sc.signupForm.birthDate.$setValidity("commonError", false);
+              break;
             case 200:
               sc.signupForm.username.$setValidity("alreadyRegistered", false);
             break;
