@@ -124,8 +124,10 @@ angular.module('myApp.controllers', [])
 
       switch(gender) {
         case "f" : filters.push({"id":1,"value":"Femenino"});
+				   sc.header = "header-image-women";
 				   sc.breadcrumb.push({url:"#/products?gender=f", name:"Mujeres"}); break;
         case "m" : filters.push({"id":1,"value":"Masculino"});
+				   sc.header = "header-image-men";
 				   sc.breadcrumb.push({url:"#/products?gender=m", name:"Hombres"}); break;
       }
       return filters;
