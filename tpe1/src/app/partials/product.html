@@ -8,15 +8,31 @@
   <li class="active">{{ product.name }}</li>
 </ol>
 
+<div class="alert alert-success alert-dismissable animate-show" ng-show="showMsgCart" ng-hide="!showMsgCart">
+  <button type="button" class="close" data-dismiss="alert" ng-click="showMsgCart = false">&times;</button>
+  Se ha agregado el producto al carrito.
+</div>
+
+<div class="alert alert-info alert-dismissable" ng-show="showMsgWishlist" ng-hide="!showMsgWishlist">
+  <button type="button" class="close" data-dismiss="alert" ng-click="showMsgWishlist = false">&times;</button>
+  Se ha agregado el producto a la lista de deseos.
+</div>
+
+<div class="alert alert-danger alert-dismissable" ng-show="error" ng-hide="!error">
+  <button type="button" class="close" data-dismiss="alert" ng-click="error = false">&times;</button>
+  Se ha producido un error.
+</div>
+
 <div class=row>
   <div class=col-md-4>
     <img ng-src="{{ currentImage }}" class="img-rounded img-responsive" alt="{{ product.name }}">
-    <div>
+    <div class=row>
       <div class=col-md-3 ng-repeat="imgUrl in product.imageUrl">
-        <img ng-src="{{ imgUrl }}" ng-click="changeImage(imgUrl)"class="img-thumbnail img-responsive" alt="{{ product.name }}">
+        <img ng-src="{{ imgUrl }}" ng-mouseenter="changeImage(imgUrl)"class="img-thumbnail img-responsive" alt="{{ product.name }}">
       </div>
     </div>
   </div>
+  
   <div class="col-md-7 col-md-offset-1">
     <div class="panel panel-default">
       <div class=panel-body>

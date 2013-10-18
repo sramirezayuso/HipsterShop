@@ -263,25 +263,24 @@ angular.module('myApp.controllers', [])
   	  sc.breadcrumb.push({name: sc.product.subcategory.name, url: url});
     })
 
-    sc.categories = [
-      { title: "Pantalones", active: false },
-      { title: "Remeras", active: true },
-      { title: "Zapatos", active: false },
-      { title: "Anteojos", active: false }
-    ];
-
     sc.addToCart = function() {
-      console.log('test');
       as.async('Account', {method: 'GetPreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
-        as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).cartId}, product: {id: sc.product.id}, quantity: sc.quantity}} ).then(function(response) {
+        as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).cartId}, product: {id: sc.product.id}, quantity: sc.quantity}} ).then(function(ans) {
+		  if("error" in ans.data)
+		    sc.error = true;
+		  else
+			sc.showMsgCart = true;
         });
       });
     }
 
     sc.addToWishlist = function() {
-      console.log('test');
       as.async('Account', {method: 'GetPreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
-        as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).wishId}, product: {id: sc.product.id}, quantity: sc.quantity}} ).then(function(response) {
+        as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).wishId}, product: {id: sc.product.id}, quantity: sc.quantity}} ).then(function(ans) {
+		  if("error" in ans.data)
+		    sc.error = true;
+		  else
+			sc.showMsgWishlist = true;
         });
       });
     }
