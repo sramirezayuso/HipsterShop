@@ -4,7 +4,7 @@
 
 <div class="order-page-container">
   <div class="order-product-container">
-    <div class="order-product" ng-repeat="product in products">
+    <div class="order-product" ng-repeat="product in products" ng-click="goOrder(product.product.id)">
       <img class="order-product-img" ng-src="{{product.product.imageUrl}}" alt="...">
       <div class="product-info-container">
         <h2 class="order-product-title">{{ product.title }}</h2>

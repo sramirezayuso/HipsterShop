@@ -235,6 +235,8 @@ angular.module('myApp.controllers', [])
 
   .controller('ProductCtrl', ['$scope', '$routeParams', '$cookieStore', 'ajaxService', function(sc, rp, cs, as) {
 
+    //cs.remove('fakeCart');
+
     sc.quantity = 1;
 
     sc.changeImage = function(imgUrl) {
@@ -277,12 +279,14 @@ angular.module('myApp.controllers', [])
           });
         });
       } else if (!cs.get('fakeCart')) {
-        cs.put('fakeCart', {items: [{id: sc.product.id, quantity: sc.quantity}]})
+        cs.put('fakeCart', {items: [{product: {id: sc.product.id}, quantity: sc.quantity}]})
+        console.log(cs.get('fakeCart'));
         sc.showMsgCart = true;
       } else {
         var fCart = cs.get('fakeCart');
-        fCart.items.push({id: sc.product.id, quantity: sc.quantity});
+        fCart.items.push({product: {id: sc.product.id}, quantity: sc.quantity});
         cs.put('fakeCart', fCart);
+        console.log(cs.get('fakeCart'));
         sc.showMsgCart = true;
       }
     }
@@ -298,11 +302,11 @@ angular.module('myApp.controllers', [])
           });
         });
       } else if (!cs.get('fakeWish')) {
-        cs.put('fakeWish', {items: [{id: sc.product.id, quantity: sc.quantity}]})
+        cs.put('fakeWish', {items: [{product: {id: sc.product.id}, quantity: sc.quantity}]})
         sc.showMsgWishlist = true;
       } else {
         var fCart = cs.get('fakeWish');
-        fCart.items.push({id: sc.product.id, quantity: sc.quantity});
+        fCart.items.push({product: {id: sc.product.id}, quantity: sc.quantity});
         cs.put('fakeWish', fCart);
         sc.showMsgWishlist = true;
       }
@@ -346,9 +350,8 @@ angular.module('myApp.controllers', [])
     } else {
       $scope.products = $cookieStore.get('fakeCart').items;
       angular.forEach($scope.products, function(product, index){
-        ajaxService.async('Catalog', {method: 'GetProductById', id:product.id} ).then(function(response) {
+        ajaxService.async('Catalog', {method: 'GetProductById', id:product.product.id} ).then(function(response) {
           $scope.products[index].price = response.data.product.price;
-          $scope.products[index].product = {};
           $scope.products[index].product.imageUrl = response.data.product.imageUrl[0];
           var att = response.data.product.attributes;
           for(var i = 0; i < att.length ; i++) {
@@ -385,6 +388,11 @@ angular.module('myApp.controllers', [])
       $location.path( path );
     };
 
+    $scope.goOrder = function( id ) {
+      console.log(id);
+      $location.path( '/products/' + id );
+    }
+
   })
 
   .controller('WishlistCtrl', function($scope, $location, $cookieStore, ajaxService) {
@@ -413,9 +421,8 @@ angular.module('myApp.controllers', [])
     } else {
       $scope.products = $cookieStore.get('fakeWish').items;
       angular.forEach($scope.products, function(product, index){
-        ajaxService.async('Catalog', {method: 'GetProductById', id:product.id} ).then(function(response) {
+        ajaxService.async('Catalog', {method: 'GetProductById', id:product.product.id} ).then(function(response) {
           $scope.products[index].price = response.data.product.price;
-          $scope.products[index].product = {};
           $scope.products[index].product.imageUrl = response.data.product.imageUrl[0];
           var att = response.data.product.attributes;
           for(var i = 0; i < att.length ; i++) {
@@ -452,7 +459,7 @@ angular.module('myApp.controllers', [])
     $scope.addToCart = function( idx ) {
       if($cookieStore.get('authToken')){
         ajaxService.async('Order', {method: 'AddItemToOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), order_item: {order: {id: $scope.cartId}, product: {id: $scope.products[idx].product.id}, quantity: $scope.products[idx].quantity}} ).then(function(response) {
-          ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].id } ).then(function(response) {
+          ajaxService.async('Order', {method: 'RemoveItemFromOrder', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), id: $scope.products[idx].product.id } ).then(function(response) {
           });
         });
       } else {
@@ -469,6 +476,10 @@ angular.module('myApp.controllers', [])
     $scope.go = function ( path ) {
       $location.path( path );
     };
+
+    $scope.goOrder = function( id ) {
+      $location.path( '/products/' + id );
+    }
 
   })
 
@@ -575,7 +586,7 @@ angular.module('myApp.controllers', [])
                 sc.wishlist = response.data.order.id;
                 if(cs.get('fakeWish')){
                   angular.forEach(cs.get('fakeWish').items, function(item, idx){
-                    as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: sc.wishlist}, product: {id: item.id}, quantity: item.quantity}} ).then(function(response) {
+                    as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: sc.wishlist}, product: {id: item.product.id}, quantity: item.quantity}} ).then(function(response) {
                     });
                   });
                 }
@@ -583,7 +594,7 @@ angular.module('myApp.controllers', [])
                   sc.cart = response.data.order.id;
                   if(cs.get('fakeCart')){
                     angular.forEach(cs.get('fakeCart').items, function(item, idx){
-                      as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: sc.cart}, product: {id: item.id}, quantity: item.quantity}} ).then(function(response) {
+                      as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: sc.cart}, product: {id: item.product.id}, quantity: item.quantity}} ).then(function(response) {
                       });
                     });
                   }
@@ -600,7 +611,7 @@ angular.module('myApp.controllers', [])
     }
 
 }])
-.controller('OrderCtrl', function($scope, $routeParams, $cookieStore, ajaxService) {
+.controller('OrderCtrl', function($scope, $routeParams, $location, $cookieStore, ajaxService) {
 
     $scope.orderno = $routeParams.orderno;
     $scope.products = [];
@@ -628,6 +639,10 @@ angular.module('myApp.controllers', [])
       return runningTotal;
     };
 
+    $scope.goOrder = function( id ) {
+      $location.path( '/products/' + id );
+    }
+
   })
 
   .controller('CheckoutCtrl', function($scope, $cookieStore, $q, ajaxService) {
@@ -652,6 +667,17 @@ angular.module('myApp.controllers', [])
       $scope.preferences = JSON.parse(response.data.preferences)
       ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).cartId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
         $scope.products = response.data.order.items;
+        angular.forEach($scope.products, function(product, index){
+        ajaxService.async('Catalog', {method: 'GetProductById', id:product.product.id} ).then(function(response) {
+          var att = response.data.product.attributes;
+          for(var i = 0; i < att.length ; i++) {
+            switch(att[i].id) {
+              case 4: $scope.products[index].color = att[i].values[0]; break;
+              case 9: $scope.products[index].brand = att[i].values[0]; break;
+            }
+          }
+        });
+      });
       });
     });
 
