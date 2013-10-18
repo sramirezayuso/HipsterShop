@@ -12,7 +12,7 @@
           	<span class="checkout-product-data">Cantidad: {{ product.quantity }}</span>
           	<span class="checkout-product-data">Precio Unitario: ${{ product.price }}</span>
 		</div>
-		<span class="checkout-summary-total">Total: {{runningTotal()}}</span>
+		<span class="checkout-summary-total">Total: {{(runningTotal()).toFixed(2)}}</span>
 	</div>
 
 	<div class="saved-address-container">

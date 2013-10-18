@@ -412,9 +412,9 @@ angular.module('myApp.controllers', [])
     $scope.runningTotal = function(orderno){
       var runningTotal = 0;
       angular.forEach($scope.orders, function(order, index){
-        if (order.orderno == orderno) {
-          angular.forEach(order.products, function(product, index){
-            runningTotal += product.price;
+        if (order.id == orderno) {
+          angular.forEach(order.items, function(product, index){
+            runningTotal += product.price * product.quantity;
           })
         };
       });

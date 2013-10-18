@@ -16,11 +16,11 @@
           </div>
           <div class="info-line">
             <span class="order-elem-data">Cantidad: {{ product.quantity }}</span>
-            <span class="order-elem-data">Precio: ${{ product.price }}</span>
-            <span class="order-elem-data">Precio Subtotal: ${{ product.price * product.quantity }}</span>
+            <span class="order-elem-data">Precio: ${{ (product.price).toFixed(2) }}</span>
+            <span class="order-elem-data">Precio Subtotal: ${{ (product.price * product.quantity).toFixed(2) }}</span>
           </div>
         </div>
-        <span class="order-total">Total: {{runningTotal(order.orderno)}}</span>
+        <span class="order-total">Total: {{(runningTotal(order.id)).toFixed(2)}}</span>
       </div>
       <div class="order-information">
         <span class="order-info-elem">Estado: {{ getStatus(order.status) }}</span>

@@ -15,13 +15,13 @@
         </div>
         <div class="cart-data-row">
           <span class="cart-elem-quantity">Cantidad: {{ product.quantity }}</span>
-          <span class="cart-elem-price">Precio por Unidad: ${{ product.price }}</span>
-          <span class="cart-elem-totalprice">Precio Total: ${{ product.price * product.quantity }}</span>
+          <span class="cart-elem-price">Precio por Unidad: ${{ (product.price).toFixed(2) }}</span>
+          <span class="cart-elem-totalprice">Precio Total: ${{ (product.price * product.quantity).toFixed(2) }}</span>
         </div>
       </div>
       <button type="button" class="cart-elem-del" animate remove="remove($index)">x</button>
     </div>
-    <span class="cart-total">Total: ${{ runningTotal() }}</span>
+    <span class="cart-total">Total: ${{ (runningTotal()).toFixed(2) }}</span>
     <button type="button" class="cart-submit" ng-click="go('/checkout')">Checkout</button>
   </div>
 </div>
