@@ -178,7 +178,7 @@ angular.module('myApp.controllers', [])
       });
     });
 
-    rs.$emit('updateCategories');
+    rs.$emit('updateCategories', rp.gender);
 
     sc.changeProductsCategory = function(category) {
       rs.$emit('productsChange', rp.gender, category.id, 0, "");
