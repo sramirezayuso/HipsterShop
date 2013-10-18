@@ -87,7 +87,7 @@ angular.module('myApp.controllers', [])
 			}
 		});
 		
-        function genreInCategory(genre, category){
+    function genreInCategory(genre, category){
 			for(var i = 0; i < category.attributes.length; i++){
 				var att = category.attributes[i];
 				if(att.name == "Genero") {
@@ -306,9 +306,19 @@ angular.module('myApp.controllers', [])
     ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
       ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).cartId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
         $scope.products = response.data.order.items;
+        angular.forEach($scope.products, function(product, index){
+          ajaxService.async('Catalog', {method: 'GetProductById', id:product.product.id} ).then(function(response) {
+            var att = response.data.product.attributes;
+            for(var i = 0; i < att.length ; i++) {
+              switch(att[i].id) {
+                case 4: $scope.products[index].color = att[i].values[0]; break;
+                case 9: $scope.products[index].brand = att[i].values[0]; break;
+              }
+            }
+          });
+        });
       });
     });
-
 
     $scope.runningTotal = function(){
       var runningTotal = 0;
@@ -332,20 +342,22 @@ angular.module('myApp.controllers', [])
 
   .controller('WishlistCtrl', function($scope, $location, $cookieStore, ajaxService) {
 
-    /*ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
-      $scope.pref = JSON.parse(response.data.preferences);
-      ajaxService.async('Order', {method: 'CreateOrder', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
-        $scope.pref.wishId = response.data.order.id;
-        ajaxService.async('Account', {method: 'UpdatePreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken'), value: JSON.stringify($scope.pref)} ).then(function(response) {
-        });
-      });
-    });*/
-
     $scope.products = [];
     ajaxService.async('Account', {method: 'GetPreferences', username: $cookieStore.get('user.username'), authentication_token:$cookieStore.get('authToken')} ).then(function(response) {
       $scope.cartId = JSON.parse(response.data.preferences).cartId;
       ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: JSON.parse(response.data.preferences).wishId, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
         $scope.products = response.data.order.items;
+        angular.forEach($scope.products, function(product, index){
+          ajaxService.async('Catalog', {method: 'GetProductById', id:product.product.id} ).then(function(response) {
+            var att = response.data.product.attributes;
+            for(var i = 0; i < att.length ; i++) {
+              switch(att[i].id) {
+                case 4: $scope.products[index].color = att[i].values[0]; break;
+                case 9: $scope.products[index].brand = att[i].values[0]; break;
+              }
+            }
+          });
+        });
       });
     });
 
@@ -484,16 +496,23 @@ angular.module('myApp.controllers', [])
     }
 
 }])
-.controller('OrderCtrl', function($scope, $routeParams, ajaxService) {
+.controller('OrderCtrl', function($scope, $routeParams, $cookieStore, ajaxService) {
 
     $scope.orderno = $routeParams.orderno;
     $scope.products = [];
 
-    ajaxService.async('Account', {method: 'SignIn', username: 'MattHarvey', password: 'nymetsharvey'} ).then(function(response) {
-      $scope.authToken = response.data.authenticationToken;
-      ajaxService.async('Order', {method: 'GetOrderById', username: 'MattHarvey', id: $routeParams.orderno, authentication_token: $scope.authToken} ).then(function(response) {
-        console.log(response);
-        $scope.products = response.data.order.items;
+    ajaxService.async('Order', {method: 'GetOrderById', username: $cookieStore.get('user.username'), id: $routeParams.orderno, authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+      $scope.products = response.data.order.items;
+      angular.forEach($scope.products, function(product, index){
+        ajaxService.async('Catalog', {method: 'GetProductById', id:product.product.id} ).then(function(response) {
+          var att = response.data.product.attributes;
+          for(var i = 0; i < att.length ; i++) {
+            switch(att[i].id) {
+              case 4: $scope.products[index].color = att[i].values[0]; break;
+              case 9: $scope.products[index].brand = att[i].values[0]; break;
+            }
+          }
+        });
       });
     });
 

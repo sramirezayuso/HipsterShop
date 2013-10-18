@@ -9,14 +9,13 @@
       <div class="product-info-container">
         <h2 class="order-product-title">{{ product.title }}</h2>
         <div class="order-data-row">
-          <span class="order-product-size">Talle: {{ product.size }}</span>
-          <span class="order-product-color">Color: {{ product.color }}</span>
-          <span class="order-product-price">Marca: {{ product.brand }}</span>
+          <span class="order-product-topData">Color: {{ product.color }}</span>
+          <span class="order-product-topData">Marca: {{ product.brand }}</span>
         </div>
         <div class="order-data-row">
-          <span class="order-product-quantity">Cantidad: {{ product.quantity }}</span>
-          <span class="order-product-price">Precio por Unidad: ${{ (product.price).toFixed(2) }}</span>
-          <span class="order-product-totalprice">Precio Total: ${{ (product.price * product.quantity).toFixed(2) }}</span>
+          <span class="order-product-data">Cantidad: {{ product.quantity }}</span>
+          <span class="order-product-data">Precio por Unidad: ${{ (product.price).toFixed(2) }}</span>
+          <span class="order-product-data">Precio Total: ${{ (product.price * product.quantity).toFixed(2) }}</span>
         </div>
       </div>
     </div>
