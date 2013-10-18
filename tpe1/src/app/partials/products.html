@@ -18,10 +18,10 @@
         <div class="col-md-4">
           <div class="form-group">
             <label for=order-by-input>Ordenar</label>
-            <select ng-model=order id=order-by-input class="form-control input-sm form-control-horizontal-with-label">
-              <option value=title>alfábeticamente</option>
-              <option value=brand>por marca</option>
-              <option value=price>por precio</option>
+            <select ng-model=order ng-change="changeOrder()" id=order-by-input class="form-control input-sm form-control-horizontal-with-label">
+              <option value=nombre>alfabéticamente</option>
+              <option value=marca>por marca</option>
+              <option value=precio>por precio</option>
             </select>
           </div>
         </div>
@@ -40,7 +40,7 @@
       <small>No encontramos ningún producto con las características que buscabas.<br> Probá otra búsqueda o seleccioná otra categoría.</small>
     </div>
     <div class="row">
-      <div class="col-md-4" ng-repeat="product in products | orderBy: order">
+      <div class="col-md-4" ng-repeat="product in products">
         <div class="thumbnail thumbnail-infinite">
           <a href="#/products/{{ product.id }}" class=thumbnail>
             <img ng-src="{{ product.imageUrl }}" alt="{{ product.title }}">
