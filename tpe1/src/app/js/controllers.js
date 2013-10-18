@@ -550,6 +550,15 @@ angular.module('myApp.controllers', [])
       as.async('Account', params).then(function(response) {
         if (response.data.error) {
           console.log(response.data.error);
+          switch(response.data.error.code) {
+            case 200:
+              sc.signupForm.username.$setValidity("alreadyRegistered", false);
+            break;
+            case 201:
+              sc.signupForm.identityCard.$setValidity("alreadyRegistered", false);
+            break;
+          }
+
         } else {
           // Need to sign in after account creation.
           as.async('Account', { method: 'SignIn', username: sc.signup.username, password: sc.signup.password }).then(function(response) {

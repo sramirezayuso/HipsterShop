@@ -18,7 +18,15 @@
               <input type="text" class="form-control" name=username id="signup-username-input"
                 ng-model="signup.username"  required ng-minlength="6" ng-maxlength="15" ng-pattern="/^[\wáéíóúÁÉÍÓÚñÑ]+$/"
               >
-              <span class="help-block"><small>(entre 6 y 15 letras y/o números)</small></span>
+              <span
+                ng-show="!submittedSignUp ||
+                (submittedSignUp && (signupForm.username.$error.required || signupForm.username.$error.minlength || signupForm.username.$error.maxlength))" class="help-block">
+                <small>Debe tener entre 6 y 15 letras y/o números.</small>
+              </span>
+
+              <span ng-show="signupForm.username.$error.alreadyRegistered" class=help-block>
+                <small>Este nombre de usuario ya existe, elegí otro.</small>
+              </span>
             </div>
           </div>
           <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.password.$invalid}">
@@ -26,7 +34,11 @@
             <div class="col-md-9">
               <input type="password" id="signup-password-input" name=password class="form-control"
               ng-model=signup.password  required ng-maxlength="15" ng-minlength="8">
-              <span class="help-block"><small>(entre 8 y 15 caracteres)</small></span>
+              <span
+                ng-show="!submittedSignUp ||
+                (submittedSignUp && (signupForm.password.$error.required || signupForm.password.$error.minlength || signupForm.password.$error.maxlength))" class="help-block">
+                <small>Debe tener entre 8 y 15 caracteres.</small>
+              </span>
             </div>
           </div>
           <div class=form-group ng-class="{'has-error': submittedSignUp && signupForm.firstName.$invalid}">
@@ -75,6 +87,10 @@
               >
               <span ng-show="submittedSignUp && signupForm.identityCard.$error.required" class="help-block">
                 <small>Debés ingresar tu número de DNI.</small>
+              </span>
+
+              <span ng-show="submittedSignUp && signupForm.identityCard.$error.alreadyRegistered " class="help-block">
+                <small>Alguien ya está usando ese número. *</small>
               </span>
             </div>
           </div>
