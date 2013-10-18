@@ -36,6 +36,7 @@ angular.module('myApp.controllers', [])
         lc.path('products').search('search', sc.searchTerm );
         lc.path('products').search('categoryId', 0);
         lc.path('products').search('subcategoryId', 0);
+        lc.path('products').search('page', 1);
         rc.$emit('productsChange', rp.gender, 0, 0, sc.searchTerm);
       }
       sc.changeGender = function(gender){
@@ -44,6 +45,7 @@ angular.module('myApp.controllers', [])
         lc.path('products').search('categoryId', 0);
         lc.path('products').search('subcategoryId', 0);
         lc.path('products').search('gender', gender);
+        lc.path('products').search('page', 1);
 
         rc.$emit('productsChange', gender, 0, 0, "");
         rc.$emit('updateCategories', gender);
@@ -119,6 +121,7 @@ angular.module('myApp.controllers', [])
 
   .controller('ProductsCtrl', ['$scope', '$routeParams', 'ajaxService', '$location', '$rootScope', function(sc, rp, as, lc, rs) {
     sc.order = "marca";
+    rs.currentPage = rp.page;
 
     function addGenderFilter(gender, filters){
       var filters = [ ];
@@ -206,33 +209,49 @@ angular.module('myApp.controllers', [])
       rs.$emit('productsChange', rp.gender, rp.categoryId || 0, rp.subcategoryId || 0, rp.search || "");
     }
 
+    sc.changePage = function(page) {
+      lc.search('page', page);
+      rs.currentPage = page;
+      sc.previousPage = parseInt(sc.currentPage) - 1;
+      sc.nextPage = parseInt(sc.currentPage) + 1;
+      rs.$emit('productsChange', rp.gender, rp.categoryId || 0, rp.subcategoryId || 0, rp.search || "", page);
+    }
+
+    sc.previousPage = parseInt(sc.currentPage) - 1;
+    sc.nextPage = parseInt(sc.currentPage) + 1;
+
     // This search depends if there is a category, or a subcategory, or a search by name
-    rs.$on('productsChange', function(ev, gender, categoryId, subcategoryId, search) {
+    rs.$on('productsChange', function(ev, gender, categoryId, subcategoryId, search, page) {
       sc.products = [ ];
+      var page = page || 1;
       var productFilters = addGenderFilter(gender, []);
 
       if (search != null && search.length > 0) {
         sc.categories.forEach(function(cat){cat.active=false;});
-        as.async('Catalog', {method: 'GetProductsByName', name: search, filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
+        as.async('Catalog', {method: 'GetProductsByName', name: search, filters: productFilters, sort_key: sc.order, page: page, page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
+          sc.totalPages = Math.ceil(response.data.total / 12);
         });
       } else if (subcategoryId != null && subcategoryId != 0) {
-        as.async('Catalog', {method: 'GetProductsBySubcategoryId', id: subcategoryId, filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
+        as.async('Catalog', {method: 'GetProductsBySubcategoryId', id: subcategoryId, filters: productFilters, page: page, sort_key: sc.order, page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
+          sc.totalPages = Math.ceil(response.data.total / 12);
         });
       } else if (categoryId != null && categoryId != 0) {
-        as.async('Catalog', {method: 'GetProductsByCategoryId', id: categoryId, filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
+        as.async('Catalog', {method: 'GetProductsByCategoryId', id: categoryId, filters: productFilters, sort_key: sc.order, page: page,  page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
+          sc.totalPages = Math.ceil(response.data.total / 12);
         });
       } else {
         // Show all products
-        as.async('Catalog', {method: 'GetAllProducts', filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
+        as.async('Catalog', {method: 'GetAllProducts', filters: productFilters, sort_key: sc.order, page: page, page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
+          sc.totalPages = Math.ceil(response.data.total / 12);
         });
       }
     });
 
-    rs.$emit('productsChange', rp.gender, rp.categoryId, rp.subcategoryId || 0, rp.search || "");
+    rs.$emit('productsChange', rp.gender, rp.categoryId, rp.subcategoryId || 0, rp.search || "", rp.page);
   }])
 
   .controller('ProductCtrl', ['$scope', '$routeParams', '$cookieStore', 'ajaxService', function(sc, rp, cs, as) {
