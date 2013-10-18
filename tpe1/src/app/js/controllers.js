@@ -563,7 +563,20 @@ angular.module('myApp.controllers', [])
               console.log('new cookie authToken:' + response.data.authenticationToken);
               as.async('Order', {method: 'CreateOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
                 sc.wishlist = response.data.order.id;
+                if(cs.get('fakeWish')){
+                  angular.forEach(cs.get('fakeWish').items, function(item, idx){
+                    as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: sc.wishlist}, product: {id: item.id}, quantity: item.quantity}} ).then(function(response) {
+                    });
+                  });
+                }
                 as.async('Order', {method: 'CreateOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
+                  sc.cart = response.data.order.id;
+                  if(cs.get('fakeCart')){
+                    angular.forEach(cs.get('fakeCart').items, function(item, idx){
+                      as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: sc.cart}, product: {id: item.id}, quantity: item.quantity}} ).then(function(response) {
+                      });
+                    });
+                  }
                   as.async('Account', {method: 'UpdatePreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken'), value: JSON.stringify({cartId: response.data.order.id, wishId: sc.wishlist, orders: []}) } ).then(function(response) {
                     rt.$emit('refreshUser');
                     lc.path('#products')
