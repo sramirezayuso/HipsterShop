@@ -664,6 +664,44 @@ angular.module('myApp.controllers', [])
 
   })
 
+  .controller('UserCtrl', function($scope, $cookieStore, ajaxService) {
+
+    $scope.isModifying = false;
+    $scope.account = {};
+    $scope.date1 = 'AAAA';
+    $scope.date2 = 'MM';
+    $scope.date3 = 'DD';
+    $scope.user = '';
+    $scope.oldPass = '';
+    $scope.newPass = '';
+    ajaxService.async('Account', {method: 'GetAccount', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken')} ).then(function(response) {
+      $scope.account = response.data.account;
+      $scope.date1 = $scope.account.birthDate.substr(0,4);
+      $scope.date2 = $scope.account.birthDate.substr(5,2);
+      $scope.date3 = $scope.account.birthDate.substr(8,2);
+    });
+
+    $scope.$watch('date1 + - + date2 + - + date3',
+      function(value) {
+        $scope.account.birthDate = value; 
+      }
+    );
+
+    $scope.saveChanges = function(){
+      $scope.isModifying = false;
+      ajaxService.async('Account', {method: 'UpdateAccount', username: $cookieStore.get('user.username'), authentication_token: $cookieStore.get('authToken'), account: $scope.account} ).then(function(response) {
+      });
+    };
+
+    $scope.changePass = function(){
+      ajaxService.async('Account', {method: 'ChangePassword', username: $scope.user, password: $scope.oldPass, new_password: $scope.newPass} ).then(function(response) {
+        if(response.data.error)
+          $scope.error = true;
+      });
+    }
+
+  })
+
   .controller('CheckoutCtrl', function($scope, $location, $cookieStore, $q, ajaxService) {
 
     $scope.paymentMethod = 'cash';
