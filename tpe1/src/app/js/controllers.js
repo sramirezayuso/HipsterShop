@@ -116,6 +116,7 @@ angular.module('myApp.controllers', [])
   })
 
   .controller('ProductsCtrl', ['$scope', '$routeParams', 'ajaxService', '$location', '$rootScope', function(sc, rp, as, lc, rs) {
+    sc.order = "marca";
 
     function addGenderFilter(gender, filters){
       var filters = [ ];
@@ -197,6 +198,10 @@ angular.module('myApp.controllers', [])
       rs.$emit('productsChange', rp.gender, rp.categoryId, subcategory.id, "");
     }
 
+    sc.changeOrder = function(){
+      rs.$emit('productsChange', rp.gender, rp.categoryId || 0, rp.subcategoryId || 0, rp.search || "");
+    }
+
     // This search depends if there is a category, or a subcategory, or a search by name
     rs.$on('productsChange', function(ev, gender, categoryId, subcategoryId, search) {
       sc.products = [ ];
@@ -204,32 +209,30 @@ angular.module('myApp.controllers', [])
 
       if (search.length > 0) {
         sc.categories.forEach(function(cat){cat.active=false;});
-        as.async('Catalog', {method: 'GetProductsByName', name: search, filters: productFilters}).then(function(response) {
+        as.async('Catalog', {method: 'GetProductsByName', name: search, filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
         });
       } else if (subcategoryId != 0) {
-        as.async('Catalog', {method: 'GetProductsBySubcategoryId', id: subcategoryId, filters: productFilters}).then(function(response) {
+        as.async('Catalog', {method: 'GetProductsBySubcategoryId', id: subcategoryId, filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
         });
       } else if (categoryId != 0) {
-        as.async('Catalog', {method: 'GetProductsByCategoryId', id: categoryId, filters: productFilters}).then(function(response) {
+        as.async('Catalog', {method: 'GetProductsByCategoryId', id: categoryId, filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
         });
       } else {
         // Show all products
-        as.async('Catalog', {method: 'GetAllProducts', filters: productFilters}).then(function(response) {
+        as.async('Catalog', {method: 'GetAllProducts', filters: productFilters, sort_key: sc.order, page_size: 12}).then(function(response) {
           response.data.products.forEach(showProduct);
         });
       }
     });
 
     rs.$emit('productsChange', rp.gender, rp.categoryId, rp.subcategoryId || 0, rp.search || "");
-
-    sc.order = "brand";
   }])
 
   .controller('ProductCtrl', ['$scope', '$routeParams', '$cookieStore', 'ajaxService', function(sc, rp, cs, as) {
-    
+
     sc.quantity = 1;
 
     sc.changeImage = function(imgUrl) {
