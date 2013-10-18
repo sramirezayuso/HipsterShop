@@ -702,6 +702,7 @@ angular.module('myApp.controllers', [])
 
     $scope.loadSavedAddress = function( idx ) {
       $scope.currentAddr = JSON.parse(JSON.stringify($scope.addresses[idx]));
+      console.log($scope.currentAddr.city);
       $scope.isAddressSaved = true;
     };
 
