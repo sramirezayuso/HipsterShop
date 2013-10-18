@@ -267,7 +267,7 @@ angular.module('myApp.controllers', [])
 
     sc.addToCart = function() {
       as.async('Account', {method: 'GetPreferences', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
-        as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).cartId}, product: {id: sc.product.id}, quantity: sc.quantity}} ).then(function(ans) {
+        as.async('Order', {method: 'AddItemToOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken'), order_item: {order: {id: JSON.parse(response.data.preferences).cartId}, product: {id: sc.product.id, attributes: [{id:4, name:'Color', value:'Coral'}]}, quantity: sc.quantity}} ).then(function(ans) {
 		  if("error" in ans.data)
 		    sc.error = true;
 		  else
