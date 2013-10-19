@@ -328,13 +328,11 @@ angular.module('myApp.controllers', [])
         });
       } else if (!cs.get('fakeCart')) {
         cs.put('fakeCart', {items: [{product: {id: sc.product.id, name: sc.product.name}, quantity: sc.quantity}]})
-        console.log(cs.get('fakeCart'));
         sc.showMsgCart = true;
       } else {
         var fCart = cs.get('fakeCart');
         fCart.items.push({product: {id: sc.product.id, name: sc.product.name}, quantity: sc.quantity});
         cs.put('fakeCart', fCart);
-        console.log(cs.get('fakeCart'));
         sc.showMsgCart = true;
       }
     }
@@ -439,7 +437,6 @@ angular.module('myApp.controllers', [])
     };
 
     $scope.goOrder = function( id ) {
-      console.log(id);
       $location.path( '/products/' + id );
     }
 
@@ -595,7 +592,6 @@ angular.module('myApp.controllers', [])
             cs.put('user.id', response.data.account.id);
             cs.put('user.username', response.data.account.username);
             cs.put('user.firstName', response.data.account.firstName);
-            console.log('new cookie authToken:' + response.data.authenticationToken);
             rt.$emit('refreshUser');
             lc.path('#products')
           }
@@ -645,7 +641,6 @@ angular.module('myApp.controllers', [])
               cs.put('user.id', response.data.account.id);
               cs.put('user.username', response.data.account.username);
               cs.put('user.firstName', response.data.account.firstName);
-              console.log('new cookie authToken:' + response.data.authenticationToken);
               as.async('Order', {method: 'CreateOrder', username: cs.get('user.username'), authentication_token: cs.get('authToken')} ).then(function(response) {
                 sc.wishlist = response.data.order.id;
                 if(cs.get('fakeWish')){
@@ -800,7 +795,6 @@ angular.module('myApp.controllers', [])
 
     $scope.loadSavedAddress = function( idx ) {
       $scope.currentAddr = JSON.parse(JSON.stringify($scope.addresses[idx]));
-      console.log($scope.currentAddr.city);
       $scope.isAddressSaved = true;
     };
 

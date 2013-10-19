@@ -13,7 +13,6 @@ angular.module('myApp.services', []).
         		params.callback = 'JSON_CALLBACK';
 				var promise = $http({method: 'JSONP', url: 'http://eiffel.itba.edu.ar/hci/service3/'+domain+'.groovy', params: params })
 				.success(function(data) {
-					console.log(data);
                 	return data;
             	})
             	.error(function(data, status, headers, config) {
