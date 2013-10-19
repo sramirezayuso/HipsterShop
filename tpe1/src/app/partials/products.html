@@ -64,9 +64,9 @@
   </li>
   <li ng-repeat="n in [] | range:totalPages" ng-class="{active: n+1 == currentPage}"><a href="" ng-click="changePage(n+1)">{{n + 1}}</a></li>
 
-  <li ng-class="{disabled: currentPage == totalPages}">
-    <span ng-show="currentPage == totalPages">&raquo;</span>
-    <a ng-show="currentPage != totalPages" href="" ng-click="changePage(nextPage)">&raquo;</a></li>
+  <li ng-class="{disabled: (currentPage == totalPages || totalPages == 0)}">
+    <span ng-show="currentPage == totalPages || totalPages == 0">&raquo;</span>
+    <a ng-show="currentPage != totalPages && totalPages != 0" href="" ng-click="changePage(nextPage)">&raquo;</a></li>
   </li>
 </ul>
 </div>
