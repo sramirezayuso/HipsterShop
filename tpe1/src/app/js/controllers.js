@@ -209,6 +209,10 @@ angular.module('myApp.controllers', [])
       rs.$emit('productsChange', rp.gender, rp.categoryId || 0, rp.subcategoryId || 0, rp.search || "");
     }
 
+    sc.changeAgeFilter = function(){
+      rs.$emit('productsChange', rp.gender, rp.categoryId || 0, rp.subcategoryId || 0, rp.search || "");
+    }
+
     sc.changePage = function(page) {
       lc.search('page', page);
       rs.currentPage = page;
@@ -225,6 +229,7 @@ angular.module('myApp.controllers', [])
       sc.products = [ ];
       var page = page || 1;
       var productFilters = addGenderFilter(gender, []);
+      if (sc.ageFilter != null) { productFilters.push({id: 2, value: sc.ageFilter}); }
 
       if (search != null && search.length > 0) {
         sc.categories.forEach(function(cat){cat.active=false;});

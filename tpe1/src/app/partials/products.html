@@ -28,9 +28,12 @@
         <div class="col-md-3">
           <div class="form-group">
             <label for=filter-by-age-input>Edad</label>
-            <select id=filter-by-age-input class="form-control input-sm form-control-horizontal-with-label">
-              <option>adulto</option>
-              <option>infantil</option>
+            <select ng-model=ageFilter ng-change="changeAgeFilter()"
+              id=filter-by-age-input class="form-control input-sm form-control-horizontal-with-label"
+              >
+              <option value=Adulto>adulto</option>
+              <option value=Infantil>infantil</option>
+              <option value=Bebe>bebé</option>
             </select>
           </div>
         </div>
