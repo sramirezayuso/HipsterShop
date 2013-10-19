@@ -107,7 +107,7 @@
               </span>
             </div>
           </div>
-          <div class=form-group ng-class="{'has-error': (submittedSignUp && signupForm.birthDate.$invalid) || (signupForm.birthDate.$error.pattern && signupForm.birthDate.$viewValue.length > 2 )}">
+          <div class=form-group ng-class="{'has-error': (submittedSignUp && signupForm.birthDate.$invalid) || (signupForm.birthDate.$error.pattern && signupForm.birthDate.$viewValue.length > 10 )}">
             <label class="col-md-3 control-label" for="signup-birthdate-input">Fecha de nacimiento</label>
             <div class="col-md-9">
               <input type="text" id="signup-birthdate-input" class="form-control" name=birthDate  placeholder="Por ejemplo 17/11/1991"
@@ -117,7 +117,7 @@
                 <small>DD/MM/AAAA</small>
               </span>
 
-              <span ng-show="(submittedSignUp && signupForm.birthDate.$error.commonError) || (signupForm.birthDate.$error.pattern && signupForm.birthDate.$viewValue.length > 2 )" class="help-block">
+              <span ng-show="(submittedSignUp && signupForm.birthDate.$error.commonError) || (signupForm.birthDate.$error.pattern && signupForm.birthDate.$viewValue.length > 10 )" class="help-block">
                 <small>Fecha inválida, por favor respetá el formato.</small>
               </span>
             </div>
