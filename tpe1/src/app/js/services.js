@@ -17,7 +17,6 @@ angular.module('myApp.services', []).
                 	return data;
             	})
             	.error(function(data, status, headers, config) {
-                	alert('¡Perdón! Tuvimos un problema cargando la página. Por favor, volvé a intentar en unos instantes.');
             	});
 				return promise;
 			}

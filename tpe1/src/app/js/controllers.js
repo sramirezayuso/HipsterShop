@@ -56,41 +56,41 @@ angular.module('myApp.controllers', [])
         var sc = $scope, rp = $routeParams;
 		var div = 12, columns = 4;
 		var lim = (2*div)/columns;
-		
+
 		sc.showMsg = rp.checkout == 1?true:false;
-		
+
 		ajaxService.async('Catalog', {method: 'GetAllSubcategories', id: 1} ).then(function(response) {
 			var iM = 0, iH = 0;
 			sc.categories1M = [ ];
 			sc.categories1H = [ ];
-			
+
 			for(var i = 0; iM < lim || iH < lim; i++) {
 				var each = response.data.subcategories[i];
-				
+
 				if(genreInCategory('Femenino', each) && iM++ < lim)
 					sc.categories1M.push({name: each.name, categoryId: 1, subcategoryId: each.id});
-					
+
 				if(genreInCategory('Masculino', each) && iH++ < lim)
 					sc.categories1H.push({name: each.name, categoryId: 1, subcategoryId: each.id});
 			}
 		});
-		
+
 		ajaxService.async('Catalog', {method: 'GetAllSubcategories', id: 2} ).then(function(response) {
 			var iM = 0, iH = 0;
 			sc.categories2M = [ ];
 			sc.categories2H = [ ];
-			
+
 			for(var i = 0; iM < lim || iH < lim; i++) {
 				var each = response.data.subcategories[i];
-				
+
 				if(genreInCategory('Femenino', each) && iM++ < lim)
 					sc.categories2M.push({name: each.name, categoryId: 2, subcategoryId: each.id});
-				
+
 				if(genreInCategory('Masculino', each) && iH++ < lim)
 					sc.categories2H.push({name: each.name, categoryId: 2, subcategoryId: each.id});
 			}
 		});
-		
+
     function genreInCategory(genre, category){
 			for(var i = 0; i < category.attributes.length; i++){
 				var att = category.attributes[i];
@@ -119,25 +119,27 @@ angular.module('myApp.controllers', [])
 
   })
 
-  .controller('ProductsCtrl', ['$scope', '$routeParams', 'ajaxService', '$location', '$rootScope', function(sc, rp, as, lc, rs) {
+  .controller('ProductsCtrl', ['$scope', '$routeParams', 'ajaxService', '$location', '$rootScope', '$window', function(sc, rp, as, lc, rs, wd) {
     sc.order = "marca";
     rs.currentPage = rp.page;
 
+    sc.reload = function(){
+       wd.location.reload();
+    }
+
     function addGenderFilter(gender, filters){
       var filters = [ ];
-      sc.breadcrumb = [ ];
 
       switch(gender) {
         case "f" : filters.push({"id":1,"value":"Femenino"});
 				   sc.header = "header-image-women";
-				   sc.breadcrumb.push({url:"#/products?gender=f", name:"Mujeres"}); break;
+				    break;
         case "m" : filters.push({"id":1,"value":"Masculino"});
 				   sc.header = "header-image-men";
-				   sc.breadcrumb.push({url:"#/products?gender=m", name:"Hombres"}); break;
+				  break;
       }
       return filters;
     }
-
     function loadSubcategories(category, filters) {
       var subcategories = [ ];
       as.async('Catalog', {method: 'GetAllSubcategories', id: category.id, filters: filters}).then(function(response) {
@@ -146,10 +148,9 @@ angular.module('myApp.controllers', [])
           subcategories.push({ id: subcategory.id, title: subcategory.name, active: rp.subcategoryId == subcategory.id, url: subUrl});
 
           if(rp.subcategoryId == subcategory.id) {
-            sc.breadcrumb.push({url:subUrl, name:subcategory.name});
+            sc.breadcrumbLast = {url:subUrl, name:subcategory.name};
           }
         });
-        sc.breadcrumbLast = sc.breadcrumb.pop();
       });
       return subcategories;
     }
@@ -160,6 +161,7 @@ angular.module('myApp.controllers', [])
     }
 
     rs.$on('updateCategories', function(ev, gender) {
+      var anyActive = false;
       sc.categories = [];
       var categoryFilters = addGenderFilter(gender, []);
       as.async('Catalog', {method: 'GetAllCategories', filters: categoryFilters}).then(function(response) {
@@ -169,15 +171,16 @@ angular.module('myApp.controllers', [])
           var subcategories = [];
 
           if (active) {
+            sc.breadcrumb.push({url:url, name: category.name});
+            anyActive = true;
             subcategories = loadSubcategories(category, categoryFilters);
-            sc.breadcrumb.push({url:url, name:category.name});
           }
 
           sc.categories.push({ id: category.id, title: category.name, active: active, url: url, subcategories: subcategories});
 
         });
 
-        if(sc.breadcrumb.length == 1){
+        if (!anyActive){
           sc.breadcrumbLast = sc.breadcrumb.pop();
         }
       });
@@ -192,6 +195,10 @@ angular.module('myApp.controllers', [])
       lc.search('categoryId', category.id);
       lc.search('subcategoryId', 0);
       lc.search('search', '');
+
+      var url = '#/products?gender=' + rp.gender + '&categoryId=' + category.id;
+      sc.breadcrumbLast = {url:url, name: category.title};
+
       if (category.subcategories.length == 0) {
         category.subcategories = loadSubcategories(category, [])
       }
@@ -203,6 +210,11 @@ angular.module('myApp.controllers', [])
 
       subcategory.active = true;
       rs.$emit('productsChange', rp.gender, rp.categoryId, subcategory.id, "");
+
+      var url = '#/products?gender=' + rp.gender + '&categoryId=' + category.id;
+      sc.breadcrumb.push({url:url, name: category.title});
+      var subUrl = '#/products?gender=' + rp.gender + '&categoryId=' + category.id + '&subcategoryId=' + subcategory.id;
+      sc.breadcrumbLast = {name: subcategory.title};
     }
 
     sc.changeOrder = function(){
@@ -226,6 +238,14 @@ angular.module('myApp.controllers', [])
 
     // This search depends if there is a category, or a subcategory, or a search by name
     rs.$on('productsChange', function(ev, gender, categoryId, subcategoryId, search, page) {
+
+      sc.breadcrumb = [ ];
+      if (gender == "f") {
+        sc.breadcrumb.push({url:"#/products?gender=f", name:"Mujeres"});
+      } else if (gender == "m") {
+        sc.breadcrumb.push({url:"#/products?gender=m", name:"Hombres"});
+      }
+
       sc.products = [ ];
       var page = page || 1;
       var productFilters = addGenderFilter(gender, []);

@@ -4,7 +4,7 @@
 
 <ol class="breadcrumb">
   <li><a href="#/home">Inicio</a></li>
-  <li ng-repeat="each in breadcrumb"><a href="{{each.url}}">{{ each.name }}</a></li>
+  <li ng-repeat="each in breadcrumb"><a ng-click="reload()" href="{{each.url}}">{{ each.name }}</a></li>
   <li class="active">{{ breadcrumbLast.name }}</li>
 </ol>
 
