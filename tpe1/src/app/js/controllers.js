@@ -562,7 +562,9 @@ angular.module('myApp.controllers', [])
       if (sc.signinForm.$valid) {
         as.async('Account', { method: 'SignIn', username: sc.signin.username, password: sc.signin.password }).then(function(response) {
           if (response.data.error) {
-			sc.error = true;
+            // sc.error = true;
+            sc.signinForm.username.$setValidity("serverValid", false);
+            sc.signinForm.password.$setValidity("serverValid", false);
           } else {
             cs.put('authToken', response.data.authenticationToken);
             cs.put('user.id', response.data.account.id);
@@ -613,7 +615,6 @@ angular.module('myApp.controllers', [])
           // Need to sign in after account creation.
           as.async('Account', { method: 'SignIn', username: sc.signup.username, password: sc.signup.password }).then(function(response) {
             // We assume everything went okay.
-
             if (!response.data.error) {
               cs.put('authToken', response.data.authenticationToken);
               cs.put('user.id', response.data.account.id);
@@ -702,7 +703,7 @@ angular.module('myApp.controllers', [])
 
     $scope.$watch('date1 + - + date2 + - + date3',
       function(value) {
-        $scope.account.birthDate = value; 
+        $scope.account.birthDate = value;
       }
     );
 
