@@ -20,7 +20,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.ResultReceiver;
 import ar.edu.itba.model.GetAllStates;
-import ar.edu.itba.model.State;
+import ar.edu.itba.utils.Utils;
 
 public class ApiService extends IntentService{
 

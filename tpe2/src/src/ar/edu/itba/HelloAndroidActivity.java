@@ -4,13 +4,11 @@ import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
 import ar.edu.itba.model.State;
-import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
-import ar.edu.itba.utils.Utils;
+import ar.edu.itba.utils.HipsterShopApi;
 
 
 public class HelloAndroidActivity extends MasterActivity  {
@@ -26,19 +24,15 @@ public class HelloAndroidActivity extends MasterActivity  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-        apiResultReceiver = new APIResultReceiver(new Handler());
-        apiResultReceiver.setReceiver(this);
-        
-        final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, ApiService.class);
-        intent.putExtra(Utils.RECEIVER, apiResultReceiver);
-        intent.putExtra(Utils.COMMAND, "query");
+
+        final Intent intent = HipsterShopApi.getAllStates(this, apiResultReceiver);
         startService(intent);
     }
      
 
     @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
+    	System.out.println(resultCode);
         switch (resultCode) {
         case ApiService.STATUS_RUNNING:
             //show progress
