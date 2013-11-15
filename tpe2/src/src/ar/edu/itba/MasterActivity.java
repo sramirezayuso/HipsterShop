@@ -16,7 +16,9 @@ public class MasterActivity extends Activity implements APIResultReceiver.Receiv
 
     public void onPause() {
     	apiResultReceiver.setReceiver(null); // Clear receiver so there are no leaks.
+    	super.onPause();
     }
+    
 
 	public void onReceiveResult(int resultCode, Bundle resultData) {
 		// Might do nothing when we get a result.
