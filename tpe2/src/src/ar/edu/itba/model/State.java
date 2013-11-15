@@ -1,8 +1,15 @@
 package ar.edu.itba.model;
 
-public class State {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class State implements Parcelable{
 	private String stateId;
 	private String name;
+	
+	public State(String name){
+		this.name = name;
+	}
 	public String getStateId() {
 		return stateId;
 	}
@@ -11,8 +18,33 @@ public class State {
 	}
 	@Override
 	public String toString() {
-		return stateId+name;
+		return name;
 	}
+	
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+	
+	@Override
+	public void writeToParcel(Parcel out, int flags) {
+		out.writeString("hola");		
+	}
+	
+	private State(Parcel in) {
+		name = in.readString();
+	}
+
+	public static final Parcelable.Creator<State> CREATOR = new Parcelable.Creator<State>() {
+		public State createFromParcel(Parcel in) {
+			return new State(in);
+		}
+
+		public State[] newArray(int size) {
+			return new State[size];
+		}
+	 };
+	
 }
 /*
 {
