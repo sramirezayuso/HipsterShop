@@ -28,11 +28,9 @@ public class State implements Parcelable{
 	
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
-		out.writeString("hola");		
 	}
 	
 	private State(Parcel in) {
-		name = in.readString();
 	}
 
 	public static final Parcelable.Creator<State> CREATOR = new Parcelable.Creator<State>() {

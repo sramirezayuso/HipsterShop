@@ -1,11 +1,9 @@
 package ar.edu.itba;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import ar.edu.itba.services.APIResultReceiver;
-import ar.edu.itba.utils.HipsterShopApi;
 
 public class MasterActivity extends Activity implements APIResultReceiver.Receiver {
 	public APIResultReceiver apiResultReceiver;

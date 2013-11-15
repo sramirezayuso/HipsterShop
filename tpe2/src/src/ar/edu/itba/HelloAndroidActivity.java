@@ -1,14 +1,14 @@
 package ar.edu.itba;
 
-import java.util.List;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import ar.edu.itba.model.State;
+import ar.edu.itba.model.GetAllStates;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
+import ar.edu.itba.utils.Utils;
 
 
 public class HelloAndroidActivity extends MasterActivity  {
@@ -25,7 +25,7 @@ public class HelloAndroidActivity extends MasterActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final Intent intent = HipsterShopApi.getAllStates(this, apiResultReceiver);
+        final Intent intent = HipsterShopApi.getAllStatesRequest(this, apiResultReceiver);
         startService(intent);
     }
      
@@ -40,8 +40,14 @@ public class HelloAndroidActivity extends MasterActivity  {
 
             break;
         case ApiService.STATUS_FINISHED:
-            List<State> results = resultData.getParcelableArrayList("results");
-        	System.out.println("Lo que vuelve de response a la Activity: " + results);
+        	System.out.println("Lo que vuelve de response a la Activity: "+ resultData.get("response"));
+        	GetAllStates states = (GetAllStates) resultData.get(Utils.RESPONSE);
+        	System.out.println("los states son: "+ states.getStates());
+        	
+        	System.out.println("El primero es: "+ states.getStates().get(0).getStateId()+ " " + states.getStates().get(0).getName());
+
+        	
+        	//System.out.println("Lo que vuelve de response a la Activity: " + results);
             // hide progress
             break;
         case ApiService.STATUS_ERROR:

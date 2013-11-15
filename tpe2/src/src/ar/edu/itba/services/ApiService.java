@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.ResultReceiver;
 import ar.edu.itba.model.GetAllStates;
+import ar.edu.itba.model.MethodObject;
 import ar.edu.itba.utils.Utils;
 
 public class ApiService extends IntentService{
@@ -35,17 +36,28 @@ public class ApiService extends IntentService{
 
 	protected void onHandleIntent(Intent intent) {
 		final ResultReceiver receiver = intent.getParcelableExtra(Utils.RECEIVER);
-	    String command = intent.getStringExtra("command");
 	    Bundle b = new Bundle();
-	    if(command.equals("query")) {
+
+	    String command = intent.getStringExtra(Utils.COMMAND);
+	    String requestUrl = intent.getStringExtra(Utils.REQUEST_URL);
+	    Class methodObjectClass = null;
+	    try {
+	    	System.out.println(intent.getStringExtra(Utils.METHOD_CLASS));
+	    	methodObjectClass = Class.forName(intent.getStringExtra(Utils.METHOD_CLASS));
+	    	System.out.println(methodObjectClass);
+		} catch (ClassNotFoundException e) {
+       	 	b.putString(Intent.EXTRA_TEXT, e.toString());
+       	 	receiver.send(STATUS_ERROR, b);
+		}
+	    if(methodObjectClass != null && command.equals("query")) {
 	    	receiver.send(STATUS_RUNNING, Bundle.EMPTY);
 	        try {
 	        	Gson gson = new GsonBuilder().create();
-	            BufferedReader reader = getJSONData( "http://eiffel.itba.edu.ar/hci/service3/Common.groovy?method=GetAllStates" );
-	            GetAllStates states = gson.fromJson(reader, GetAllStates.class);	   
-	            System.out.println("Lo que devuelve de la API desde el service " + states.getStates());
+	            BufferedReader reader = getJSONData(requestUrl);
+	            MethodObject response = gson.fromJson(reader, methodObjectClass);	   
+	            System.out.println("Lo que devuelve de la API desde el service " + response);
 	                
-		        b.putParcelableArrayList("results", (ArrayList<? extends Parcelable>) states.getStates());
+		        b.putParcelable(Utils.RESPONSE, response);
 	            receiver.send(STATUS_FINISHED, b);
 	         } catch(Exception e) {
 	        	 b.putString(Intent.EXTRA_TEXT, e.toString());

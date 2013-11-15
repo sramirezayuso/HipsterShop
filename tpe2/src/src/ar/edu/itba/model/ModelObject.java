@@ -1,5 +1,7 @@
 package ar.edu.itba.model;
 
-public class ModelObject {
+import android.os.Bundle;
 
+public abstract class ModelObject {
+	public abstract void response(Bundle b);
 }
