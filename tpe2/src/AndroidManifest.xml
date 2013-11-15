@@ -41,6 +41,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ItemListActivity" />
         </activity>
+        <activity android:name="ar.edu.itba.MasterActivity"></activity>
         <service android:name="ar.edu.itba.services.ApiService"
             android:enabled="true"
     	    android:exported="false"/>

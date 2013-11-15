@@ -34,7 +34,7 @@ public class ApiService extends IntentService{
 	public static final int STATUS_ERROR = 3;
 
 	protected void onHandleIntent(Intent intent) {
-		final ResultReceiver receiver = intent.getParcelableExtra("receiver");
+		final ResultReceiver receiver = intent.getParcelableExtra(Utils.RECEIVER);
 	    String command = intent.getStringExtra("command");
 	    Bundle b = new Bundle();
 	    if(command.equals("query")) {

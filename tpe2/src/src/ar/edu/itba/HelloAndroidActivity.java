@@ -2,7 +2,6 @@ package ar.edu.itba;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,10 +10,10 @@ import android.view.View;
 import ar.edu.itba.model.State;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
+import ar.edu.itba.utils.Utils;
 
 
-public class HelloAndroidActivity extends Activity implements APIResultReceiver.Receiver {
-	public APIResultReceiver apiResultReceiver;
+public class HelloAndroidActivity extends MasterActivity  {
 
 
     /**
@@ -32,18 +31,14 @@ public class HelloAndroidActivity extends Activity implements APIResultReceiver.
         apiResultReceiver.setReceiver(this);
         
         final Intent intent = new Intent(Intent.ACTION_SYNC, null, this, ApiService.class);
-
-        intent.putExtra("receiver", apiResultReceiver);
-        intent.putExtra("command", "query");
+        intent.putExtra(Utils.RECEIVER, apiResultReceiver);
+        intent.putExtra(Utils.COMMAND, "query");
         startService(intent);
     }
      
-    public void onPause() {
-    	apiResultReceiver.setReceiver(null); // clear receiver so no leaks.
-    }
 
+    @Override
     public void onReceiveResult(int resultCode, Bundle resultData) {
-    	System.out.println(resultCode);
         switch (resultCode) {
         case ApiService.STATUS_RUNNING:
             //show progress
