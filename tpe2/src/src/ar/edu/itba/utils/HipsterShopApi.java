@@ -1,10 +1,12 @@
 package ar.edu.itba.utils;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import ar.edu.itba.model.GetAllOrders;
 import ar.edu.itba.model.GetAllStates;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
@@ -24,7 +26,18 @@ public class HipsterShopApi {
 	    return intent;
 	}
 	
+	public static Intent getAllOrdersRequest(Activity activity, APIResultReceiver receiver){
+		Intent intent = buildIntent(activity, receiver);
+		
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put("username", "elgrupo2");
+		parameters.put("authentication_token", "bf4c9b4dc2d9ed26118c538aefe36859");
 
+		
+		intent.putExtra(Utils.REQUEST_URL, buildUrl("Order", "GetAllOrders", parameters));
+		intent.putExtra(Utils.METHOD_CLASS, GetAllOrders.class.getName());
+	    return intent;
+	}
 	
 	
 	public static String buildUrl(String controller, String method, HashMap<String, String> parameters){
@@ -33,8 +46,15 @@ public class HipsterShopApi {
         b.encodedPath("http://eiffel.itba.edu.ar/hci/service3");
         b.appendPath(controller + ".groovy");
         b.appendQueryParameter("method", method);
- 
-		return b.build().toString();
+        
+        if (parameters != null) {
+        	for(Entry<String, String> entry : parameters.entrySet()) {
+        		b.appendQueryParameter(entry.getKey(), entry.getValue());
+        	}
+        }
+        String url = b.build().toString();
+        System.out.println(url);
+		return url;
 	}
 
 }
