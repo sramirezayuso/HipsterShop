@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import ar.edu.itba.model.GetAllStates;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
@@ -23,8 +24,17 @@ public class HipsterShopApi {
 	    return intent;
 	}
 	
+
+	
+	
 	public static String buildUrl(String controller, String method, HashMap<String, String> parameters){
-		return "http://eiffel.itba.edu.ar/hci/service3/" + controller + ".groovy?method=" + method;
+        Uri.Builder b = new Uri.Builder();
+        
+        b.encodedPath("http://eiffel.itba.edu.ar/hci/service3");
+        b.appendPath(controller + ".groovy");
+        b.appendQueryParameter("method", method);
+ 
+		return b.build().toString();
 	}
 
 }
