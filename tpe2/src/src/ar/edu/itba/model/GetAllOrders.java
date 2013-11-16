@@ -5,7 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
-public class GetAllOrders extends MethodObject implements Parcelable{
+public class GetAllOrders extends MethodObject{
 	private Meta meta;
 	private List<Order> orders;
 	

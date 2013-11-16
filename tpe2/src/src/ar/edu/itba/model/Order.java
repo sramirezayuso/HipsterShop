@@ -4,27 +4,30 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Order extends ModelObject{
-	private String id;
-	private String address;
+	private Integer id;
+	private String status;
+	private CreditCard creditCard;	
+	
 	private String receivedDate;
 	private String processedDate;
 	private String shippedDate;
 	private String deliveredDate;
-	private String latitude;
-	private String longitude;
+	
+	private Address address;	
+	private Integer latitude;
+	private Integer longitude;
 
-	public Order(String address){
-		this.address = address;
+	public Order( ){
 	}
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 	public String getName() {
-		return address;
+		return status;
 	}
 	@Override
 	public String toString() {
-		return address;
+		return status;
 	}
 	
 	@Override
