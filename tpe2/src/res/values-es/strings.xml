@@ -3,6 +3,7 @@
 
     <string name="app_name">Maven Inicio</string>
     <string name="hello">Hello hci-application!</string>
+    
     <string name="action_settings">Ajustes</string>
     <string name="hello_world">Hola mundo</string>
     <string name="title_activity_product">ProductActivity</string>
@@ -10,5 +11,7 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="button_name">Productos</string>
+    
+    
 
 </resources>

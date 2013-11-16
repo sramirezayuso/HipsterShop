@@ -82,5 +82,10 @@ public class HelloAndroidActivity extends MasterActivity  {
     	startActivity(intent);
     	
     } 
+    public void onOrdersClick(View view){
+    	Intent intent = new Intent(this, OrdersListActivity.class);
+    //	intent.putExtra(ProductActivity.EXTRA_MESSAGE, "prueba");
+    	startActivity(intent);
+    } 
 
 }
