@@ -1,7 +1,6 @@
 package ar.edu.itba.model;
 
-import android.os.Bundle;
+import android.os.Parcelable;
 
-public abstract class ModelObject {
-	public abstract void response(Bundle b);
+public abstract class ModelObject implements Parcelable{
 }

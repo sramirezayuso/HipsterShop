@@ -3,7 +3,7 @@ package ar.edu.itba.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class State implements Parcelable{
+public class State extends ModelObject{
 	private String stateId;
 	private String name;
 	
