@@ -28,6 +28,26 @@ public class Product extends ModelObject {
 	public String[] getImageUrl() {
 		return imageUrl;
 	}
+	
+	public String getBrand() {
+		Attribute brand = null;
+		for(Attribute attr : attributes){
+			if (attr.isBrand()){
+				brand = attr;
+			}
+		}
+		return brand.getValues()[0];
+	}
+	
+	public String[] getColors(){
+		Attribute color = null;
+		for(Attribute attr : attributes){
+			if (attr.isColor()){
+				color = attr;
+			}
+		}
+		return color.getValues();
+	}
 
 	public Category getCategory() {
 		return category;
@@ -40,6 +60,7 @@ public class Product extends ModelObject {
 	public Attribute[] getAttributes() {
 		return attributes;
 	}
+
 
 	@Override
 	public String toString() {

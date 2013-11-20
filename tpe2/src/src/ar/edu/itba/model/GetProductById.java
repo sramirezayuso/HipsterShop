@@ -7,13 +7,13 @@ import android.os.Parcelable;
 
 public class GetProductById extends MethodObject implements Parcelable {
 	private Meta meta;
-	private List<Product> product;
+	private Product product;
 
 	public Meta getMeta() {
 		return meta;
 	}
 
-	public List<Product> getProduct() {
+	public Product getProduct() {
 		return product;
 	}
 
@@ -22,11 +22,11 @@ public class GetProductById extends MethodObject implements Parcelable {
 	}
 
 	public void writeToParcel(Parcel out, int flags) {
-		out.writeTypedList(product);
+		out.writeParcelable(product, flags);
 	}
 
 	private GetProductById(Parcel in) {
-		in.readTypedList(product, Product.CREATOR);
+		in.readParcelable(Product.class.getClassLoader());
 	}
 
 	public static final Parcelable.Creator<GetProductById> CREATOR = new Parcelable.Creator<GetProductById>() {

@@ -32,34 +32,15 @@ public class ProdActivity extends MasterActivity {
 				apiResultReceiver, "1");
 		startService(intent);
 
-		TextView productName = (TextView) findViewById(R.id.productName);
-		productName.setText("  Baker");
 
-		TextView productBrand = (TextView) findViewById(R.id.productBrand);
-		productBrand.setText("Kevingston");
 
-		TextView productPrice = (TextView) findViewById(R.id.productPrice);
-		productPrice.setText("$660");
-
-		TextView productDetails = (TextView) findViewById(R.id.productDetails);
-		productDetails
-				.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat eu augue quis tempus. Quisque consectetur, enim vitae pretium suscipit, eros purus vehicula leo, in venenatis mauris nibh quis velit. Suspendisse non purus est. Nullam ligula leo, luctus sed ante ac, aliquet ultrices eros. Nullam venenatis sapien in pellentesque pellentesque. Vestibulum molestie orci ac tristique blandit. Cras aliquet mi sit amet ultricies pharetra. Fusce id rhoncus mi. Vestibulum congue tortor in nisl feugiat pellentesque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed consequat eu augue quis tempus. Quisque consectetur, enim vitae pretium suscipit, eros purus vehicula leo, in venenatis mauris nibh quis velit. FIN.");
-		productDetails.setMovementMethod(new ScrollingMovementMethod());
-
-		String[] array_spinner = new String[4];
-		array_spinner[0] = "Rojo";
-		array_spinner[1] = "Negro";
-		array_spinner[2] = "Verde";
-		array_spinner[3] = "Azul";
-		Spinner productColors = (Spinner) findViewById(R.id.productColors);
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				R.layout.spinner_item, array_spinner);
-		productColors.setAdapter(adapter);
-
-		array_spinner = new String[3];
+		String[] array_spinner = new String[3];
 		array_spinner[0] = "S";
 		array_spinner[1] = "M";
 		array_spinner[2] = "L";
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				R.layout.spinner_item, array_spinner);
+		
 		Spinner productSizes = (Spinner) findViewById(R.id.productSizes);
 		adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,
 				array_spinner);
@@ -107,8 +88,36 @@ public class ProdActivity extends MasterActivity {
 			GetProductById response = (GetProductById) resultData
 					.get(Utils.RESPONSE);
 			
-			TextView productDetails = (TextView) findViewById(R.id.productDetails);
-			productDetails.setText(response.getProduct().toString());
+			Product product = response.getProduct();
+			
+			TextView productName = (TextView) findViewById(R.id.productName);
+			productName.setText(product.getName());
+			
+			TextView productBrand = (TextView) findViewById(R.id.productBrand);
+			productBrand.setText("Kevingston");
+			
+			//TextView productDetails = (TextView) findViewById(R.id.productDetails);
+			//productDetails.setText(response.getProduct().toString());
+			
+	
+			// TODO: Convert to right currency
+			String priceFormat = getResources().getString(R.string.product_price);
+			TextView productPrice = (TextView) findViewById(R.id.productPrice);
+			productPrice.setText(String.format(priceFormat, response.getProduct().getPrice()));
+			
+			
+			String[] array_spinner = product.getColors();//new String[4];
+		//	array_spinner[0] = "Rojo";
+			//array_spinner[1] = "Negro";
+		//	array_spinner[2] = "Verde";
+		//	array_spinner[3] = "Azul";
+			
+			
+			Spinner productColors = (Spinner) findViewById(R.id.productColors);
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+					R.layout.spinner_item, array_spinner);
+			productColors.setAdapter(adapter);
+			
 			
 			// setProduct(response.getProduct());
 			break;
