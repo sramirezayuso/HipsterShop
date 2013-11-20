@@ -20,7 +20,7 @@ public class Product extends ModelObject {
 	public String getName() {
 		return name;
 	}
-	
+
 	public Integer getPrice() {
 		return price;
 	}
@@ -53,6 +53,15 @@ public class Product extends ModelObject {
 
 	@Override
 	public void writeToParcel(Parcel out, int flags) {
+	}
+
+	public Product(String name, Integer price, Attribute[] attributes) {
+		super();
+		this.name = name;
+		this.price = price;
+		this.attributes = attributes;
+		imageUrl = new String[1];
+		imageUrl[0] = "http://eiffel.itba.edu.ar/hci/service3/images/camver1.jpg";
 	}
 
 	private Product(Parcel in) {

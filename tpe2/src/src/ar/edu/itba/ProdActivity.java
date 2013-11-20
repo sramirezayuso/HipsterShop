@@ -15,6 +15,7 @@ import android.widget.TextView;
 import ar.edu.itba.model.GetProductById;
 import ar.edu.itba.model.Product;
 import ar.edu.itba.services.ApiService;
+import ar.edu.itba.utils.DownloadImageTask;
 import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.Utils;
 
@@ -68,27 +69,27 @@ public class ProdActivity extends MasterActivity {
 		ImageView imgThumb1 = (ImageView) findViewById(R.id.productImgThumbnail1);
 		ImageView imgThumb2 = (ImageView) findViewById(R.id.productImgThumbnail2);
 		ImageView imgThumb3 = (ImageView) findViewById(R.id.productImgThumbnail3);
-		imgMain.setImageResource(R.drawable.baker1);
-		imgThumb1.setImageResource(R.drawable.baker1);
-		imgThumb1.setTag(R.drawable.baker1);
+		new DownloadImageTask(imgMain).execute("http://eiffel.itba.edu.ar/hci/service3/images/camver1.jpg");
+		new DownloadImageTask(imgThumb1).execute("http://eiffel.itba.edu.ar/hci/service3/images/camver1.jpg");
+		imgThumb1.setTag("http://eiffel.itba.edu.ar/hci/service3/images/camver1.jpg");
 		setThumbnailListener(imgThumb1);
-		imgThumb2.setImageResource(R.drawable.baker2);
-		imgThumb2.setTag(R.drawable.baker2);
+		new DownloadImageTask(imgThumb2).execute("http://eiffel.itba.edu.ar/hci/service3/images/camver2.jpg");
+		imgThumb2.setTag("http://eiffel.itba.edu.ar/hci/service3/images/camver2.jpg");
 		setThumbnailListener(imgThumb2);
-		imgThumb3.setImageResource(R.drawable.baker3);
-		imgThumb3.setTag(R.drawable.baker3);
+		new DownloadImageTask(imgThumb3).execute("http://eiffel.itba.edu.ar/hci/service3/images/camver3.jpg");
+		imgThumb3.setTag("http://eiffel.itba.edu.ar/hci/service3/images/camver3.jpg");
 		setThumbnailListener(imgThumb3);
 
 	}
 
 	private void setThumbnailListener(ImageView thumbnail) {
-		final Integer id = (Integer) thumbnail.getTag();
+		final String url = (String) thumbnail.getTag();
 		thumbnail.setClickable(true);
 		thumbnail.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				ImageView imgMain = (ImageView) findViewById(R.id.productImgMain);
-				imgMain.setImageResource(id);
+				new DownloadImageTask(imgMain).execute(url); //MEJORAR ESTO
 			}
 		});
 
