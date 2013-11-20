@@ -7,7 +7,8 @@
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="18" />
-     <uses-permission android:name="android.permission.INTERNET" /> 
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -41,16 +42,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ItemListActivity" />
         </activity>
-        <activity android:name="ar.edu.itba.MasterActivity"></activity>
-        
-        <activity 
-            android:name="ar.edu.itba.OrdersListActivity"
-            android:label="@string/orders_list.title">
+        <activity android:name="ar.edu.itba.MasterActivity" >
         </activity>
-        
-        <service android:name="ar.edu.itba.services.ApiService"
+        <activity
+            android:name="ar.edu.itba.OrdersListActivity"
+            android:label="@string/orders_list.title" >
+        </activity>
+
+        <service
+            android:name="ar.edu.itba.services.ApiService"
             android:enabled="true"
-    	    android:exported="false"/>
+            android:exported="false" />
+
+        <activity
+            android:name="ar.edu.itba.ProdActivity"
+            android:label="@string/title_activity_prod"
+            android:parentActivityName="ar.edu.itba.HelloAndroidActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.edu.itba.HelloAndroidActivity" />
+        </activity>
     </application>
 
 </manifest>

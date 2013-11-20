@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import ar.edu.itba.model.GetAllOrders;
 import ar.edu.itba.model.GetAllStates;
+import ar.edu.itba.model.GetProductById;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
 
@@ -36,6 +37,17 @@ public class HipsterShopApi {
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Order", "GetAllOrders", parameters));
 		intent.putExtra(Utils.METHOD_CLASS, GetAllOrders.class.getName());
+	    return intent;
+	}
+	
+	public static Intent getProductByIdRequest(Activity activity, APIResultReceiver receiver, String id){
+		Intent intent = buildIntent(activity, receiver);
+		
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put("id", id);
+		
+		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductById", parameters));
+		intent.putExtra(Utils.METHOD_CLASS, GetProductById.class.getName());
 	    return intent;
 	}
 	

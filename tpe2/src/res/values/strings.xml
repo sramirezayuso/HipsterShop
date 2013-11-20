@@ -11,12 +11,9 @@
     <string name="title_section3">Section 3</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
-    
-    
     <string name="main.orders_button_name">Orders</string>
     <string name="main.products_button_name">Products</string>
-    
     <string name="orders_list.title">Orders</string>
-    
-    
+    <string name="title_activity_prod">ProdActivity</string>
+
 </resources>
