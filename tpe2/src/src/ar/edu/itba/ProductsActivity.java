@@ -25,29 +25,29 @@ public class ProductsActivity extends Activity {
 		// Show the Up button in the action bar.
 		setupActionBar();
 
-		GridView gridView = (GridView) findViewById(R.id.gridview);
-
-		ArrayList<Product> data = new ArrayList<Product>();
-		String[] b = { "Levi's" };
-		Attribute[] atts = new Attribute[1];
-		atts[0] = new Attribute(9, "marca", b);
-		data.add(new Product("Baker4", new Integer(100), atts));
-		data.add(new Product("Baker5", new Integer(3400), atts));
-		data.add(new Product("Baker3", new Integer(60), atts));
-
-		ProductAdapter imageAdapter = new ProductAdapter(this, data);
-		gridView.setAdapter(imageAdapter);
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-
-				Intent intent = new Intent(ProductsActivity.this,
-						ProdActivity.class);
-				ProductsActivity.this.startActivity(intent);
-
-			}
-		});
+//		GridView gridView = (GridView) findViewById(R.id.gridview);
+//
+//		ArrayList<Product> data = new ArrayList<Product>();
+//		String[] b = { "Levi's" };
+//		Attribute[] atts = new Attribute[1];
+//		atts[0] = new Attribute(9, "marca", b);
+//		data.add(new Product("Baker4", new Integer(100), atts));
+//		data.add(new Product("Baker5", new Integer(3400), atts));
+//		data.add(new Product("Baker3", new Integer(60), atts));
+//
+//		ProductAdapter imageAdapter = new ProductAdapter(this, data);
+//		gridView.setAdapter(imageAdapter);
+//		gridView.setOnItemClickListener(new OnItemClickListener() {
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view,
+//					int position, long id) {
+//
+//				Intent intent = new Intent(ProductsActivity.this,
+//						ProdActivity.class);
+//				ProductsActivity.this.startActivity(intent);
+//
+//			}
+//		});
 	}
 
 	/**
