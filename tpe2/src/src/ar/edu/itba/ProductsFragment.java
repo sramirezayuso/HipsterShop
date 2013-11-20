@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import ar.edu.itba.model.Attribute;
 import ar.edu.itba.model.Product;
+import ar.edu.itba.utils.ProductAdapter;
 
 public class ProductsFragment extends Fragment {
 	
@@ -34,7 +35,7 @@ public class ProductsFragment extends Fragment {
 		data.add(new Product("Baker5", new Integer(3400), atts));
 		data.add(new Product("Baker3", new Integer(60), atts));
 		
-		ProductImageAdapter imageAdapter = new ProductImageAdapter(view.getContext(), data);
+		ProductAdapter imageAdapter = new ProductAdapter(view.getContext(), data);
 		gridView.setAdapter(imageAdapter);
 		return view;
 	}
