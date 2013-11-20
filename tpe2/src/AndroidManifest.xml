@@ -60,7 +60,23 @@
             android:parentActivityName="ar.edu.itba.HelloAndroidActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.edu.itba.ProductsActivity" />
+        </activity>
+        <activity
+            android:name="ar.edu.itba.SubcategoriesActivity"
+            android:label="@string/title_activity_subcategories"
+            android:parentActivityName="ar.edu.itba.HelloAndroidActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
                 android:value="ar.edu.itba.HelloAndroidActivity" />
+        </activity>
+        <activity
+            android:name="ar.edu.itba.ProductsActivity"
+            android:label="@string/title_activity_products"
+            android:parentActivityName="ar.edu.itba.SubcategoriesActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.edu.itba.SubcategoriesActivity" />
         </activity>
     </application>
 

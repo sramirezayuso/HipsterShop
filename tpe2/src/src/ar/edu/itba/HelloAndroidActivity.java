@@ -82,7 +82,7 @@ public class HelloAndroidActivity extends MasterActivity {
 	}
 
 	public void onProductClick(View view) {
-		Intent intent = new Intent(this, ProdActivity.class);
+		Intent intent = new Intent(this, ProductsActivity.class);
 		intent.putExtra(ProductActivity.EXTRA_MESSAGE, "prueba");
 		startActivity(intent);
 
