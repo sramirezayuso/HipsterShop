@@ -24,7 +24,12 @@ public class Attribute {
 		return values;
 	}
 	
+	public boolean isBrand(){
+		return id.equals(9);
+	}
 	
-	
+	public boolean isColor(){
+		return id.equals(4);
+	}
 	
 }
