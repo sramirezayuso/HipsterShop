@@ -43,7 +43,7 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent intent = new Intent(view.getContext(), ProdActivity.class);
+				Intent intent = new Intent(view.getContext(), ProductActivity.class);
 				view.getContext().startActivity(intent);
 			}
 		});

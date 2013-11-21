@@ -19,7 +19,7 @@ import ar.edu.itba.utils.DownloadImageTask;
 import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.Utils;
 
-public class ProdActivity extends MasterActivity {
+public class ProductActivity extends MasterActivity {
 	private Product product;
 	
 	@Override

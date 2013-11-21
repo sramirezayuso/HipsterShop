@@ -55,7 +55,7 @@
             android:exported="false" />
 
         <activity
-            android:name="ar.edu.itba.ProdActivity"
+            android:name="ar.edu.itba.ProductActivity"
             android:label="@string/title_activity_prod"
             android:parentActivityName="ar.edu.itba.HelloAndroidActivity" >
             <meta-data
