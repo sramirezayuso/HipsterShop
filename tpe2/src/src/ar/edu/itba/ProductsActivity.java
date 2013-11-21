@@ -1,25 +1,15 @@
 package ar.edu.itba;
 
-import java.util.ArrayList;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.GridView;
-import ar.edu.itba.model.Attribute;
-import ar.edu.itba.model.Product;
-import ar.edu.itba.utils.ProductAdapter;
 
-public class ProductsActivity extends Activity {
+public class ProductsActivity extends MasterActivity{
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_products);
 		// Show the Up button in the action bar.

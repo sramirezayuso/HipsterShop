@@ -1,52 +1,97 @@
 package ar.edu.itba;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ListView;
 import ar.edu.itba.model.Attribute;
+import ar.edu.itba.model.GetProductsByCategoryId;
 import ar.edu.itba.model.Product;
+import ar.edu.itba.services.APIResultReceiver;
+import ar.edu.itba.services.ApiService;
+import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.ProductAdapter;
+import ar.edu.itba.utils.Utils;
 
-public class ProductsFragment extends Fragment {
+public class ProductsFragment extends Fragment implements APIResultReceiver.Receiver {
 	
+	public APIResultReceiver apiResultReceiver;
+	public GridView gridView;
+	public View view;
 	
 	 @Override
-     public void onActivityCreated(Bundle savedInstanceState) {
+	 public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-       
-     }
+	 }
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstnceState){
-		View view = inflater.inflate(R.layout.fragment_products, container, false);
-		GridView gridView = (GridView) view.findViewById(R.id.fragment_products);
+		view = inflater.inflate(R.layout.fragment_products, container, false);
+		gridView = (GridView) view.findViewById(R.id.fragment_products);
 		
-		ArrayList<Product> data = new ArrayList<Product>();
-		String[] b = { "Levi's" };
-		Attribute[] atts = new Attribute[1];
-		atts[0] = new Attribute(9, "marca", b);
-		data.add(new Product("Baker4", new Integer(100), atts));
-		data.add(new Product("Baker5", new Integer(3400), atts));
-		data.add(new Product("Baker3", new Integer(60), atts));
-		
-		ProductAdapter imageAdapter = new ProductAdapter(view.getContext(), data);
-		gridView.setAdapter(imageAdapter);
+		gridView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent intent = new Intent(view.getContext(), ProdActivity.class);
+				view.getContext().startActivity(intent);
+			}
+		});
+	
 		return view;
 	}
 	
-  @Override
-  public void onAttach(Activity activity) {
-    super.onAttach(activity);
-  }
+	@Override
+	public void onStart(){
+		super.onStart();
+        apiResultReceiver = new APIResultReceiver(new Handler());
+        apiResultReceiver.setReceiver(this);
+		final Intent intent = HipsterShopApi.getProductsByCategoryIdRequest(getActivity(), apiResultReceiver, "1");
+	    view.getContext().startService(intent);
+	}
+	
+	@Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+    	System.out.println(resultCode);
+        switch (resultCode) {
+        case ApiService.STATUS_RUNNING:
+            //show progress
+        	System.out.println("progress");
+
+            break;
+        case ApiService.STATUS_FINISHED:
+        	GetProductsByCategoryId response = (GetProductsByCategoryId) resultData.get(Utils.RESPONSE); 
+        	System.out.println(response.getProducts());
+        	List<Product> products = response.getProducts();
+    		    		 
+        	ProductAdapter imageAdapter = new ProductAdapter(view.getContext(), products);
+        	gridView.setAdapter(imageAdapter);
+            break;
+        case ApiService.STATUS_ERROR:
+        	System.out.println("error");
+        	System.out.println(resultData.get(Intent.EXTRA_TEXT));
+            // handle the error;
+            break;
+        }
+    }
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+	}
   
-  @Override
-  public void onDetach() {
-    super.onDetach();
-  }
+	@Override
+	public void onDetach() {
+		super.onDetach();
+	}
 }
