@@ -46,7 +46,7 @@
         </activity>
         <activity
             android:name="ar.edu.itba.OrdersListActivity"
-            android:label="@string/orders_list.title" >
+            android:label="@string/orders_list_title" >
         </activity>
 
         <service

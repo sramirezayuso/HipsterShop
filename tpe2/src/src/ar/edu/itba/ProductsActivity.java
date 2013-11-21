@@ -43,8 +43,8 @@ public class ProductsActivity extends MasterActivity{
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
-	private void setupActionBar() {
-
+	public void setupActionBar() {
+		super.setupActionBar();
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}

@@ -29,7 +29,6 @@ public class ProdActivity extends MasterActivity {
 		setContentView(R.layout.activity_prod);
 		// Show the Up button in the action bar.
 		
-		setupActionBar();
 		final Intent intent = HipsterShopApi.getProductByIdRequest(this,
 				apiResultReceiver, "1");
 		startService(intent);
@@ -139,7 +138,8 @@ public class ProdActivity extends MasterActivity {
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
-	private void setupActionBar() {
+	public void setupActionBar() {
+		super.setupActionBar();
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		getActionBar().setTitle(getResources().getString(R.string.loading));
 
