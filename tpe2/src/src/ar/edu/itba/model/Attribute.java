@@ -32,4 +32,8 @@ public class Attribute {
 		return id.equals(4);
 	}
 	
+	public boolean isSize(){
+		return id.equals(7);
+	}
+	
 }

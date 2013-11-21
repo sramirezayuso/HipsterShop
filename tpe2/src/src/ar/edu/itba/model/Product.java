@@ -25,7 +25,7 @@ public class Product extends ModelObject {
 		return price;
 	}
 
-	public String[] getImageUrl() {
+	public String[] getImageUrls() {
 		return imageUrl;
 	}
 	
@@ -47,6 +47,16 @@ public class Product extends ModelObject {
 			}
 		}
 		return color.getValues();
+	}
+	
+	public String[] getSizes(){
+		Attribute size = null;
+		for(Attribute attr : attributes){
+			if (attr.isSize()){
+				size = attr;
+			}
+		}
+		return size.getValues();
 	}
 
 	public Category getCategory() {

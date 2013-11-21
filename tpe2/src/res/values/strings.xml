@@ -22,5 +22,8 @@
     
     <string name="product_price">$%1$d</string>
     
+   	<string name="loading">Cargando</string>
+    
+    
     
 </resources>

@@ -55,7 +55,7 @@ public class ProductAdapter extends BaseAdapter {
 
 		Product item = (Product) getItem(i);
 
-		new DownloadImageTask(picture).execute(item.getImageUrl()[0]);
+		new DownloadImageTask(picture).execute(item.getImageUrls()[0]);
 		data.setText(getProductData(item));
 
 		return v;

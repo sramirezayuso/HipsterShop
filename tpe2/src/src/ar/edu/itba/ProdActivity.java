@@ -20,47 +20,20 @@ import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.Utils;
 
 public class ProdActivity extends MasterActivity {
-
+	private Product product;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		setContentView(R.layout.activity_prod);
 		// Show the Up button in the action bar.
+		
 		setupActionBar();
-
 		final Intent intent = HipsterShopApi.getProductByIdRequest(this,
 				apiResultReceiver, "1");
 		startService(intent);
-
-
-
-		String[] array_spinner = new String[3];
-		array_spinner[0] = "S";
-		array_spinner[1] = "M";
-		array_spinner[2] = "L";
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				R.layout.spinner_item, array_spinner);
 		
-		Spinner productSizes = (Spinner) findViewById(R.id.productSizes);
-		adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,
-				array_spinner);
-		productSizes.setAdapter(adapter);
-
-		ImageView imgMain = (ImageView) findViewById(R.id.productImgMain);
-		ImageView imgThumb1 = (ImageView) findViewById(R.id.productImgThumbnail1);
-		ImageView imgThumb2 = (ImageView) findViewById(R.id.productImgThumbnail2);
-		ImageView imgThumb3 = (ImageView) findViewById(R.id.productImgThumbnail3);
-		new DownloadImageTask(imgMain).execute("http://eiffel.itba.edu.ar/hci/service3/images/camver1.jpg");
-		new DownloadImageTask(imgThumb1).execute("http://eiffel.itba.edu.ar/hci/service3/images/camver1.jpg");
-		imgThumb1.setTag("http://eiffel.itba.edu.ar/hci/service3/images/camver1.jpg");
-		setThumbnailListener(imgThumb1);
-		new DownloadImageTask(imgThumb2).execute("http://eiffel.itba.edu.ar/hci/service3/images/camver2.jpg");
-		imgThumb2.setTag("http://eiffel.itba.edu.ar/hci/service3/images/camver2.jpg");
-		setThumbnailListener(imgThumb2);
-		new DownloadImageTask(imgThumb3).execute("http://eiffel.itba.edu.ar/hci/service3/images/camver3.jpg");
-		imgThumb3.setTag("http://eiffel.itba.edu.ar/hci/service3/images/camver3.jpg");
-		setThumbnailListener(imgThumb3);
-
 	}
 
 	private void setThumbnailListener(ImageView thumbnail) {
@@ -75,6 +48,35 @@ public class ProdActivity extends MasterActivity {
 		});
 
 	}
+	
+	private void setImages(){
+		ImageView imgMain = (ImageView) findViewById(R.id.productImgMain);
+		ImageView imgThumb1 = (ImageView) findViewById(R.id.productImgThumbnail1);
+		ImageView imgThumb2 = (ImageView) findViewById(R.id.productImgThumbnail2);
+		ImageView imgThumb3 = (ImageView) findViewById(R.id.productImgThumbnail3);
+		
+		String[] images = product.getImageUrls();
+		
+		new DownloadImageTask(imgMain).execute(product.getImageUrls()[0]);
+		
+		if (images.length < 2) { return; }
+		
+		new DownloadImageTask(imgThumb1).execute(product.getImageUrls()[1]);
+		imgThumb1.setTag(product.getImageUrls()[1]);
+		setThumbnailListener(imgThumb1);
+		
+		if (images.length < 3) { return; }
+
+		new DownloadImageTask(imgThumb2).execute(product.getImageUrls()[2]);
+		imgThumb2.setTag(product.getImageUrls()[2]);
+		setThumbnailListener(imgThumb2);
+		
+		if (images.length < 4) { return; }
+
+		new DownloadImageTask(imgThumb3).execute(product.getImageUrls()[3]);
+		imgThumb3.setTag(product.getImageUrls()[3]);
+		setThumbnailListener(imgThumb3);
+	}
 
 	@Override
 	public void onReceiveResult(int resultCode, Bundle resultData) {
@@ -88,13 +90,13 @@ public class ProdActivity extends MasterActivity {
 			GetProductById response = (GetProductById) resultData
 					.get(Utils.RESPONSE);
 			
-			Product product = response.getProduct();
+			this.product = response.getProduct();
 			
 			TextView productName = (TextView) findViewById(R.id.productName);
 			productName.setText(product.getName());
 			
 			TextView productBrand = (TextView) findViewById(R.id.productBrand);
-			productBrand.setText("Kevingston");
+			productBrand.setText(product.getBrand());
 			
 			//TextView productDetails = (TextView) findViewById(R.id.productDetails);
 			//productDetails.setText(response.getProduct().toString());
@@ -106,20 +108,24 @@ public class ProdActivity extends MasterActivity {
 			productPrice.setText(String.format(priceFormat, response.getProduct().getPrice()));
 			
 			
-			String[] array_spinner = product.getColors();//new String[4];
-		//	array_spinner[0] = "Rojo";
-			//array_spinner[1] = "Negro";
-		//	array_spinner[2] = "Verde";
-		//	array_spinner[3] = "Azul";
-			
+			String[] colors_array = product.getColors();
 			
 			Spinner productColors = (Spinner) findViewById(R.id.productColors);
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-					R.layout.spinner_item, array_spinner);
-			productColors.setAdapter(adapter);
+			ArrayAdapter<String> color_adapter = new ArrayAdapter<String>(this,
+					R.layout.spinner_item, colors_array);
+			productColors.setAdapter(color_adapter);
 			
 			
-			// setProduct(response.getProduct());
+			String[] sizes_array = product.getSizes();
+			Spinner productSizes = (Spinner) findViewById(R.id.productSizes);
+			ArrayAdapter<String> size_adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,
+					sizes_array);
+			productSizes.setAdapter(size_adapter);
+			
+			setImages();
+			getActionBar().setTitle(product.getName());
+
+			
 			break;
 		case ApiService.STATUS_ERROR:
 			System.out.println("error");
@@ -129,17 +135,13 @@ public class ProdActivity extends MasterActivity {
 		}
 	}
 
-	private void setProduct(Product product) {
-		TextView productName = (TextView) findViewById(R.id.productName);
-		productName.setText("*" + product.getName() + "*");
-	}
 
 	/**
 	 * Set up the {@link android.app.ActionBar}.
 	 */
 	private void setupActionBar() {
-
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setTitle(getResources().getString(R.string.loading));
 
 	}
 
