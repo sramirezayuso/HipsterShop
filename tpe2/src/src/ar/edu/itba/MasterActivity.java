@@ -1,10 +1,12 @@
 package ar.edu.itba;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import ar.edu.itba.services.APIResultReceiver;
 
 public class MasterActivity extends Activity implements APIResultReceiver.Receiver {
@@ -37,5 +39,20 @@ public class MasterActivity extends Activity implements APIResultReceiver.Receiv
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.main, menu);
 	    return super.onCreateOptionsMenu(menu);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle presses on the action bar items
+	    switch (item.getItemId()) {
+	        case R.id.action_search:
+	            return true;
+	        case R.id.action_orders:
+	    		Intent intent = new Intent(this, OrdersListActivity.class);
+	    		startActivity(intent);
+	    		return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 }
