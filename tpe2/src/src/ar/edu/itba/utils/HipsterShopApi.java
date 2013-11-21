@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import ar.edu.itba.model.GetAllOrders;
 import ar.edu.itba.model.GetAllStates;
+import ar.edu.itba.model.GetOrderById;
 import ar.edu.itba.model.GetProductById;
 import ar.edu.itba.model.GetProductsByCategoryId;
 import ar.edu.itba.services.APIResultReceiver;
@@ -41,6 +42,20 @@ public class HipsterShopApi {
 	    return intent;
 	}
 	
+	public static Intent getOrderByIdRequest(Activity activity, APIResultReceiver receiver, Integer id){
+		Intent intent = buildIntent(activity, receiver);
+		
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put("username", "elgrupo2");
+		parameters.put("authentication_token", "bf4c9b4dc2d9ed26118c538aefe36859");
+		parameters.put("id", id.toString());
+
+		
+		intent.putExtra(Utils.REQUEST_URL, buildUrl("Order", "GetOrderById", parameters));
+		intent.putExtra(Utils.METHOD_CLASS, GetOrderById.class.getName());
+	    return intent;
+	}
+	//TODO: Convert String to Integer in method signature for id
 	public static Intent getProductByIdRequest(Activity activity, APIResultReceiver receiver, String id){
 		Intent intent = buildIntent(activity, receiver);
 		
