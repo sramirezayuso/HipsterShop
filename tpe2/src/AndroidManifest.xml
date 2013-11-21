@@ -41,7 +41,12 @@
             android:name="ar.edu.itba.OrdersListActivity"
             android:label="@string/orders_list_title" >
         </activity>
-
+        
+        <activity
+            android:name="ar.edu.itba.OrderActivity"
+            android:label="@string/order_title" >
+        </activity>
+        
         <service
             android:name="ar.edu.itba.services.ApiService"
             android:enabled="true"

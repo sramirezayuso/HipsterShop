@@ -3,6 +3,9 @@ package ar.edu.itba;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -43,6 +46,8 @@ public class OrdersListActivity extends MasterActivity {
     		        android.R.layout.simple_list_item_1, orders);
     		ListView listView = (ListView) findViewById(R.id.listView1);
     		listView.setAdapter(adapter);
+    	    listView.setOnItemClickListener(mMessageClickedHandler); 
+
             break;
         case ApiService.STATUS_ERROR:
         	System.out.println("error");
@@ -51,5 +56,17 @@ public class OrdersListActivity extends MasterActivity {
             break;
         }
     }
+    
+ // Create a message handling object as an anonymous class.
+    private OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
+        public void onItemClick(AdapterView parent, View v, int position, long id) {
+        	Integer orderId = ((Order) parent.getAdapter().getItem(position)).getId();
+        	
+    		Intent intent = new Intent(parent.getContext(), OrderActivity.class);
+    		intent.putExtra(Utils.ID, orderId);
+    		startActivity(intent);
+        }
+    };
+
 
 }
