@@ -5,9 +5,7 @@
     <header
         android:fragment="ar.edu.itba.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
-    <header
-        android:fragment="ar.edu.itba.SettingsActivity$NotificationPreferenceFragment"
-        android:title="@string/pref_header_notifications" />
+
     <header
         android:fragment="ar.edu.itba.SettingsActivity$DataSyncPreferenceFragment"
         android:title="@string/pref_header_data_sync" />
