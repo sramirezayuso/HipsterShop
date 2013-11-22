@@ -44,13 +44,17 @@ public class MasterActivity extends Activity implements APIResultReceiver.Receiv
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle presses on the action bar items
+		Intent intent = null;
 	    switch (item.getItemId()) {
 	        case R.id.action_search:
 	            return true;
 	        case R.id.action_orders:
-	    		Intent intent = new Intent(this, OrdersListActivity.class);
+	    		intent = new Intent(this, OrdersListActivity.class);
 	    		startActivity(intent);
 	    		return true;
+	        case R.id.action_settings:
+	    		intent = new Intent(this, SettingsActivity.class);
+	    		startActivity(intent);
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
