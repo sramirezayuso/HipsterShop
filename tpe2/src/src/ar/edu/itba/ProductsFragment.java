@@ -17,6 +17,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import ar.edu.itba.model.Attribute;
 import ar.edu.itba.model.GetProductsByCategoryId;
+import ar.edu.itba.model.Order;
 import ar.edu.itba.model.Product;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
@@ -39,17 +40,21 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstnceState){
 		view = inflater.inflate(R.layout.fragment_products, container, false);
 		gridView = (GridView) view.findViewById(R.id.fragment_products);
-		
-		gridView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent intent = new Intent(view.getContext(), ProductActivity.class);
-				view.getContext().startActivity(intent);
-			}
-		});
 	
 		return view;
 	}
+	
+	
+    
+ // Create a message handling object as an anonymous class.
+    private OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
+        public void onItemClick(AdapterView parent, View v, int position, long id) {
+    		Intent intent = new Intent(parent.getContext(), ProductActivity.class);
+    		intent.putExtra(Utils.ID, Long.valueOf(id).intValue());
+    		startActivity(intent);
+        }
+    };
+	
 	
 	@Override
 	public void onStart(){
@@ -76,6 +81,8 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
     		    		 
         	ProductAdapter imageAdapter = new ProductAdapter(view.getContext(), products);
         	gridView.setAdapter(imageAdapter);
+    		gridView.setOnItemClickListener(mMessageClickedHandler); 
+
             break;
         case ApiService.STATUS_ERROR:
         	System.out.println("error");

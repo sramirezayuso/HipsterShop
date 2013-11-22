@@ -35,7 +35,7 @@ public class ProductAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int i) {
-		return Long.parseLong(items.get(i).getName());
+		return Long.valueOf(items.get(i).getId());
 	}
 
 	@Override

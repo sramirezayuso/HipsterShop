@@ -25,12 +25,14 @@ public class ProductActivity extends MasterActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		
 		setContentView(R.layout.activity_prod);
 		// Show the Up button in the action bar.
-		
+		Intent receivedIntent = getIntent();
+		Integer productId = receivedIntent.getIntExtra(Utils.ID, -1);
 		final Intent intent = HipsterShopApi.getProductByIdRequest(this,
-				apiResultReceiver, "1");
+				apiResultReceiver, productId);
+		
 		startService(intent);
 		
 	}

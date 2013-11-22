@@ -55,12 +55,12 @@ public class HipsterShopApi {
 		intent.putExtra(Utils.METHOD_CLASS, GetOrderById.class.getName());
 	    return intent;
 	}
-	//TODO: Convert String to Integer in method signature for id
-	public static Intent getProductByIdRequest(Activity activity, APIResultReceiver receiver, String id){
+	
+	public static Intent getProductByIdRequest(Activity activity, APIResultReceiver receiver, Integer id){
 		Intent intent = buildIntent(activity, receiver);
 		
 		HashMap<String, String> parameters = new HashMap<String, String>();
-		parameters.put("id", id);
+		parameters.put("id", id.toString());
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductById", parameters));
 		intent.putExtra(Utils.METHOD_CLASS, GetProductById.class.getName());
