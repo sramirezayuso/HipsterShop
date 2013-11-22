@@ -1,5 +1,10 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
+  <PreferenceScreen android:key="login" android:title="@string/pref_login_button" android:summary="@string/pref_login_explanation">
+   <intent android:action="android.intent.action.VIEW" android:targetPackage="ar.edu.itba" android:targetClass="ar.edu.itba.LoginActivity" />
+  </PreferenceScreen>
+	
+	
+	
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="example_checkbox"
