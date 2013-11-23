@@ -58,7 +58,7 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 		super.onStart();
         apiResultReceiver = new APIResultReceiver(new Handler());
         apiResultReceiver.setReceiver(this);
-		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1");
+		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", "", "");
 	    view.getContext().startService(intent);
 	}
 	

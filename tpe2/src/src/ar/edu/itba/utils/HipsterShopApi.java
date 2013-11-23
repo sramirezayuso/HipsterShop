@@ -67,22 +67,36 @@ public class HipsterShopApi {
 	    return intent;
 	}
 	
-	public static Intent getProductsByCategoryIdRequest(Activity activity, APIResultReceiver receiver, String id){
+	public static Intent getProductsByCategoryIdRequest(Activity activity, APIResultReceiver receiver, String id, String gender, String age){
 		Intent intent = buildIntent(activity, receiver);
 		
 		HashMap<String, String> parameters = new HashMap<String, String>();
 		parameters.put("id", id);
+		String filters = "[";
+		if(gender != "")
+			filters = filters + "{\"id\":1,\"value\":\"" + gender + "\"},";
+		if(age != "")
+			filters = filters + "{\"id\":2,\"value\":\"" + age + "\"}";
+		filters = filters + "]";
+		parameters.put("filters", filters);
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductsByCategoryId", parameters));
 		intent.putExtra(Utils.METHOD_CLASS, GetProductsByCategoryId.class.getName());
 		return intent;
 	}
 	
-	public static Intent getProductsBySubcategoryIdRequest(Activity activity, APIResultReceiver receiver, String id){
+	public static Intent getProductsBySubcategoryIdRequest(Activity activity, APIResultReceiver receiver, String id, String gender, String age){
 		Intent intent = buildIntent(activity, receiver);
 		
 		HashMap<String, String> parameters = new HashMap<String, String>();
 		parameters.put("id", id);
+		String filters = "[";
+		if(gender != "")
+			filters = filters + "{\"id\":1,\"value\":\"" + gender + "\"},";
+		if(age != "")
+			filters = filters + "{\"id\":2,\"value\":\"" + age + "\"}";
+		filters = filters + "]";
+		parameters.put("filters", filters);
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductsBySubcategoryId", parameters));
 		intent.putExtra(Utils.METHOD_CLASS, GetProductsByCategoryId.class.getName());
