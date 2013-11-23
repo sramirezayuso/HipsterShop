@@ -2,10 +2,10 @@
     android:id="@+id/fragment_products"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:numColumns="auto_fit"
+    android:numColumns="2"
     android:columnWidth="90dp"
-    android:horizontalSpacing="10dp"
-    android:verticalSpacing="10dp"
+    android:horizontalSpacing="0dp"
+    android:verticalSpacing="0dp"
     android:gravity="center"
     android:stretchMode="columnWidth" >  
 

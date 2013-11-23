@@ -17,7 +17,6 @@ import android.widget.SpinnerAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import ar.edu.itba.model.GetProductsByCategoryId;
-import ar.edu.itba.model.Order;
 import ar.edu.itba.model.Product;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
