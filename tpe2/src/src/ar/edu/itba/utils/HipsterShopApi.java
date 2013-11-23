@@ -78,6 +78,17 @@ public class HipsterShopApi {
 		return intent;
 	}
 	
+	public static Intent getProductsBySubcategoryIdRequest(Activity activity, APIResultReceiver receiver, String id){
+		Intent intent = buildIntent(activity, receiver);
+		
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put("id", id);
+		
+		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductsBySubcategoryId", parameters));
+		intent.putExtra(Utils.METHOD_CLASS, GetProductsByCategoryId.class.getName());
+		return intent;
+	}
+	
 	
 	public static String buildUrl(String controller, String method, HashMap<String, String> parameters){
         Uri.Builder b = new Uri.Builder();
