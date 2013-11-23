@@ -1,6 +1,5 @@
 package ar.edu.itba;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -14,10 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.ListView;
-import ar.edu.itba.model.Attribute;
 import ar.edu.itba.model.GetProductsByCategoryId;
-import ar.edu.itba.model.Order;
 import ar.edu.itba.model.Product;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;

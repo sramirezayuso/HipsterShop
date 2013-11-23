@@ -64,7 +64,7 @@ public class ProductAdapter extends BaseAdapter {
 	private String getProductData(Product prod) {
 		String brand = "";
 		for (Attribute att : prod.getAttributes()) {
-			if (att.getId() == 9 && att.getName().equals("marca")) {
+			if (att.getId() == 9) {
 				brand = att.getValues()[0];
 			}
 		}

@@ -5,8 +5,8 @@
 
     <ar.edu.itba.utils.SquareImageView
         android:id="@+id/specificOrderImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentLeft="true"
         android:layout_centerInParent="true" />
 

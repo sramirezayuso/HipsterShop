@@ -3,7 +3,6 @@ package ar.edu.itba;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +43,7 @@ public class ProductActivity extends MasterActivity {
 			@Override
 			public void onClick(View v) {
 				ImageView imgMain = (ImageView) findViewById(R.id.productImgMain);
-				new DownloadImageTask(imgMain).execute(url); //MEJORAR ESTO
+				new DownloadImageTask(imgMain).execute(url); //TODO: MEJORAR ESTO
 			}
 		});
 
@@ -60,22 +59,20 @@ public class ProductActivity extends MasterActivity {
 		
 		new DownloadImageTask(imgMain).execute(product.getImageUrls()[0]);
 		
-		if (images.length < 2) { return; }
-		
-		new DownloadImageTask(imgThumb1).execute(product.getImageUrls()[1]);
-		imgThumb1.setTag(product.getImageUrls()[1]);
+		new DownloadImageTask(imgThumb1).execute(product.getImageUrls()[0]);
+		imgThumb1.setTag(product.getImageUrls()[0]);
 		setThumbnailListener(imgThumb1);
+		
+		if (images.length < 2) { return; }
+
+		new DownloadImageTask(imgThumb2).execute(product.getImageUrls()[1]);
+		imgThumb2.setTag(product.getImageUrls()[1]);
+		setThumbnailListener(imgThumb2);
 		
 		if (images.length < 3) { return; }
 
-		new DownloadImageTask(imgThumb2).execute(product.getImageUrls()[2]);
-		imgThumb2.setTag(product.getImageUrls()[2]);
-		setThumbnailListener(imgThumb2);
-		
-		if (images.length < 4) { return; }
-
-		new DownloadImageTask(imgThumb3).execute(product.getImageUrls()[3]);
-		imgThumb3.setTag(product.getImageUrls()[3]);
+		new DownloadImageTask(imgThumb3).execute(product.getImageUrls()[2]);
+		imgThumb3.setTag(product.getImageUrls()[2]);
 		setThumbnailListener(imgThumb3);
 	}
 
