@@ -1,10 +1,13 @@
 package ar.edu.itba;
 
 
+import android.app.ActionBar.OnNavigationListener;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.SpinnerAdapter;
 
 public class ProductsActivity extends MasterActivity{
 
@@ -14,18 +17,7 @@ public class ProductsActivity extends MasterActivity{
 		setContentView(R.layout.activity_products);
 		// Show the Up button in the action bar.
 		setupActionBar();
-
-//		gridView.setOnItemClickListener(new OnItemClickListener() {
-//			@Override
-//			public void onItemClick(AdapterView<?> parent, View view,
-//					int position, long id) {
-//
-//				Intent intent = new Intent(ProductsActivity.this,
-//						ProdActivity.class);
-//				ProductsActivity.this.startActivity(intent);
-//
-//			}
-//		});
+		getActionBar().setNavigationMode(0x00000001);
 	}
 
 	/**

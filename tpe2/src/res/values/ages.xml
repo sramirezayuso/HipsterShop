@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="age_list">
+    	<item>@string/all_ages</item>
+        <item>@string/adults</item>
+        <item>@string/children</item>
+        <item>@string/babies</item>
+    </string-array>
+</resources>

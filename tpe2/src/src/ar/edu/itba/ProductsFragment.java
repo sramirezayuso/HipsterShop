@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ActionBar.OnNavigationListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.SpinnerAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import ar.edu.itba.model.GetProductsByCategoryId;
@@ -56,6 +59,7 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 	@Override
 	public void onStart(){
 		super.onStart();
+		setUpSpinners();
         apiResultReceiver = new APIResultReceiver(new Handler());
         apiResultReceiver.setReceiver(this);
 		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", "", "");
@@ -97,5 +101,36 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 	@Override
 	public void onDetach() {
 		super.onDetach();
+	}
+	
+	public void setUpSpinners(){
+		SpinnerAdapter genderSpinner = ArrayAdapter.createFromResource(view.getContext(), R.array.gender_list,
+		          android.R.layout.simple_spinner_dropdown_item);
+		OnNavigationListener onGenderChange = new OnNavigationListener() {
+			String[] strings = {"", "Masculino", "Femenino"};
+			
+			@Override
+			public boolean onNavigationItemSelected(int position, long itemId) {
+				final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", strings[position], "");
+			    view.getContext().startService(intent);
+				return true;
+			}
+		};
+		
+		SpinnerAdapter ageSpinner = ArrayAdapter.createFromResource(view.getContext(), R.array.age_list,
+		          android.R.layout.simple_spinner_dropdown_item);
+		OnNavigationListener onAgeChange = new OnNavigationListener() {
+			String[] strings = {"", "Adulto", "Infantil", "Bebe"};
+			
+			@Override
+			public boolean onNavigationItemSelected(int position, long itemId) {
+				final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", "", strings[position]);
+			    view.getContext().startService(intent);
+				return true;
+			}
+		};
+		
+		getActivity().getActionBar().setListNavigationCallbacks(genderSpinner, onGenderChange);
+		getActivity().getActionBar().setListNavigationCallbacks(ageSpinner, onAgeChange);
 	}
 }

@@ -5,5 +5,9 @@
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
+    <group android:id="@+id/group_genders" android:enabled="true" android:visible="true" android:menuCategory="container">
+        <item android:id="@+id/action_male" android:title="@string/male"></item>
+        <item android:id="@+id/action_female" android:title="@string/female"></item>
+    </group>
 
 </menu>

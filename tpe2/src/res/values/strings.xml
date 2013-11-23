@@ -27,6 +27,13 @@
     <string name="product_price">$%1$d</string>
     
    	<string name="loading">Cargando</string>
+   	<string name="male">M</string>
+   	<string name="female">W</string>
+   	<string name="all_genders">A</string>
+   	<string name="adults">D</string>
+   	<string name="children">C</string>
+   	<string name="babies">B</string>
+   	<string name="all_ages">A</string>
     
     
     
