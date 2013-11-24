@@ -1,12 +1,15 @@
 package ar.edu.itba;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MenuItem.OnActionExpandListener;
+import android.view.inputmethod.InputMethodManager;
 import ar.edu.itba.services.APIResultReceiver;
 
 public class MasterActivity extends Activity implements APIResultReceiver.Receiver {
@@ -47,6 +50,11 @@ public class MasterActivity extends Activity implements APIResultReceiver.Receiv
 		Intent intent = null;
 	    switch (item.getItemId()) {
 	        case R.id.action_search:
+	        	 //get focus
+	            item.getActionView().requestFocus();
+	            //get input method
+	            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
 	            return true;
 	        case R.id.action_orders:
 	    		intent = new Intent(this, OrdersListActivity.class);
