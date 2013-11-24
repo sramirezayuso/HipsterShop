@@ -17,7 +17,6 @@ public class ProductsActivity extends MasterActivity{
 		setContentView(R.layout.activity_products);
 		// Show the Up button in the action bar.
 		setupActionBar();
-		getActionBar().setNavigationMode(0x00000001);
 	}
 
 	/**
