@@ -7,6 +7,7 @@ public class Utils {
     public final static String METHOD_CLASS = "method_class";
     public final static String RESPONSE = "response";
     public final static String ID = "id";
+    public final static String PREFERENCES = "preferences";
 
 
 
