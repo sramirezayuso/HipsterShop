@@ -9,13 +9,13 @@
         android:id="@+id/action_orders"
      	android:showAsAction="ifRoom"
      	android:title="@string/orders_list_title"
-     	android:icon="@drawable/orders_icon"
+     	android:icon="@drawable/ic_action_view_as_list"
     />
     <item 
         android:id="@+id/action_search"
      	android:showAsAction="ifRoom|collapseActionView"
      	android:title="@string/search_title"
-     	android:icon="@drawable/search_icon"
+     	android:icon="@drawable/ic_action_search"
      	android:actionLayout="@layout/menu_search"
     />
     

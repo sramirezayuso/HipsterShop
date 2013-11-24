@@ -11,6 +11,7 @@ import ar.edu.itba.model.GetAllStates;
 import ar.edu.itba.model.GetOrderById;
 import ar.edu.itba.model.GetProductById;
 import ar.edu.itba.model.GetProductsByCategoryId;
+import ar.edu.itba.model.SignIn;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
 
@@ -103,6 +104,17 @@ public class HipsterShopApi {
 		return intent;
 	}
 	
+	public static Intent signIn(Activity activity, APIResultReceiver receiver, String user, String pass){
+		Intent intent = buildIntent(activity, receiver);
+		
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put("username", user);
+		parameters.put("password", pass);
+		
+		intent.putExtra(Utils.REQUEST_URL, buildUrl("Account", "SignIn", parameters));
+		intent.putExtra(Utils.METHOD_CLASS, SignIn.class.getName());
+		return intent;
+	}
 	
 	public static String buildUrl(String controller, String method, HashMap<String, String> parameters){
         Uri.Builder b = new Uri.Builder();

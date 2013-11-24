@@ -3,8 +3,8 @@ package ar.edu.itba;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
-import android.os.AsyncTask;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,29 +14,17 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+import ar.edu.itba.model.SignIn;
+import ar.edu.itba.services.ApiService;
+import ar.edu.itba.utils.HipsterShopApi;
+import ar.edu.itba.utils.Utils;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
-public class LoginActivity extends Activity {
-	/**
-	 * A dummy authentication store containing known user names and passwords.
-	 * TODO: remove after connecting to a real authentication system.
-	 */
-	private static final String[] DUMMY_CREDENTIALS = new String[] {
-			"foo@example.com:hello", "bar@example.com:world" };
-
-	/**
-	 * The default email to populate the email field with.
-	 */
-	public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-
-	/**
-	 * Keep track of the login task to ensure we can cancel it if requested.
-	 */
-	private UserLoginTask mAuthTask = null;
-
+public class LoginActivity extends MasterActivity {
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
 	private String mPassword;
@@ -49,17 +37,21 @@ public class LoginActivity extends Activity {
 	private TextView mLoginStatusMessageView;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_login);
+		
+		SharedPreferences settings = getPreferences(0);
+		mEmail = settings.getString("Username", "");
+		mPassword = settings.getString("Password", "");
 
 		// Set up the login form.
-		mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 
 		mPasswordView = (EditText) findViewById(R.id.password);
+		mPasswordView.setText(mPassword);
 		mPasswordView
 				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
@@ -99,9 +91,6 @@ public class LoginActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-		if (mAuthTask != null) {
-			return;
-		}
 
 		// Reset errors.
 		mEmailView.setError(null);
@@ -130,10 +119,6 @@ public class LoginActivity extends Activity {
 			mEmailView.setError(getString(R.string.error_field_required));
 			focusView = mEmailView;
 			cancel = true;
-		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
-			focusView = mEmailView;
-			cancel = true;
 		}
 
 		if (cancel) {
@@ -145,8 +130,9 @@ public class LoginActivity extends Activity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new UserLoginTask();
-			mAuthTask.execute((Void) null);
+			final Intent intent = HipsterShopApi.signIn(this,
+					apiResultReceiver, mEmail, mPassword);
+			startService(intent);
 		}
 	}
 
@@ -191,52 +177,34 @@ public class LoginActivity extends Activity {
 		}
 	}
 
-	/**
-	 * Represents an asynchronous login/registration task used to authenticate
-	 * the user.
-	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			// TODO: attempt authentication against a network service.
-
-			try {
-				// Simulate network access.
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				return false;
-			}
-
-			for (String credential : DUMMY_CREDENTIALS) {
-				String[] pieces = credential.split(":");
-				if (pieces[0].equals(mEmail)) {
-					// Account exists, return true if the password matches.
-					return pieces[1].equals(mPassword);
-				}
-			}
-
-			// TODO: register the new account here.
-			return true;
-		}
-
-		@Override
-		protected void onPostExecute(final Boolean success) {
-			mAuthTask = null;
+	@Override
+	public void onReceiveResult(int resultCode, Bundle resultData) {
+		switch (resultCode) {
+		case ApiService.STATUS_RUNNING:
+			showProgress(true);
+			break;
+		case ApiService.STATUS_FINISHED:
 			showProgress(false);
+			SignIn response = (SignIn) resultData.get(Utils.RESPONSE);
 
-			if (success) {
-				finish();
+			if (response.getAuthenticationToken() != null) {
+				Toast.makeText(getApplicationContext(), R.string.login_success,
+						Toast.LENGTH_LONG).show();
+				
+				SharedPreferences settings = getPreferences(0);
+			    SharedPreferences.Editor editor = settings.edit();
+			    editor.putString("Username", mEmail);
+			    editor.putString("Password", mPassword);
+			    editor.putString("Token", response.getAuthenticationToken());
+			    editor.commit();
 			} else {
-				mPasswordView
-						.setError(getString(R.string.error_incorrect_password));
-				mPasswordView.requestFocus();
+				mPasswordView.setError(getString(R.string.login_error));
+				mEmailView.setError(getString(R.string.login_error));
 			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			mAuthTask = null;
-			showProgress(false);
+			break;
+		case ApiService.STATUS_ERROR:
+			break;
 		}
 	}
+
 }
