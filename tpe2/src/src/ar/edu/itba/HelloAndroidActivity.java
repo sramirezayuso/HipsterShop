@@ -93,5 +93,11 @@ public class HelloAndroidActivity extends MasterActivity {
 		// intent.putExtra(ProductActivity.EXTRA_MESSAGE, "prueba");
 		startActivity(intent);
 	}
+	
+	public void onSubcategoriesClick(View view) {
+		Intent intent = new Intent(this, SubcategoriesActivity.class);
+		// intent.putExtra(ProductActivity.EXTRA_MESSAGE, "prueba");
+		startActivity(intent);
+	}
 
 }

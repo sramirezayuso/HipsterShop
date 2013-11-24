@@ -3,7 +3,6 @@ package ar.edu.itba;
 import java.util.List;
 
 import android.app.ActionBar;
-import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -21,8 +20,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-import ar.edu.itba.model.GetProductsByCategoryId;
+import ar.edu.itba.model.GetProductsBySubcategoryId;
 import ar.edu.itba.model.Product;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
@@ -85,7 +83,7 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 
             break;
         case ApiService.STATUS_FINISHED:
-        	GetProductsByCategoryId response = (GetProductsByCategoryId) resultData.get(Utils.RESPONSE); 
+        	GetProductsBySubcategoryId response = (GetProductsBySubcategoryId) resultData.get(Utils.RESPONSE); 
         	System.out.println(response.getProducts());
         	List<Product> products = response.getProducts();
     		    		 
