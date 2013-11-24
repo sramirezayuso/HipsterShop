@@ -5,6 +5,7 @@ import java.util.Map.Entry;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import ar.edu.itba.model.GetAllOrders;
 import ar.edu.itba.model.GetAllStates;
@@ -33,10 +34,10 @@ public class HipsterShopApi {
 	public static Intent getAllOrdersRequest(Activity activity, APIResultReceiver receiver){
 		Intent intent = buildIntent(activity, receiver);
 		
+		SharedPreferences settings = activity.getSharedPreferences(Utils.PREFERENCES, 0);
 		HashMap<String, String> parameters = new HashMap<String, String>();
-		parameters.put("username", "elgrupo2");
-		parameters.put("authentication_token", "bf4c9b4dc2d9ed26118c538aefe36859");
-
+		parameters.put("username", settings.getString("Username", ""));
+		parameters.put("authentication_token", settings.getString("Token", ""));
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Order", "GetAllOrders", parameters));
 		intent.putExtra(Utils.METHOD_CLASS, GetAllOrders.class.getName());
@@ -46,9 +47,10 @@ public class HipsterShopApi {
 	public static Intent getOrderByIdRequest(Activity activity, APIResultReceiver receiver, Integer id){
 		Intent intent = buildIntent(activity, receiver);
 		
+		SharedPreferences settings = activity.getSharedPreferences(Utils.PREFERENCES, 0);
 		HashMap<String, String> parameters = new HashMap<String, String>();
-		parameters.put("username", "elgrupo2");
-		parameters.put("authentication_token", "bf4c9b4dc2d9ed26118c538aefe36859");
+		parameters.put("username", settings.getString("Username", ""));
+		parameters.put("authentication_token", settings.getString("Token", ""));
 		parameters.put("id", id.toString());
 
 		

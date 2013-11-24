@@ -42,7 +42,7 @@ public class LoginActivity extends MasterActivity {
 
 		setContentView(R.layout.activity_login);
 		
-		SharedPreferences settings = getPreferences(0);
+		SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
 		mEmail = settings.getString("Username", "");
 		mPassword = settings.getString("Password", "");
 
@@ -191,7 +191,7 @@ public class LoginActivity extends MasterActivity {
 				Toast.makeText(getApplicationContext(), R.string.login_success,
 						Toast.LENGTH_LONG).show();
 				
-				SharedPreferences settings = getPreferences(0);
+				SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
 			    SharedPreferences.Editor editor = settings.edit();
 			    editor.putString("Username", mEmail);
 			    editor.putString("Password", mPassword);

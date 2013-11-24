@@ -1,7 +1,10 @@
 package ar.edu.itba;
 
+import java.util.List;
+
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -16,8 +19,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
-
-import java.util.List;
+import ar.edu.itba.utils.Utils;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -118,7 +120,7 @@ public class SettingsActivity extends PreferenceActivity {
 	 * A preference value change listener that updates the preference's summary
 	 * to reflect its new value.
 	 */
-	private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+	private Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
 		@Override
 		public boolean onPreferenceChange(Preference preference, Object value) {
 			String stringValue = value.toString();
@@ -128,12 +130,15 @@ public class SettingsActivity extends PreferenceActivity {
 				// the preference's 'entries' list.
 				ListPreference listPreference = (ListPreference) preference;
 				int index = listPreference.findIndexOfValue(stringValue);
-
 				// Set the summary to reflect the new value.
 				preference
 						.setSummary(index >= 0 ? listPreference.getEntries()[index]
 								: null);
-
+				
+				SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
+			    SharedPreferences.Editor editor = settings.edit();
+			    editor.putInt("CheckTime", Integer.valueOf(listPreference.getEntryValues()[index].toString()));
+			    editor.commit();
 			} else if (preference instanceof RingtonePreference) {
 				// For ringtone preferences, look up the correct display value
 				// using RingtoneManager.
@@ -175,7 +180,7 @@ public class SettingsActivity extends PreferenceActivity {
 	 * 
 	 * @see #sBindPreferenceSummaryToValueListener
 	 */
-	private static void bindPreferenceSummaryToValue(Preference preference) {
+	private void bindPreferenceSummaryToValue(Preference preference) {
 		// Set the listener to watch for value changes.
 		preference
 				.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
@@ -188,8 +193,6 @@ public class SettingsActivity extends PreferenceActivity {
 						preference.getContext()).getString(preference.getKey(),
 						""));
 	}
-
-
 
 
 }
