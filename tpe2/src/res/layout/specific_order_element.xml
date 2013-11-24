@@ -1,28 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="fill_parent"
+    android:background="@drawable/back"
+    android:orientation="vertical" >
 
-    <ar.edu.itba.utils.SquareImageView
-        android:id="@+id/specificOrderImage"
+    <TextView
+        android:id="@+id/orderItemNumber"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_centerInParent="true" />
-
-    <TextView
-        android:id="@+id/specificOrderProduct"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:background="#f5f5f5"
+        android:fontFamily="sans-serif"
+        android:text="@string/order_request"
+        android:textColor="#000000"
+        android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/specificOrderPrice"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/specificOrderProduct"
-        android:layout_centerHorizontal="true" />
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
 
-</RelativeLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/orderItemAddress"
+                android:layout_width="fill_parent"
+                android:layout_height="20dp"
+                android:background="#f5f5f5"
+                android:fontFamily="sans-serif"
+                android:textColor="#999999"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/orderItemPrice"
+                android:layout_width="fill_parent"
+                android:layout_height="20dp"
+                android:background="#f5f5f5"
+                android:text="@string/order_price"
+                android:fontFamily="sans-serif"
+                android:textColor="#999999"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="3"
+            android:orientation="vertical" >
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="#f5f5f5"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/order_creation"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/orderItemCreationDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="#f5f5f5"
+                    android:fontFamily="sans-serif-light"
+                    android:paddingLeft="3dp"
+                    android:textColor="#999999"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="#f5f5f5"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/order_delivery"
+                    android:textColor="#000000"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/orderItemDeliveryDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="#f5f5f5"
+                    android:fontFamily="sans-serif-light"
+                    android:paddingLeft="3dp"
+                    android:textColor="#999999"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

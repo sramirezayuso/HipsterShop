@@ -32,6 +32,10 @@ public class Order extends ModelObject {
 		return status;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
 	public String getReceivedDate() {
 		return receivedDate;
 	}
@@ -96,7 +100,8 @@ public class Order extends ModelObject {
 		int total = 0;
 
 		for (SpecificOrder each : items) {
-			total += each.getQuantity() * each.getPrice();
+			if (each.getQuantity() != null && each.getPrice() != null)
+				total += each.getQuantity() * each.getPrice();
 		}
 
 		return total;

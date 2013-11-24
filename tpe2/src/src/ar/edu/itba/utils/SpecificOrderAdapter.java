@@ -1,25 +1,23 @@
 package ar.edu.itba.utils;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import ar.edu.itba.R;
+import ar.edu.itba.model.Order;
 import ar.edu.itba.model.SpecificOrder;
 
 public class SpecificOrderAdapter extends BaseAdapter {
-	protected Activity activity;
-	protected ArrayList<SpecificOrder> items;
+	protected Context activity;
+	protected List<Order> items;
 
-	public SpecificOrderAdapter(Activity activity,
-			ArrayList<SpecificOrder> items) {
-		this.activity = activity;
+	public SpecificOrderAdapter(Context context, List<Order> items) {
+		this.activity = context;
 		this.items = items;
 	}
 
@@ -48,17 +46,23 @@ public class SpecificOrderAdapter extends BaseAdapter {
 			vi = inflater.inflate(R.layout.specific_order_element, null);
 		}
 
-		SpecificOrder item = items.get(position);
+		Order item = items.get(position);
 
-		ImageView image = (ImageView) vi.findViewById(R.id.specificOrderImage);
-		new DownloadImageTask(image).execute(item.getProduct().getImageUrl());
-
-		TextView product = (TextView) vi
-				.findViewById(R.id.specificOrderProduct);
-		product.setText(item.getProduct().getName());
-
-		TextView price = (TextView) vi.findViewById(R.id.specificOrderPrice);
-		price.setText(String.valueOf(item.getPrice() * item.getQuantity()));
+		TextView number = (TextView) vi.findViewById(R.id.orderItemNumber);
+		number.append(String.valueOf(item.getId()));
+		
+		TextView address = (TextView) vi.findViewById(R.id.orderItemAddress);
+		if(item.getAddress() != null && item.getAddress().getName() != null)
+			address.setText(item.getAddress().getName());
+		
+		TextView price = (TextView) vi.findViewById(R.id.orderItemPrice);
+		price.append("FALTA");
+		
+		TextView creationDate = (TextView) vi.findViewById(R.id.orderItemCreationDate);
+		creationDate.setText(item.getReceivedDate());
+		
+		TextView deliveryDate = (TextView) vi.findViewById(R.id.orderItemDeliveryDate);
+		deliveryDate.setText(item.getDeliveredDate());
 
 		return vi;
 	}

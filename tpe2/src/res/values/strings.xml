@@ -26,6 +26,9 @@
     <string name="order_creation">Creado:</string>
     <string name="order_delivery">Entrega:</string>
     
+    <string name="order_request">Pedido nro:</string>
+    <string name="order_price">$</string>
+    
     <string name="product_price">$%1$d</string>
     
    	<string name="loading">Cargando</string>
@@ -37,6 +40,9 @@
    	<string name="babies">Babies</string>
    	<string name="all_ages">All</string>
     
-    
+    <string name="received">Creado</string>
+    <string name="processed">Confirmado</string>
+    <string name="shipped">Despachado</string>
+    <string name="delivered">Entregado</string>
     
 </resources>

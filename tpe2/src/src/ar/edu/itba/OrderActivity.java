@@ -8,7 +8,7 @@ import ar.edu.itba.model.GetOrderById;
 import ar.edu.itba.model.Order;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
-import ar.edu.itba.utils.SpecificOrderAdapter;
+import ar.edu.itba.utils.OrderProductAdapter;
 import ar.edu.itba.utils.Utils;
 
 public class OrderActivity extends MasterActivity {
@@ -39,7 +39,7 @@ public class OrderActivity extends MasterActivity {
 			deliveryDate.setText(order.getDeliveredDate());
 
 		ListView lv = (ListView) findViewById(R.id.orderList);
-		lv.setAdapter(new SpecificOrderAdapter(this, order.getListItems()));
+		lv.setAdapter(new OrderProductAdapter(this, order.getListItems()));
 
 		TextView total = (TextView) findViewById(R.id.orderTotal);
 		total.append(String.valueOf(order.getTotalPrice()));
