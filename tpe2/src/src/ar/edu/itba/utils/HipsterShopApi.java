@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.net.Uri;
 import ar.edu.itba.model.GetAllOrders;
 import ar.edu.itba.model.GetAllStates;
+import ar.edu.itba.model.GetAllSubcategories;
 import ar.edu.itba.model.GetOrderById;
 import ar.edu.itba.model.GetProductById;
 import ar.edu.itba.model.GetProductsByCategoryId;
+import ar.edu.itba.model.GetProductsBySubcategoryId;
 import ar.edu.itba.model.SignIn;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
@@ -100,7 +102,18 @@ public class HipsterShopApi {
 		parameters.put("filters", filters);
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductsBySubcategoryId", parameters));
-		intent.putExtra(Utils.METHOD_CLASS, GetProductsByCategoryId.class.getName());
+		intent.putExtra(Utils.METHOD_CLASS, GetProductsBySubcategoryId.class.getName());
+		return intent;
+	}
+	
+	public static Intent getAllSubcategoriesRequest(Activity activity, APIResultReceiver receiver, String id){
+		Intent intent = buildIntent(activity, receiver);
+		
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put("id", id);
+		
+		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetAllSubcategories", parameters));
+		intent.putExtra(Utils.METHOD_CLASS,  GetAllSubcategories.class.getName());
 		return intent;
 	}
 	

@@ -19,6 +19,17 @@
         android:layout_height="wrap_content"
         android:onClick="onProductClick"
         android:text="@string/main.products_button_name" />
+        
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="57dp"
+        android:layout_marginRight="100dp"
+        android:onClick="onSubcategoriesClick"
+        android:text="subcategories" />
 
     <Button
         android:id="@+id/button1"

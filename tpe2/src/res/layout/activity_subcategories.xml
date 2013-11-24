@@ -5,10 +5,9 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/subcategoriesList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </ListView>
+    <fragment android:id="@+id/fragment_subcategories"
+		android:layout_height="fill_parent"
+		android:name="ar.edu.itba.SubcategoriesFragment"
+		android:layout_width="match_parent" />
 
 </LinearLayout>
