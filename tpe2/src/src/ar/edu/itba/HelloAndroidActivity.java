@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.widget.TextView;
 import ar.edu.itba.model.GetAllStates;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
@@ -29,9 +28,6 @@ public class HelloAndroidActivity extends MasterActivity {
 		final Intent intent = HipsterShopApi.getAllStatesRequest(this,
 				apiResultReceiver);
 		startService(intent);
-		
-		TextView txt = (TextView) findViewById(R.id.aux);
-		txt.setText("rusemaster");
 	}
 
 	@Override

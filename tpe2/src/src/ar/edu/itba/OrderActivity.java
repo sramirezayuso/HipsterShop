@@ -42,7 +42,7 @@ public class OrderActivity extends MasterActivity {
 		lv.setAdapter(new OrderProductAdapter(this, order.getListItems()));
 
 		TextView total = (TextView) findViewById(R.id.orderTotal);
-		total.append(String.valueOf(order.getTotalPrice()));
+		total.setText(getResources().getString(R.string.order_total) + order.getTotalPrice());
 	}
 
 	@Override

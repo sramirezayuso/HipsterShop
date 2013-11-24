@@ -1,9 +1,6 @@
 package ar.edu.itba.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +12,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import ar.edu.itba.OrderActivity;
 import ar.edu.itba.R;
 import ar.edu.itba.model.Order;
@@ -74,7 +70,7 @@ public class OrdersAdapter extends PagerAdapter {
         	
     		Intent intent = new Intent(parent.getContext(), OrderActivity.class);
     		intent.putExtra(Utils.ID, orderId);
-    		new Activity().startActivity(intent);
+    		context.startActivity(intent);
         }
     };
 

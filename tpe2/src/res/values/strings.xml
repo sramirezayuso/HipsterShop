@@ -28,7 +28,8 @@
     
     <string name="order_request">Pedido nro:</string>
     <string name="order_price">$</string>
-    
+    <string name="order_quantity">Cantidad:</string>
+        
     <string name="product_price">$%1$d</string>
     
    	<string name="loading">Cargando</string>

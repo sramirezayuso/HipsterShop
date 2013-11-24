@@ -17,8 +17,7 @@ public class OrderProductAdapter extends BaseAdapter {
 	protected Activity activity;
 	protected ArrayList<SpecificOrder> items;
 
-	public OrderProductAdapter(Activity activity,
-			ArrayList<SpecificOrder> items) {
+	public OrderProductAdapter(Activity activity, ArrayList<SpecificOrder> items) {
 		this.activity = activity;
 		this.items = items;
 	}
@@ -57,9 +56,20 @@ public class OrderProductAdapter extends BaseAdapter {
 				.findViewById(R.id.specificOrderProduct);
 		product.setText(item.getProduct().getName());
 
+		TextView details = (TextView) vi.findViewById(R.id.specificOrderDetails);
+		details.setText(generateDetails(item));
+		
 		TextView price = (TextView) vi.findViewById(R.id.specificOrderPrice);
-		price.setText(String.valueOf(item.getPrice() * item.getQuantity()));
+		price.setText(activity.getResources().getString(R.string.order_total)
+				+ (item.getPrice() * item.getQuantity()));
 
 		return vi;
+	}
+
+	private String generateDetails(SpecificOrder item) {
+		return activity.getResources().getString(R.string.order_quantity)
+				+ item.getQuantity() + " - "
+				+ activity.getResources().getString(R.string.order_price)
+				+ item.getPrice();
 	}
 }
