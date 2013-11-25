@@ -55,7 +55,7 @@ public class OrdersListActivity extends MasterActivity {
         startService(intent);
         
 		SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
-        if(settings.getString("Token", "estonoesuntoken").equals("estonoesuntoken")) {
+        if(!settings.contains("Token")) {
     		new AlertDialog.Builder(this)
 			.setMessage(getResources().getString(R.string.orders_alert))
 			.setPositiveButton(getResources().getString(R.string.accept_message),

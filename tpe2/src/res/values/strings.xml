@@ -11,8 +11,8 @@
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
 
-    <string name="title_activity_subcategories">SubcategoriesActivity</string>
-    <string name="title_activity_products">ProductsActivity</string>
+    <string name="title_activity_subcategories">Subcategories</string>
+    <string name="title_activity_products">Products</string>
 
    	<string name="main.orders_button_name">Orders</string>
     <string name="main.products_button_name">Products</string>

@@ -3,7 +3,6 @@ package ar.edu.itba;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -13,14 +12,9 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.SignIn;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
@@ -47,24 +41,8 @@ public class LoginActivity extends MasterActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_login);
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-	        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-				System.out.println(categories.get(position).getName());
-				Intent intent = new Intent(LoginActivity.this, SubcategoriesActivity.class);
-		    	SharedPreferences prefs = LoginActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
-		    	SharedPreferences.Editor editor = prefs.edit();
-		        editor.putInt("selectedCategory", categories.get(position).getId());
-		        editor.commit();
-				startActivity(intent);
-			}
-	    });
 		
-        final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
-	   	startService(intent);
-		
-		SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
+		SharedPreferences settings = getPreferences(0);
 		mEmail = settings.getString("Username", "");
 		mPassword = settings.getString("Password", "");
 
@@ -206,32 +184,22 @@ public class LoginActivity extends MasterActivity {
 			showProgress(true);
 			break;
 		case ApiService.STATUS_FINISHED:
-			
-			
-			if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllCategories")) {
-				GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE);
-				categories = response.getCategories();	
-	    	
-				String[] values = response.getNames();
-				mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));
+			showProgress(false);
+			SignIn response = (SignIn) resultData.get(Utils.RESPONSE);
+
+			if (response.getAuthenticationToken() != null) {
+				Toast.makeText(getApplicationContext(), R.string.login_success,
+						Toast.LENGTH_LONG).show();
+				
+				SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
+			    SharedPreferences.Editor editor = settings.edit();
+			    editor.putString("Username", mEmail);
+			    editor.putString("Password", mPassword);
+			    editor.putString("Token", response.getAuthenticationToken());
+			    editor.commit();
 			} else {
-				showProgress(false);
-				SignIn response = (SignIn) resultData.get(Utils.RESPONSE);
-	
-				if (response.getAuthenticationToken() != null) {
-					Toast.makeText(getApplicationContext(), R.string.login_success,
-							Toast.LENGTH_LONG).show();
-					
-					SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
-				    SharedPreferences.Editor editor = settings.edit();
-				    editor.putString("Username", mEmail);
-				    editor.putString("Password", mPassword);
-				    editor.putString("Token", response.getAuthenticationToken());
-				    editor.commit();
-				} else {
-					mPasswordView.setError(getString(R.string.login_error));
-					mEmailView.setError(getString(R.string.login_error));
-				}
+				mPasswordView.setError(getString(R.string.login_error));
+				mEmailView.setError(getString(R.string.login_error));
 			}
 			break;
 		case ApiService.STATUS_ERROR:

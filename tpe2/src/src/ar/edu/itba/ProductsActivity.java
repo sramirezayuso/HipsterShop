@@ -50,6 +50,10 @@ public class ProductsActivity extends MasterActivity{
 			}
 	    });
 		
+		SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
+		String title = settings.getString("subcategoryName", getResources().getString(R.string.title_activity_products));
+		getActionBar().setTitle(title);
+		
         final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
 	   	startService(intent);
 		// Show the Up button in the action bar.
