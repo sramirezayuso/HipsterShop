@@ -71,6 +71,8 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 	   	subcategoryId = getActivity().getIntent().getIntExtra(Utils.ID, -1);
 	   	mGender =  getActivity().getIntent().getExtras().getString(Utils.GENDER, "");
 	   	mAge =  getActivity().getIntent().getExtras().getString(Utils.AGE, "");
+	   	System.out.println("Edad:" + mAge);
+	   	System.out.println("Genero:" + mGender);
 		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), "", "");
 	    view.getContext().startService(intent);
 	}
@@ -133,9 +135,6 @@ public void setUpSpinners(){
 
 		    @Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
-		    	mAge = strings[0];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
-			    view.getContext().startService(intent);
 		    }
 		});
 		
@@ -151,9 +150,6 @@ public void setUpSpinners(){
 
 		    @Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
-		    	mGender = strings[0];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
-			    view.getContext().startService(intent);
 		    }
 		});
 		

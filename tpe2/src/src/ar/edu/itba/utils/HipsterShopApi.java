@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.GetAllOrders;
 import ar.edu.itba.model.GetAllStates;
 import ar.edu.itba.model.GetAllSubcategories;
@@ -31,6 +32,13 @@ public class HipsterShopApi {
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Common", "GetAllStates", null));
 		intent.putExtra(Utils.METHOD_CLASS, GetAllStates.class.getName());
 	    return intent;
+	}
+	
+	public static Intent getAllCategoriesRequest(Activity activity, APIResultReceiver receiver){
+		Intent intent = buildIntent(activity, receiver);
+		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetAllCategories", null));
+		intent.putExtra(Utils.METHOD_CLASS, GetAllCategories.class.getName());
+		return intent;
 	}
 	
 	public static Intent getAllOrdersRequest(Activity activity, APIResultReceiver receiver){
@@ -78,9 +86,9 @@ public class HipsterShopApi {
 		HashMap<String, String> parameters = new HashMap<String, String>();
 		parameters.put("id", id);
 		String filters = "[";
-		if(gender != "")
+		if(!gender.equals(""))
 			filters = filters + "{\"id\":1,\"value\":\"" + gender + "\"},";
-		if(age != "")
+		if(!age.equals(""))
 			filters = filters + "{\"id\":2,\"value\":\"" + age + "\"}";
 		filters = filters + "]";
 		parameters.put("filters", filters);
@@ -96,11 +104,12 @@ public class HipsterShopApi {
 		HashMap<String, String> parameters = new HashMap<String, String>();
 		parameters.put("id", id);
 		String filters = "[";
-		if(gender != "")
+		if(!gender.equals(""))
 			filters = filters + "{\"id\":1,\"value\":\"" + gender + "\"},";
-		if(age != "")
+		if(!age.equals(""))
 			filters = filters + "{\"id\":2,\"value\":\"" + age + "\"}";
 		filters = filters + "]";
+		System.out.println(filters);
 		parameters.put("filters", filters);
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductsBySubcategoryId", parameters));
@@ -114,9 +123,9 @@ public class HipsterShopApi {
 		HashMap<String, String> parameters = new HashMap<String, String>();
 		parameters.put("id", id);
 		String filters = "[";
-		if(gender != "")
+		if(!gender.equals(""))
 			filters = filters + "{\"id\":1,\"value\":\"" + gender + "\"},";
-		if(age != "")
+		if(!age.equals(""))
 			filters = filters + "{\"id\":2,\"value\":\"" + age + "\"}";
 		filters = filters + "]";
 		parameters.put("filters", filters);

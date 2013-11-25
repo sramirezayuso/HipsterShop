@@ -1,10 +1,16 @@
 package ar.edu.itba;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.View;
-import ar.edu.itba.model.GetAllStates;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import ar.edu.itba.model.Category;
+import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.Utils;
@@ -24,10 +30,12 @@ public class HelloAndroidActivity extends MasterActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		final Intent intent = HipsterShopApi.getAllStatesRequest(this,
-				apiResultReceiver);
-		startService(intent);
+		String [] mierda = new String[] {"TestA", "Test2", "Test3"};
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, mierda));
+		
+        //final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
+	   	//startService(intent);
 	}
 
 	@Override
@@ -40,17 +48,14 @@ public class HelloAndroidActivity extends MasterActivity {
 
 			break;
 		case ApiService.STATUS_FINISHED:
-			System.out.println("Lo que vuelve de response a la Activity: "
-					+ resultData.get("response"));
-			GetAllStates states = (GetAllStates) resultData.get(Utils.RESPONSE);
-			System.out.println("los states son: " + states.getStates());
-
-			System.out.println("El primero es: "
-					+ states.getStates().get(0).getStateId() + " "
-					+ states.getStates().get(0).getName());
-
-			// System.out.println("Lo que vuelve de response a la Activity: " +
-			// results);
+			GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE); 
+	    	System.out.println(response.getCategories());
+	    	List<Category>categories = response.getCategories();
+			
+	    	
+		    String[] values = response.getNames();
+		    //mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));
+		    
 			// hide progress
 			break;
 		case ApiService.STATUS_ERROR:

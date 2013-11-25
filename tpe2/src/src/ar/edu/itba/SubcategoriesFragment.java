@@ -106,9 +106,6 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 
 		    @Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
-		    	mAge = strings[0];
-		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
-		    	getActivity().startService(intent);
 		    }
 		});
 		
@@ -124,9 +121,6 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 
 		    @Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
-		    	mGender = strings[0];
-		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
-		    	getActivity().startService(intent);
 		    }
 		});
 		
