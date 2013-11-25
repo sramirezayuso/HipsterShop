@@ -55,6 +55,7 @@ public class ApiService extends IntentService{
 	            System.out.println("Lo que devuelve de la API desde el service " + response);
 	                
 		        b.putParcelable(Utils.RESPONSE, response);
+		        b.putString(Utils.METHOD_CLASS, intent.getStringExtra(Utils.METHOD_CLASS));
 	            receiver.send(STATUS_FINISHED, b);
 	         } catch(Exception e) {
 	        	 b.putString(Intent.EXTRA_TEXT, e.toString());

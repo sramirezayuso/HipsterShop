@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import ar.edu.itba.model.Category;
+import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.GetAllOrders;
 import ar.edu.itba.model.Order;
 import ar.edu.itba.services.ApiService;
@@ -25,6 +28,10 @@ public class OrdersListActivity extends MasterActivity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_orders_list);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		
+        final Intent catIntent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
+	   	startService(catIntent);
 
         final Intent intent = HipsterShopApi.getAllOrdersRequest(this, apiResultReceiver);
         startService(intent);
@@ -39,18 +46,26 @@ public class OrdersListActivity extends MasterActivity {
         	Utils.showProgress(true, this, findViewById(R.id.orders_progress_status), findViewById(R.id.orders_list_container));
             break;
         case ApiService.STATUS_FINISHED:
-        	GetAllOrders response = (GetAllOrders) resultData.get(Utils.RESPONSE); 
-        	System.out.println(response.getOrders());
-     
-        	ArrayAdapter<List<Order>> adapter = organizeOrders(response.getOrders());
-    	    PagerAdapter pageAdapter = new OrdersAdapter(this, adapter);
-    	    ViewPager pager = (ViewPager) findViewById(R.id.ordersPager);  
-            pager.setAdapter(pageAdapter);
-            
-            TitlePageIndicator titleIndicator = (TitlePageIndicator) findViewById(R.id.ordersTitles);
-            titleIndicator.setViewPager(pager);
-            
-            Utils.showProgress(false, this, findViewById(R.id.orders_progress_status), findViewById(R.id.orders_list_container));
+        	if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllCategories")) {
+				GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE);
+				List<Category> categories = response.getCategories();	
+	    	
+				String[] values = response.getNames();
+				mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));
+			} else {
+	        	GetAllOrders response = (GetAllOrders) resultData.get(Utils.RESPONSE); 
+	        	System.out.println(response.getOrders());
+	     
+	        	ArrayAdapter<List<Order>> adapter = organizeOrders(response.getOrders());
+	    	    PagerAdapter pageAdapter = new OrdersAdapter(this, adapter);
+	    	    ViewPager pager = (ViewPager) findViewById(R.id.ordersPager);  
+	            pager.setAdapter(pageAdapter);
+	            
+	            TitlePageIndicator titleIndicator = (TitlePageIndicator) findViewById(R.id.ordersTitles);
+	            titleIndicator.setViewPager(pager);
+	            
+	            Utils.showProgress(false, this, findViewById(R.id.orders_progress_status), findViewById(R.id.orders_list_container));
+			}
             break;
         case ApiService.STATUS_ERROR:
         	System.out.println("error");

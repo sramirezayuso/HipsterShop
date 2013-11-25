@@ -1,5 +1,7 @@
 package ar.edu.itba;
 
+import java.util.List;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -9,8 +11,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import ar.edu.itba.model.Category;
+import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.GetProductById;
 import ar.edu.itba.model.Product;
 import ar.edu.itba.services.ApiService;
@@ -26,6 +31,11 @@ public class ProductActivity extends MasterActivity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_prod);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		
+        final Intent catIntent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
+	   	startService(catIntent);
+	   	
 		// Show the Up button in the action bar.
 		Intent receivedIntent = getIntent();
 		Integer productId = receivedIntent.getIntExtra(Utils.ID, -1);
@@ -85,43 +95,50 @@ public class ProductActivity extends MasterActivity {
 			System.out.println("progress");
 			break;
 		case ApiService.STATUS_FINISHED:
-			GetProductById response = (GetProductById) resultData
-					.get(Utils.RESPONSE);
-			
-			this.product = response.getProduct();
-			
-			TextView productName = (TextView) findViewById(R.id.productName);
-			productName.setText(product.getName());
-			
-			TextView productBrand = (TextView) findViewById(R.id.productBrand);
-			productBrand.setText(product.getBrand());
-			
-			//TextView productDetails = (TextView) findViewById(R.id.productDetails);
-			//productDetails.setText(response.getProduct().toString());
-			
-	
-			// TODO: Convert to right currency
-			String priceFormat = getResources().getString(R.string.product_price);
-			TextView productPrice = (TextView) findViewById(R.id.productPrice);
-			productPrice.setText(String.format(priceFormat, response.getProduct().getPrice()));
-			
-			
-			String[] colors_array = product.getColors();
-			
-			Spinner productColors = (Spinner) findViewById(R.id.productColors);
-			ArrayAdapter<String> color_adapter = new ArrayAdapter<String>(this,
-					R.layout.spinner_item, colors_array);
-			productColors.setAdapter(color_adapter);
-			
-			
-			String[] sizes_array = product.getSizes();
-			Spinner productSizes = (Spinner) findViewById(R.id.productSizes);
-			ArrayAdapter<String> size_adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,
-					sizes_array);
-			productSizes.setAdapter(size_adapter);
-			
-			setImages();
-			getActionBar().setTitle(product.getName());
+			if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllCategories")) {
+				GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE);
+				List<Category> categories = response.getCategories();	
+	    	
+				String[] values = response.getNames();
+				mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));
+			} else {
+				GetProductById response = (GetProductById) resultData.get(Utils.RESPONSE);
+				
+				this.product = response.getProduct();
+				
+				TextView productName = (TextView) findViewById(R.id.productName);
+				productName.setText(product.getName());
+				
+				TextView productBrand = (TextView) findViewById(R.id.productBrand);
+				productBrand.setText(product.getBrand());
+				
+				//TextView productDetails = (TextView) findViewById(R.id.productDetails);
+				//productDetails.setText(response.getProduct().toString());
+				
+		
+				// TODO: Convert to right currency
+				String priceFormat = getResources().getString(R.string.product_price);
+				TextView productPrice = (TextView) findViewById(R.id.productPrice);
+				productPrice.setText(String.format(priceFormat, response.getProduct().getPrice()));
+				
+				
+				String[] colors_array = product.getColors();
+				
+				Spinner productColors = (Spinner) findViewById(R.id.productColors);
+				ArrayAdapter<String> color_adapter = new ArrayAdapter<String>(this,
+						R.layout.spinner_item, colors_array);
+				productColors.setAdapter(color_adapter);
+				
+				
+				String[] sizes_array = product.getSizes();
+				Spinner productSizes = (Spinner) findViewById(R.id.productSizes);
+				ArrayAdapter<String> size_adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,
+						sizes_array);
+				productSizes.setAdapter(size_adapter);
+				
+				setImages();
+				getActionBar().setTitle(product.getName());
+			}
 
 			
 			break;

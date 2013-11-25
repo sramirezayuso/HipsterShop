@@ -30,12 +30,10 @@ public class HelloAndroidActivity extends MasterActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		String [] mierda = new String[] {"TestA", "Test2", "Test3"};
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, mierda));
 		
-        //final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
-	   	//startService(intent);
+        final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
+	   	startService(intent);
 	}
 
 	@Override
@@ -48,13 +46,13 @@ public class HelloAndroidActivity extends MasterActivity {
 
 			break;
 		case ApiService.STATUS_FINISHED:
-			GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE); 
-	    	System.out.println(response.getCategories());
-	    	List<Category>categories = response.getCategories();
-			
+			if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllCategories")) {
+				GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE);
+				List<Category> categories = response.getCategories();	
 	    	
-		    String[] values = response.getNames();
-		    //mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));
+				String[] values = response.getNames();
+				mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));
+			}
 		    
 			// hide progress
 			break;

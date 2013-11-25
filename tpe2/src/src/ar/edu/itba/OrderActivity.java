@@ -1,5 +1,7 @@
 package ar.edu.itba;
 
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,8 +9,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import ar.edu.itba.model.Category;
+import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.GetOrderById;
 import ar.edu.itba.model.Order;
 import ar.edu.itba.model.SpecificOrder;
@@ -25,6 +30,9 @@ public class OrderActivity extends MasterActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_order);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        final Intent catIntent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
+	   	startService(catIntent);
 		Intent receivedIntent = getIntent();
 		Integer orderId = receivedIntent.getIntExtra(Utils.ID, -1);
 		final Intent intent = HipsterShopApi.getOrderByIdRequest(this,
@@ -60,23 +68,31 @@ public class OrderActivity extends MasterActivity {
 			Utils.showProgress(true, this, findViewById(R.id.order_progress_status), findViewById(R.id.order_form));
 			break;
 		case ApiService.STATUS_FINISHED:
-			GetOrderById response = (GetOrderById) resultData
-					.get(Utils.RESPONSE);
-			this.order = response.getOrder();
-
-			if (order.getItems().length != 0) {
-				showData();
-				Utils.showProgress(false, this, findViewById(R.id.order_progress_status), findViewById(R.id.order_form));
+			if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllCategories")) {
+				GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE);
+				List<Category> categories = response.getCategories();	
+	    	
+				String[] values = response.getNames();
+				mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));
 			} else {
-				new AlertDialog.Builder(this)
-					.setMessage(getResources().getString(R.string.order_alert))
-					.setPositiveButton(getResources().getString(R.string.accept_message),
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog,	int id) {
-								dialog.cancel();
-								finish();
-							}
-				}).show();
+				GetOrderById response = (GetOrderById) resultData
+						.get(Utils.RESPONSE);
+				this.order = response.getOrder();
+	
+				if (order.getItems().length != 0) {
+					showData();
+					Utils.showProgress(false, this, findViewById(R.id.order_progress_status), findViewById(R.id.order_form));
+				} else {
+					new AlertDialog.Builder(this)
+						.setMessage(getResources().getString(R.string.order_alert))
+						.setPositiveButton(getResources().getString(R.string.accept_message),
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,	int id) {
+									dialog.cancel();
+									finish();
+								}
+					}).show();
+				}
 			}
 
 			break;

@@ -1,5 +1,7 @@
 package ar.edu.itba;
 
+import java.util.List;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -12,9 +14,13 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import ar.edu.itba.model.Category;
+import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.SignIn;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
@@ -41,6 +47,10 @@ public class LoginActivity extends MasterActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_login);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		
+        final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
+	   	startService(intent);
 		
 		SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
 		mEmail = settings.getString("Username", "");
@@ -184,22 +194,32 @@ public class LoginActivity extends MasterActivity {
 			showProgress(true);
 			break;
 		case ApiService.STATUS_FINISHED:
-			showProgress(false);
-			SignIn response = (SignIn) resultData.get(Utils.RESPONSE);
-
-			if (response.getAuthenticationToken() != null) {
-				Toast.makeText(getApplicationContext(), R.string.login_success,
-						Toast.LENGTH_LONG).show();
-				
-				SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
-			    SharedPreferences.Editor editor = settings.edit();
-			    editor.putString("Username", mEmail);
-			    editor.putString("Password", mPassword);
-			    editor.putString("Token", response.getAuthenticationToken());
-			    editor.commit();
+			
+			
+			if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllCategories")) {
+				GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE);
+				List<Category> categories = response.getCategories();	
+	    	
+				String[] values = response.getNames();
+				mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));
 			} else {
-				mPasswordView.setError(getString(R.string.login_error));
-				mEmailView.setError(getString(R.string.login_error));
+				showProgress(false);
+				SignIn response = (SignIn) resultData.get(Utils.RESPONSE);
+	
+				if (response.getAuthenticationToken() != null) {
+					Toast.makeText(getApplicationContext(), R.string.login_success,
+							Toast.LENGTH_LONG).show();
+					
+					SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
+				    SharedPreferences.Editor editor = settings.edit();
+				    editor.putString("Username", mEmail);
+				    editor.putString("Password", mPassword);
+				    editor.putString("Token", response.getAuthenticationToken());
+				    editor.commit();
+				} else {
+					mPasswordView.setError(getString(R.string.login_error));
+					mEmailView.setError(getString(R.string.login_error));
+				}
 			}
 			break;
 		case ApiService.STATUS_ERROR:
