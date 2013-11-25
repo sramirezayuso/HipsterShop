@@ -29,10 +29,12 @@
     <string name="order_request">Pedido nro:</string>
     <string name="order_price">$</string>
     <string name="order_quantity">Cantidad:</string>
+    <string name="order_alert">La orden seleccionada no contiene productos</string>
+    <string name="accept_message">Entendido</string>
         
     <string name="product_price">$%1$d</string>
     
-   	<string name="loading">Cargando</string>
+   	<string name="loading">Cargando...</string>
    	<string name="male">Men</string>
    	<string name="female">Women</string>
    	<string name="all_genders">All</string>
