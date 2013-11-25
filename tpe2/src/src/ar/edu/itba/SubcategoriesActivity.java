@@ -1,5 +1,7 @@
 package ar.edu.itba;
 
+
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +10,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -18,6 +21,8 @@ import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.Utils;
 
 public class SubcategoriesActivity extends MasterActivity {
+	
+	public ViewGroup mListLayout, mProductsLayout;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,22 @@ public class SubcategoriesActivity extends MasterActivity {
 		setContentView(R.layout.activity_subcategories);
 		// Show the Up button in the action bar.
 		setupActionBar();
+		
+		mListLayout = (ViewGroup) findViewById(R.id.activity_subcategories_list_container);
+		mProductsLayout = (ViewGroup) findViewById(R.id.activity_subcategories_products_container);
+		
+		SubcategoriesFragment subcatFragment = new SubcategoriesFragment();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(mListLayout.getId(), subcatFragment, SubcategoriesFragment.class.getName());
+        fragmentTransaction.commit();
+        
+        if(mProductsLayout != null){
+            ProductsFragment imageSelectorFragment = new ProductsFragment();
+            FragmentTransaction fragmentTransaction2 = getFragmentManager().beginTransaction();
+            fragmentTransaction2.replace(mProductsLayout.getId(), imageSelectorFragment,
+            		ProductsFragment.class.getName());
+            fragmentTransaction2.commit();
+        }
 		
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {

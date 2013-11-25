@@ -2,13 +2,13 @@ package ar.edu.itba;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,7 +19,7 @@ import android.widget.ListView;
 import ar.edu.itba.model.Category;
 import ar.edu.itba.services.APIResultReceiver;
 
-public class MasterActivity extends Activity implements APIResultReceiver.Receiver {
+public class MasterActivity extends FragmentActivity implements APIResultReceiver.Receiver {
 	public APIResultReceiver apiResultReceiver;
     public ListView mDrawerList;
     public List<Category> categories;

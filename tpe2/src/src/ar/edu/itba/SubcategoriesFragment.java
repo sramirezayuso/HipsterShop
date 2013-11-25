@@ -3,6 +3,7 @@ package ar.edu.itba;
 import java.util.List;
 
 import android.app.ActionBar;
+import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
 import android.content.Intent;
@@ -38,7 +39,7 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		Intent intent = new Intent(getActivity(), ProductsActivity.class);
+		
 		if(position > 0) {
 			SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
@@ -51,7 +52,16 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 			editor.putInt("selectedSubcategory", -2);
 			editor.commit();
 		}
-		startActivity(intent);
+		if(((SubcategoriesActivity)getActivity()).mProductsLayout != null){
+			ProductsFragment newFragment = new ProductsFragment();
+			FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
+			transaction.replace(R.id.activity_subcategories_products_container, newFragment);
+			transaction.addToBackStack(null);
+			transaction.commit();
+		} else {
+			Intent intent = new Intent(getActivity(), ProductsActivity.class);
+			startActivity(intent);
+		}
 	}
 	  
 	@Override

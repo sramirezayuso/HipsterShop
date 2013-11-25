@@ -7,10 +7,17 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent" >
 	    
+	     <!--
 	    <fragment android:id="@+id/fragment_products"
 			android:layout_height="fill_parent"
 			android:name="ar.edu.itba.ProductsFragment"
 			android:layout_width="match_parent" />
+		-->
+			
+		<FrameLayout
+        	android:id="@+id/activity_products_container"
+        	android:layout_width="match_parent"
+        	android:layout_height="match_parent"/>
 
 	</FrameLayout>
 

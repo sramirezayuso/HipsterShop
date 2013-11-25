@@ -1,6 +1,7 @@
 package ar.edu.itba;
 
 
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -19,11 +21,21 @@ import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.Utils;
 
 public class ProductsActivity extends MasterActivity{
-
+	
+	private ViewGroup  mProductsLayout;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_products);
+		
+		mProductsLayout = (ViewGroup) findViewById(R.id.activity_products_container);
+		
+		ProductsFragment subcatFragment = new ProductsFragment();
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(mProductsLayout.getId(), subcatFragment, ProductsFragment.class.getName());
+        fragmentTransaction.commit();
+        
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
