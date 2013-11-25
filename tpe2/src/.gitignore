@@ -29,3 +29,7 @@ proguard/
 *.iws
 .idea/
 /target
+
+#Others
+pom.xml
+.settings
