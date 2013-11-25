@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import ar.edu.itba.R;
 import ar.edu.itba.model.Order;
-import ar.edu.itba.model.SpecificOrder;
 
 public class SpecificOrderAdapter extends BaseAdapter {
 	protected Context activity;
@@ -49,19 +48,18 @@ public class SpecificOrderAdapter extends BaseAdapter {
 		Order item = items.get(position);
 
 		TextView number = (TextView) vi.findViewById(R.id.orderItemNumber);
-		number.append(String.valueOf(item.getId()));
-		
+		number.setText(activity.getResources().getString(R.string.order_request) + item.getId());
+
 		TextView address = (TextView) vi.findViewById(R.id.orderItemAddress);
-		if(item.getAddress() != null && item.getAddress().getName() != null)
+		if (item.getAddress() != null && item.getAddress().getName() != null)
 			address.setText(item.getAddress().getName());
-		
-		TextView price = (TextView) vi.findViewById(R.id.orderItemPrice);
-		price.append("FALTA");
-		
-		TextView creationDate = (TextView) vi.findViewById(R.id.orderItemCreationDate);
+
+		TextView creationDate = (TextView) vi
+				.findViewById(R.id.orderItemCreationDate);
 		creationDate.setText(item.getReceivedDate());
-		
-		TextView deliveryDate = (TextView) vi.findViewById(R.id.orderItemDeliveryDate);
+
+		TextView deliveryDate = (TextView) vi
+				.findViewById(R.id.orderItemDeliveryDate);
 		deliveryDate.setText(item.getDeliveredDate());
 
 		return vi;
