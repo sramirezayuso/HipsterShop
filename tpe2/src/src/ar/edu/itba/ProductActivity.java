@@ -1,7 +1,5 @@
 package ar.edu.itba;
 
-import java.text.DecimalFormat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;

@@ -83,6 +83,17 @@ public class HipsterShopApi {
 		return intent;
 	}
 	
+	public static Intent getOffersRequest(Activity activity, APIResultReceiver receiver){
+		checkInternet(activity);
+		Intent intent = buildIntent(activity, receiver);
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		String filters = "[{\"id\":5,\"value\":\"" + "Oferta" + "\"}]";
+		parameters.put("filters", filters);
+		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetAllProducts", parameters));
+		intent.putExtra(Utils.METHOD_CLASS, GetAllProducts.class.getName());
+		return intent;
+	}
+	
 	public static Intent getAllOrdersRequest(Activity activity, APIResultReceiver receiver){
 		checkInternet(activity);
 		Intent intent = buildIntent(activity, receiver);

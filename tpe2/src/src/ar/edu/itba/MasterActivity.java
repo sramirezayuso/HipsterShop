@@ -127,10 +127,10 @@ public class MasterActivity extends FragmentActivity implements APIResultReceive
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Pass the event to ActionBarDrawerToggle, if it returns
         // true, then it has handled the app icon touch event
-        if (mDrawerToggle.onOptionsItemSelected(item)) {System.out.println("pasa");
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
           return true;
         }
-        System.out.println("no pasa");
+
         // Handle presses on the action bar items
 		Intent intent = null;
 	    switch (item.getItemId()) {
