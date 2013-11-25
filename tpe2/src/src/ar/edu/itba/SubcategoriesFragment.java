@@ -4,7 +4,9 @@ import java.util.List;
 
 import android.app.ActionBar;
 import android.app.ListFragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -26,8 +28,6 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 	
 	private APIResultReceiver apiResultReceiver;
 	private List<Subcategory> products;
-	private String mGender;
-	private String mAge;
 	private int categoryId;
 	
 	@Override
@@ -39,27 +39,30 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Intent intent = new Intent(getActivity(), ProductsActivity.class);
-		if(position > 0)
-			intent.putExtra(Utils.ID, Long.valueOf(products.get(position-1).getId()).intValue());
-		else {
-			intent.putExtra(Utils.ID, -2);
-			intent.putExtra(Utils.CAT_ID, categoryId);
+		if(position > 0) {
+			SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putInt("selectedSubcategory", products.get(position-1).getId());
+			editor.commit();
 		}
-		intent.putExtra(Utils.GENDER, mGender);
-		intent.putExtra(Utils.AGE, mAge);
+		else {
+			SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putInt("selectedSubcategory", -2);
+			editor.commit();
+		}
 		startActivity(intent);
 	}
 	  
 	@Override
 	public void onStart(){
 		super.onStart();
-		mGender = "";
-		mAge = "";
 		setUpSpinners();
 	   	apiResultReceiver = new APIResultReceiver(new Handler());
 	   	apiResultReceiver.setReceiver(this);
-	   	categoryId = getActivity().getIntent().getIntExtra(Utils.ID, -1);
-	   	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, String.valueOf(categoryId), "", "");
+		SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+	   	categoryId = prefs.getInt("selectedCategory", -1);
+	   	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, String.valueOf(categoryId), prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 	   	getActivity().startService(intent);
 	}
 	  
@@ -111,8 +114,11 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 			
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-		    	mAge = strings[position];
-		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, String.valueOf(categoryId), mGender, mAge);
+		    	SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("filterAge", strings[position]);
+                editor.commit();
+		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, String.valueOf(categoryId), prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 		    	getActivity().startService(intent);
 		    }
 
@@ -126,8 +132,11 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 			
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-		    	mGender = strings[position];
-		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, String.valueOf(categoryId), mGender, mAge);
+		    	SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("filterGender", strings[position]);
+                editor.commit();
+		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, String.valueOf(categoryId), prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 		    	getActivity().startService(intent);
 		    }
 

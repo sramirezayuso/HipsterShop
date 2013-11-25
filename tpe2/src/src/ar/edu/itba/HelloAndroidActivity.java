@@ -1,6 +1,8 @@
 package ar.edu.itba;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -34,10 +36,18 @@ public class HelloAndroidActivity extends MasterActivity {
 	        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				System.out.println(categories.get(position).getName());
 				Intent intent = new Intent(HelloAndroidActivity.this, SubcategoriesActivity.class);
-				intent.putExtra(Utils.ID, categories.get(position).getId());
+		    	SharedPreferences prefs = HelloAndroidActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences.Editor editor = prefs.edit();
+		        editor.putInt("selectedCategory", categories.get(position).getId());
+		        editor.commit();
 				startActivity(intent);
 			}
 	     });
+    	SharedPreferences prefs = this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+    	SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("filterAge", "");
+        editor.putString("filterGender", "");
+        editor.commit();
 		
         final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
 	   	startService(intent);

@@ -5,7 +5,9 @@ import java.util.List;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -33,8 +35,6 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 	private APIResultReceiver apiResultReceiver;
 	private GridView gridView;
 	private View view;
-	private String mGender;
-	private String mAge;
 	private int subcategoryId;
 	
 	
@@ -47,8 +47,6 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		view = inflater.inflate(R.layout.fragment_products, container, false);
 		gridView = (GridView) view.findViewById(R.id.fragment_products);
-		mGender = "";
-		mAge = "";
 		return view;
 	}
 	
@@ -70,21 +68,16 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 		setUpSpinners();
         apiResultReceiver = new APIResultReceiver(new Handler());
         apiResultReceiver.setReceiver(this);
-	   	subcategoryId = getActivity().getIntent().getIntExtra(Utils.ID, -1);
-	   	mGender = getActivity().getIntent().getStringExtra(Utils.GENDER);
-	   	if(mGender == null)
-	   		mGender = "";
-	   	mAge = getActivity().getIntent().getStringExtra(Utils.AGE);
-	   	if(mAge == null)
-	   		mAge = "";
+		SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		subcategoryId = prefs.getInt("selectedSubcategory", -1);
 	   	if(subcategoryId == -1) {
-	   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver, "", "");
+	   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver,  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 	   		view.getContext().startService(intent);
 	   	} else if(subcategoryId == -2) {
-	   		final Intent intent = HipsterShopApi.getProductsByCategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(getActivity().getIntent().getIntExtra(Utils.CAT_ID, 1)), "", "");
+	   		final Intent intent = HipsterShopApi.getProductsByCategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(getActivity().getIntent().getIntExtra(Utils.CAT_ID, 1)),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 	   		view.getContext().startService(intent);
 	   	} else {
-	   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), "", "");
+	   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 	   		view.getContext().startService(intent);
 	   	}
 	}
@@ -160,12 +153,15 @@ public void setUpSpinners(){
 			
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-		    	mAge = strings[position];
+		    	SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("filterAge", strings[position]);
+                editor.commit();
 			   	if(subcategoryId == -1){
-			   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver, mGender, mAge);
+			   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver, prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 			   		view.getContext().startService(intent);
 			   	} else {
-			   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
+			   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 			   		view.getContext().startService(intent);
 			   	}
 		    }
@@ -180,12 +176,15 @@ public void setUpSpinners(){
 			
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-		    	mGender = strings[position];
+		    	SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("filterGender", strings[position]);
+                editor.commit();
 			   	if(subcategoryId == -1){
-			   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver, mGender, mAge);
+			   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver, prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 			   		view.getContext().startService(intent);
 			   	} else {
-			   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
+			   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 			   		view.getContext().startService(intent);
 			   	}
 		    }
