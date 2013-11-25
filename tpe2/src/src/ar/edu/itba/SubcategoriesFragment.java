@@ -29,7 +29,9 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-	    // do something with the data
+		Intent intent = new Intent(getActivity(), ProductsActivity.class);
+		intent.putExtra(Utils.ID, Long.valueOf(products.get(position).getId()).intValue());
+		startActivity(intent);
 	}
 	  
 	@Override
@@ -44,6 +46,7 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 	@Override
 	public void onReceiveResult(int resultCode, Bundle resultData) {
 		System.out.println(resultCode);
+		System.out.println("-------------TEST------------");
 	    switch (resultCode) {
 	    case ApiService.STATUS_RUNNING:
 	        //show progress

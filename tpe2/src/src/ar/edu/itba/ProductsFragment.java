@@ -35,6 +35,7 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 	private View view;
 	private String mGender;
 	private String mAge;
+	private int subcategoryId;
 	
 	
 	 @Override
@@ -69,7 +70,8 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 		setUpSpinners();
         apiResultReceiver = new APIResultReceiver(new Handler());
         apiResultReceiver.setReceiver(this);
-		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", "", "");
+	   	subcategoryId = getActivity().getIntent().getIntExtra(Utils.ID, -1);
+		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), "", "");
 	    view.getContext().startService(intent);
 	}
 	
@@ -125,14 +127,14 @@ public void setUpSpinners(){
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 		    	mAge = strings[position];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
 			    view.getContext().startService(intent);
 		    }
 
 		    @Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
 		    	mAge = strings[0];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
 			    view.getContext().startService(intent);
 		    }
 		});
@@ -143,14 +145,14 @@ public void setUpSpinners(){
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 		    	mGender = strings[position];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
 			    view.getContext().startService(intent);
 		    }
 
 		    @Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
 		    	mGender = strings[0];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
 			    view.getContext().startService(intent);
 		    }
 		});
