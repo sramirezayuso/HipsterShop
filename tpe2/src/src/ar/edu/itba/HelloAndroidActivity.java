@@ -1,23 +1,35 @@
 package ar.edu.itba;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import ar.edu.itba.model.GetAllCategories;
+import ar.edu.itba.model.GetAllProducts;
+import ar.edu.itba.model.Product;
+import ar.edu.itba.model.SpecificOrder;
 import ar.edu.itba.notifications.AlarmService;
+import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
+import ar.edu.itba.utils.ProductAdapter;
 import ar.edu.itba.utils.Utils;
 
 public class HelloAndroidActivity extends MasterActivity {
+	
+	private APIResultReceiver apiResultReceiver2;
+	private List<Product> offers;
 
 	/**
 	 * Called when the activity is first created.
@@ -54,7 +66,13 @@ public class HelloAndroidActivity extends MasterActivity {
 		
         final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
 	   	startService(intent);
+	   	
+	   	apiResultReceiver2 = new APIResultReceiver(new Handler());
+        apiResultReceiver2.setReceiver(this);
+        final Intent intent2 = HipsterShopApi.getOffersRequest(this, apiResultReceiver2);
+	   	startService(intent2);
 	}
+	
 	public void setNotificationReceiver(){
 		Intent intent = new Intent(this, AlarmService.class);
 		
@@ -67,9 +85,7 @@ public class HelloAndroidActivity extends MasterActivity {
 		System.out.println(resultCode);
 		switch (resultCode) {
 		case ApiService.STATUS_RUNNING:
-			// show progress
-			System.out.println("progress");
-
+			Utils.showProgress(true, this, findViewById(R.id.order_progress_status), findViewById(R.id.order_form));
 			break;
 		case ApiService.STATUS_FINISHED:
 			if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllCategories")) {
@@ -78,6 +94,16 @@ public class HelloAndroidActivity extends MasterActivity {
 	    	
 				String[] values = response.getNames();
 				mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));
+			}
+			
+			if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllProducts")) {
+				GetAllProducts response = (GetAllProducts) resultData.get(Utils.RESPONSE);
+				GridView gridView = (GridView) findViewById(R.id.main_offers);
+				offers = response.getProducts();
+            	ProductAdapter imageAdapter = new ProductAdapter(this, offers);
+            	gridView.setAdapter(imageAdapter);
+        		gridView.setOnItemClickListener(mMessageClickedHandler); 
+        		Utils.showProgress(false, this, findViewById(R.id.order_progress_status), findViewById(R.id.order_form));
 			}
 		    
 			// hide progress
@@ -89,19 +115,6 @@ public class HelloAndroidActivity extends MasterActivity {
 			break;
 		}
 	}
-
-	/*
-	 * UTILEjemplo de uso de shared preferences SharedPreferences sp =
-	 * getPreferences(MODE_PRIVATE); SharedPreferences.Editor editor =
-	 * sp.edit();
-	 * 
-	 * editor.putString("PASSWORD_VALUE", "123456");
-	 * editor.commit();//IMPORTANTE!
-	 * 
-	 * 
-	 * Asi se levantan del otro lado String s=
-	 * sp.getString("PASSWORD_VALUE","-1");
-	 */
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -128,23 +141,15 @@ public class HelloAndroidActivity extends MasterActivity {
 		return true;
 	}
 
-	public void onProductClick(View view) {
-		Intent intent = new Intent(this, ProductsActivity.class);
-		//intent.putExtra(ProductActivity.EXTRA_MESSAGE, "prueba");
-		startActivity(intent);
+	private OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
+        public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+			Integer productId = ((Product) parent.getAdapter().getItem(
+					position)).getId();
 
-	}
-
-	public void onOrdersClick(View view) {
-		Intent intent = new Intent(this, OrdersListActivity.class);
-		// intent.putExtra(ProductActivity.EXTRA_MESSAGE, "prueba");
-		startActivity(intent);
-	}
-	
-	public void onSubcategoriesClick(View view) {
-		Intent intent = new Intent(this, SubcategoriesActivity.class);
-		// intent.putExtra(ProductActivity.EXTRA_MESSAGE, "prueba");
-		startActivity(intent);
-	}
-
+			Intent intent = new Intent(parent.getContext(),
+					ProductActivity.class);
+			intent.putExtra(Utils.ID, productId);
+			startActivity(intent);
+        }
+    };
 }
