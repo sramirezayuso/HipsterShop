@@ -15,6 +15,8 @@ public class Utils {
     public final static String RESPONSE = "response";
     public final static String ID = "id";
     public final static String PREFERENCES = "preferences";
+    public final static String GENDER = "gender";
+    public final static String AGE = "age";
 
 
     

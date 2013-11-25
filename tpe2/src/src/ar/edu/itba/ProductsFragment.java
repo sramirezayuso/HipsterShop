@@ -5,7 +5,6 @@ import java.util.List;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,15 +14,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import ar.edu.itba.model.GetProductsBySubcategoryId;
 import ar.edu.itba.model.Product;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
+import ar.edu.itba.utils.AgeAdapter;
+import ar.edu.itba.utils.GenderAdapter;
 import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.ProductAdapter;
 import ar.edu.itba.utils.Utils;
@@ -35,6 +33,7 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 	private View view;
 	private String mGender;
 	private String mAge;
+	private int subcategoryId;
 	
 	
 	 @Override
@@ -69,7 +68,10 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 		setUpSpinners();
         apiResultReceiver = new APIResultReceiver(new Handler());
         apiResultReceiver.setReceiver(this);
-		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", "", "");
+	   	subcategoryId = getActivity().getIntent().getIntExtra(Utils.ID, -1);
+	   	mGender =  getActivity().getIntent().getExtras().getString(Utils.GENDER, "");
+	   	mAge =  getActivity().getIntent().getExtras().getString(Utils.AGE, "");
+		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), "", "");
 	    view.getContext().startService(intent);
 	}
 	
@@ -125,14 +127,14 @@ public void setUpSpinners(){
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 		    	mAge = strings[position];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
 			    view.getContext().startService(intent);
 		    }
 
 		    @Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
 		    	mAge = strings[0];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
 			    view.getContext().startService(intent);
 		    }
 		});
@@ -143,14 +145,14 @@ public void setUpSpinners(){
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 		    	mGender = strings[position];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
 			    view.getContext().startService(intent);
 		    }
 
 		    @Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
 		    	mGender = strings[0];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
 			    view.getContext().startService(intent);
 		    }
 		});
@@ -159,73 +161,5 @@ public void setUpSpinners(){
 		genderSpinner.setAdapter(new GenderAdapter(view.getContext(), R.layout.spinner, getActivity().getResources().getStringArray(R.array.gender_list)));
 
 	}
-	
-	public class AgeAdapter extends ArrayAdapter<String>{
-		
-		String[] strings;
-		Context mContext;
-		 
-        public AgeAdapter(Context context, int textViewResourceId,   String[] objects) {
-            super(context, textViewResourceId, objects);
-            strings = objects;
-            mContext = context;
-        }
- 
-        @Override
-        public View getDropDownView(int position, View convertView,ViewGroup parent) {
-        	LayoutInflater inflater = getActivity().getLayoutInflater();
-        	View row = inflater.inflate(R.layout.spinner_item, parent, false);
-        	
-            TextView label = (TextView)row.findViewById(R.id.text);
-            label.setText(strings[position]);
-            
-            return row;
-        }
- 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-        	LayoutInflater inflater = getActivity().getLayoutInflater();
-        	View topBar = inflater.inflate(R.layout.spinner, parent, false);
-        	
-            ImageView icon=(ImageView)topBar.findViewById(R.id.image);
-            icon.setImageResource(R.drawable.hipster);
-            
-            return topBar;
-        }
-    }
-	
-	public class GenderAdapter extends ArrayAdapter<String>{
-		
-		String[] strings;
-		Context mContext;
-		 
-        public GenderAdapter(Context context, int textViewResourceId,   String[] objects) {
-            super(context, textViewResourceId, objects);
-            strings = objects;
-            mContext = context;
-        }
- 
-        @Override
-        public View getDropDownView(int position, View convertView,ViewGroup parent) {
-        	LayoutInflater inflater = getActivity().getLayoutInflater();
-        	View row = inflater.inflate(R.layout.spinner_item, parent, false);
-        	
-            TextView label = (TextView)row.findViewById(R.id.text);
-            label.setText(strings[position]);
-            
-            return row;
-        }
- 
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-        	LayoutInflater inflater = getActivity().getLayoutInflater();
-        	View topBar = inflater.inflate(R.layout.spinner, parent, false);
-        	
-            ImageView icon=(ImageView)topBar.findViewById(R.id.image);
-            icon.setImageResource(R.drawable.gender);
-            
-            return topBar;
-        }
-   }
 }
 
