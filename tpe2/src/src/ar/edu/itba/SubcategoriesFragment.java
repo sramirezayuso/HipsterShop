@@ -39,7 +39,12 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Intent intent = new Intent(getActivity(), ProductsActivity.class);
-		intent.putExtra(Utils.ID, Long.valueOf(products.get(position).getId()).intValue());
+		if(position > 0)
+			intent.putExtra(Utils.ID, Long.valueOf(products.get(position-1).getId()).intValue());
+		else {
+			intent.putExtra(Utils.ID, -2);
+			intent.putExtra(Utils.CAT_ID, categoryId);
+		}
 		intent.putExtra(Utils.GENDER, mGender);
 		intent.putExtra(Utils.AGE, mAge);
 		startActivity(intent);
@@ -73,7 +78,12 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 	    	products = response.getSubcategories();
 			
 	    	
-		    String[] values = response.getNames();
+		    String[] names = response.getNames();
+		    String[] values = new String[names.length+1];
+		    values[0] = "Ver todas";
+		    for (int i = 0; i < names.length; i++) {
+				values[i+1] = names[i];
+			}
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 			        android.R.layout.simple_list_item_1, values);
 			setListAdapter(adapter);

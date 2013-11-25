@@ -14,6 +14,7 @@ public class Utils {
     public final static String METHOD_CLASS = "method_class";
     public final static String RESPONSE = "response";
     public final static String ID = "id";
+    public final static String CAT_ID = "cat_id";
     public final static String PREFERENCES = "preferences";
     public final static String GENDER = "gender";
     public final static String AGE = "age";
