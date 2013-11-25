@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import ar.edu.itba.model.GetAllCategories;
+import ar.edu.itba.notifications.AlarmService;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.Utils;
@@ -29,6 +30,7 @@ public class HelloAndroidActivity extends MasterActivity {
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		setNotificationReceiver();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
@@ -52,6 +54,12 @@ public class HelloAndroidActivity extends MasterActivity {
 		
         final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
 	   	startService(intent);
+	}
+	public void setNotificationReceiver(){
+		Intent intent = new Intent(this, AlarmService.class);
+		
+		AlarmService alarm = new AlarmService();
+		alarm.onStart(this, intent, 0);
 	}
 
 	@Override
