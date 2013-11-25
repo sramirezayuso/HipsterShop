@@ -4,9 +4,15 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import ar.edu.itba.R;
 import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.GetAllOrders;
 import ar.edu.itba.model.GetAllStates;
@@ -27,7 +33,24 @@ public class HipsterShopApi {
 	    return intent;
 	}
 	
+	private static void checkInternet(Activity activity) {
+		 ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+		 NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		 if (netInfo == null || !netInfo.isConnected()) {
+			 new AlertDialog.Builder(activity)
+				.setMessage(activity.getResources().getString(R.string.internet_message))
+				.setPositiveButton(activity.getResources().getString(R.string.accept_message),
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog,	int id) {
+							dialog.cancel();
+							System.exit(0);
+						}
+				}).show();
+		 }
+	}
+	
 	public static Intent getAllStatesRequest(Activity activity, APIResultReceiver receiver){
+		checkInternet(activity);
 		Intent intent = buildIntent(activity, receiver);
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Common", "GetAllStates", null));
 		intent.putExtra(Utils.METHOD_CLASS, GetAllStates.class.getName());
@@ -35,6 +58,7 @@ public class HipsterShopApi {
 	}
 	
 	public static Intent getAllCategoriesRequest(Activity activity, APIResultReceiver receiver){
+		checkInternet(activity);
 		Intent intent = buildIntent(activity, receiver);
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetAllCategories", null));
 		intent.putExtra(Utils.METHOD_CLASS, GetAllCategories.class.getName());
@@ -42,6 +66,7 @@ public class HipsterShopApi {
 	}
 	
 	public static Intent getAllOrdersRequest(Activity activity, APIResultReceiver receiver){
+		checkInternet(activity);
 		Intent intent = buildIntent(activity, receiver);
 		
 		SharedPreferences settings = activity.getSharedPreferences(Utils.PREFERENCES, 0);
@@ -55,6 +80,7 @@ public class HipsterShopApi {
 	}
 	
 	public static Intent getOrderByIdRequest(Activity activity, APIResultReceiver receiver, Integer id){
+		checkInternet(activity);
 		Intent intent = buildIntent(activity, receiver);
 		
 		SharedPreferences settings = activity.getSharedPreferences(Utils.PREFERENCES, 0);
@@ -70,6 +96,7 @@ public class HipsterShopApi {
 	}
 	
 	public static Intent getProductByIdRequest(Activity activity, APIResultReceiver receiver, Integer id){
+		checkInternet(activity);
 		Intent intent = buildIntent(activity, receiver);
 		
 		HashMap<String, String> parameters = new HashMap<String, String>();
@@ -81,6 +108,7 @@ public class HipsterShopApi {
 	}
 	
 	public static Intent getProductsByCategoryIdRequest(Activity activity, APIResultReceiver receiver, String id, String gender, String age){
+		checkInternet(activity);
 		Intent intent = buildIntent(activity, receiver);
 		
 		HashMap<String, String> parameters = new HashMap<String, String>();
@@ -99,6 +127,7 @@ public class HipsterShopApi {
 	}
 	
 	public static Intent getProductsBySubcategoryIdRequest(Activity activity, APIResultReceiver receiver, String id, String gender, String age){
+		checkInternet(activity);
 		Intent intent = buildIntent(activity, receiver);
 		
 		HashMap<String, String> parameters = new HashMap<String, String>();
@@ -118,6 +147,7 @@ public class HipsterShopApi {
 	}
 	
 	public static Intent getAllSubcategoriesRequest(Activity activity, APIResultReceiver receiver, String id, String gender, String age){
+		checkInternet(activity);
 		Intent intent = buildIntent(activity, receiver);
 		
 		HashMap<String, String> parameters = new HashMap<String, String>();
@@ -136,6 +166,7 @@ public class HipsterShopApi {
 	}
 	
 	public static Intent signIn(Activity activity, APIResultReceiver receiver, String user, String pass){
+		checkInternet(activity);
 		Intent intent = buildIntent(activity, receiver);
 		
 		HashMap<String, String> parameters = new HashMap<String, String>();
