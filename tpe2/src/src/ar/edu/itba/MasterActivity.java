@@ -5,26 +5,25 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import ar.edu.itba.model.Category;
-import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.services.APIResultReceiver;
-import ar.edu.itba.services.ApiService;
-import ar.edu.itba.utils.HipsterShopApi;
-import ar.edu.itba.utils.Utils;
 
 public class MasterActivity extends Activity implements APIResultReceiver.Receiver {
 	public APIResultReceiver apiResultReceiver;
     public ListView mDrawerList;
     public List<Category> categories;
+    public ActionBarDrawerToggle mDrawerToggle;
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,20 +31,35 @@ public class MasterActivity extends Activity implements APIResultReceiver.Receiv
         apiResultReceiver = new APIResultReceiver(new Handler());
         apiResultReceiver.setReceiver(this);
         setContentView(R.layout.activity_main);
-		//mDrawerList = (ListView) findViewById(R.id.left_drawer);
         
-        
-        // Set the adapter for the list view
-		//String [] mierda = new String[] {"TestA", "Test2", "Test3"};
-        //mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, mierda));
+        DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.drawable.ic_drawer,  /* nav drawer icon to replace 'Up' caret */
+                R.string.drawer_open,  /* "open drawer" description */
+                R.string.drawer_close  /* "close drawer" description */
+                ) {
 
-        
-        //final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, drawerResultReceiver);
-	   	//startService(intent);
-       
+        	String title;
+        	
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                getActionBar().setTitle(title);
+            }
 
-        // Set the list's click listener
-        //mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+            	title = getActionBar().getTitle().toString();
+                getActionBar().setTitle(R.string.drawer_title);
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
         
         setupActionBar();
     }
@@ -55,6 +69,18 @@ public class MasterActivity extends Activity implements APIResultReceiver.Receiv
     	super.onPause();
     }
     
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
 
     @Override
 	public void onReceiveResult(int resultCode, Bundle resultData) {
@@ -99,7 +125,13 @@ public class MasterActivity extends Activity implements APIResultReceiver.Receiv
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle presses on the action bar items
+		// Pass the event to ActionBarDrawerToggle, if it returns
+        // true, then it has handled the app icon touch event
+        if (mDrawerToggle.onOptionsItemSelected(item)) {System.out.println("pasa");
+          return true;
+        }
+        System.out.println("no pasa");
+        // Handle presses on the action bar items
 		Intent intent = null;
 	    switch (item.getItemId()) {
 	        case R.id.action_search:

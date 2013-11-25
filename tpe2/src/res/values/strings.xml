@@ -30,7 +30,7 @@
     <string name="order_price">$</string>
     <string name="order_quantity">Cantidad:</string>
         
-    <string name="product_price">$%1$f</string>
+    <string name="product_format">%.2f</string>
     
    	<string name="loading">Cargando&#8230;</string>
    	<string name="male">Men</string>
@@ -45,6 +45,10 @@
     <string name="processed">Confirmado</string>
     <string name="shipped">Despachado</string>
     <string name="delivered">Entregado</string>
+    
+    <string name="drawer_open">Drawer open</string>
+    <string name="drawer_close">Drawer close</string>
+    <string name="drawer_title">Categorias</string>
     
     <string name="order_alert">La orden seleccionada no contiene productos.</string>
     <string name="orders_alert">Necesitas iniciar sesión para poder ver los pedidos realizados.</string>

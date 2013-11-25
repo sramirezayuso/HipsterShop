@@ -1,5 +1,7 @@
 package ar.edu.itba;
 
+import java.text.DecimalFormat;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -131,10 +133,10 @@ public class ProductActivity extends MasterActivity {
 				productDetails.setText(getProductDetails(product));
 				productDetails.setMovementMethod(new ScrollingMovementMethod());
 				
-				String priceFormat = getResources().getString(R.string.product_price);
+				String priceFormat = getResources().getString(R.string.product_format);
 				TextView productPrice = (TextView) findViewById(R.id.productPrice);
-				productPrice.setText(String.format(priceFormat, response.getProduct().getPrice()));
-				
+				String num = String.format(priceFormat, response.getProduct().getPrice());
+				productPrice.setText(getResources().getString(R.string.order_price) + num);
 				
 				String[] colors_array = product.getColors();
 				
