@@ -1,22 +1,21 @@
 package ar.edu.itba;
 
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
-import ar.edu.itba.model.Category;
+import ar.edu.itba.model.Attribute;
 import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.GetProductById;
 import ar.edu.itba.model.Product;
@@ -123,11 +122,10 @@ public class ProductActivity extends MasterActivity {
 				TextView productBrand = (TextView) findViewById(R.id.productBrand);
 				productBrand.setText(product.getBrand());
 				
-				//TextView productDetails = (TextView) findViewById(R.id.productDetails);
-				//productDetails.setText(response.getProduct().toString());
+				TextView productDetails = (TextView) findViewById(R.id.productDetails);
+				productDetails.setText(getProductDetails(product));
+				productDetails.setMovementMethod(new ScrollingMovementMethod());
 				
-		
-				// TODO: Convert to right currency
 				String priceFormat = getResources().getString(R.string.product_price);
 				TextView productPrice = (TextView) findViewById(R.id.productPrice);
 				productPrice.setText(String.format(priceFormat, response.getProduct().getPrice()));
@@ -159,6 +157,30 @@ public class ProductActivity extends MasterActivity {
 			// handle the error;
 			break;
 		}
+	}
+	
+	private String getProductDetails(Product product) {
+		StringBuffer stbf = new StringBuffer();
+
+		for(Attribute att: product.getAttributes()) {
+			switch(att.getId()) {
+				case 4:
+				case 7: break;
+				case 5:
+				case 6:
+						stbf.append(att.getValues()[0] + '\n');
+						break;
+				default:
+						stbf.append(att.getName() + ":");
+						for(String each : att.getValues()) {
+							stbf.append(each + "-");
+						}
+						stbf.deleteCharAt(stbf.length()-1);
+						stbf.append('\n');
+			}
+		}
+		
+		return stbf.toString();
 	}
 
 
