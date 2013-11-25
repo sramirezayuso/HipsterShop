@@ -2,24 +2,32 @@ package ar.edu.itba;
 
 import java.util.List;
 
+import android.app.ActionBar;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import ar.edu.itba.model.GetAllSubcategories;
 import ar.edu.itba.model.Subcategory;
 import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
+import ar.edu.itba.utils.AgeAdapter;
+import ar.edu.itba.utils.GenderAdapter;
 import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.Utils;
 
 public class SubcategoriesFragment extends ListFragment implements APIResultReceiver.Receiver{
 	
 	private APIResultReceiver apiResultReceiver;
-	List<Subcategory> products;
+	private List<Subcategory> products;
+	private String mGender;
+	private String mAge;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -31,22 +39,26 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		Intent intent = new Intent(getActivity(), ProductsActivity.class);
 		intent.putExtra(Utils.ID, Long.valueOf(products.get(position).getId()).intValue());
+		intent.putExtra(Utils.GENDER, mGender);
+		intent.putExtra(Utils.AGE, mAge);
 		startActivity(intent);
 	}
 	  
 	@Override
 	public void onStart(){
 		super.onStart();
+		mGender = "";
+		mAge = "";
+		setUpSpinners();
 	   	apiResultReceiver = new APIResultReceiver(new Handler());
 	   	apiResultReceiver.setReceiver(this);
-	   	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1");
+	   	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1", "", "");
 	   	getActivity().startService(intent);
 	}
 	  
 	@Override
 	public void onReceiveResult(int resultCode, Bundle resultData) {
 		System.out.println(resultCode);
-		System.out.println("-------------TEST------------");
 	    switch (resultCode) {
 	    case ApiService.STATUS_RUNNING:
 	        //show progress
@@ -63,9 +75,6 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
 			        android.R.layout.simple_list_item_1, values);
 			setListAdapter(adapter);
-	//	        	ProductAdapter imageAdapter = new ProductAdapter(view.getContext(), products);
-	//	        	gridView.setAdapter(imageAdapter);
-	//	    		gridView.setOnItemClickListener(mMessageClickedHandler); 
 	
 	        break;
 	    case ApiService.STATUS_ERROR:
@@ -74,6 +83,56 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 	        // handle the error;
 	        break;
 	    }
+	}
+	
+	public void setUpSpinners(){
+		
+		final ActionBar actionBar = getActivity().getActionBar();
+		actionBar.setCustomView(R.layout.products_bar);
+		actionBar.setDisplayShowCustomEnabled(true);
+		
+		Spinner ageSpinner = (Spinner) getActivity().findViewById(R.id.age_spinner);
+		Spinner genderSpinner = (Spinner) getActivity().findViewById(R.id.gender_spinner);
+		
+		ageSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			String[] strings = {"", "Adulto", "Infantil", "Bebe"};
+			
+		    @Override
+		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+		    	mAge = strings[position];
+		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	getActivity().startService(intent);
+		    }
+
+		    @Override
+		    public void onNothingSelected(AdapterView<?> parentView) {
+		    	mAge = strings[0];
+		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	getActivity().startService(intent);
+		    }
+		});
+		
+		genderSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			String[] strings = {"", "Masculino", "Femenino"};
+			
+		    @Override
+		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+		    	mGender = strings[position];
+		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	getActivity().startService(intent);
+		    }
+
+		    @Override
+		    public void onNothingSelected(AdapterView<?> parentView) {
+		    	mGender = strings[0];
+		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	getActivity().startService(intent);
+		    }
+		});
+		
+		ageSpinner.setAdapter(new AgeAdapter(getActivity(), R.layout.spinner, getActivity().getResources().getStringArray(R.array.age_list)));
+		genderSpinner.setAdapter(new GenderAdapter(getActivity(), R.layout.spinner, getActivity().getResources().getStringArray(R.array.gender_list)));
+
 	}
 
 }
