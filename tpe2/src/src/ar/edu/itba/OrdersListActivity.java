@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -35,6 +38,19 @@ public class OrdersListActivity extends MasterActivity {
 
         final Intent intent = HipsterShopApi.getAllOrdersRequest(this, apiResultReceiver);
         startService(intent);
+        
+		SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
+        if(settings.getString("Token", "estonoesuntoken").equals("estonoesuntoken")) {
+    		new AlertDialog.Builder(this)
+			.setMessage(getResources().getString(R.string.orders_alert))
+			.setPositiveButton(getResources().getString(R.string.accept_message),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog,	int id) {
+						dialog.cancel();
+						finish();
+					}
+			}).show();
+        }
 	}
 	
 
