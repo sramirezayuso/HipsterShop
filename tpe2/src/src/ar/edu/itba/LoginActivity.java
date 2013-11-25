@@ -14,11 +14,13 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 import ar.edu.itba.model.Category;
 import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.SignIn;
@@ -48,6 +50,15 @@ public class LoginActivity extends MasterActivity {
 
 		setContentView(R.layout.activity_login);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+	        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+				System.out.println(categories.get(position).getName());
+				Intent intent = new Intent(LoginActivity.this, SubcategoriesActivity.class);
+				intent.putExtra(Utils.ID, categories.get(position).getId());
+				startActivity(intent);
+			}
+	     });
 		
         final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
 	   	startService(intent);
@@ -198,7 +209,7 @@ public class LoginActivity extends MasterActivity {
 			
 			if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllCategories")) {
 				GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE);
-				List<Category> categories = response.getCategories();	
+				categories = response.getCategories();	
 	    	
 				String[] values = response.getNames();
 				mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));

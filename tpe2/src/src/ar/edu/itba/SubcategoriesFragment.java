@@ -28,6 +28,7 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 	private List<Subcategory> products;
 	private String mGender;
 	private String mAge;
+	private int categoryId;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -52,7 +53,8 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 		setUpSpinners();
 	   	apiResultReceiver = new APIResultReceiver(new Handler());
 	   	apiResultReceiver.setReceiver(this);
-	   	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1", "", "");
+	   	categoryId = getActivity().getIntent().getIntExtra(Utils.ID, -1);
+	   	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, String.valueOf(categoryId), "", "");
 	   	getActivity().startService(intent);
 	}
 	  
@@ -100,7 +102,7 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 		    	mAge = strings[position];
-		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, String.valueOf(categoryId), mGender, mAge);
 		    	getActivity().startService(intent);
 		    }
 
@@ -115,7 +117,7 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 		    	mGender = strings[position];
-		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, "1", mGender, mAge);
+		    	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, String.valueOf(categoryId), mGender, mAge);
 		    	getActivity().startService(intent);
 		    }
 

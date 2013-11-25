@@ -31,6 +31,15 @@ public class OrderActivity extends MasterActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_order);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+	        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+				System.out.println(categories.get(position).getName());
+				Intent intent = new Intent(OrderActivity.this, SubcategoriesActivity.class);
+				intent.putExtra(Utils.ID, categories.get(position).getId());
+				startActivity(intent);
+			}
+	     });
         final Intent catIntent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
 	   	startService(catIntent);
 		Intent receivedIntent = getIntent();
@@ -70,7 +79,7 @@ public class OrderActivity extends MasterActivity {
 		case ApiService.STATUS_FINISHED:
 			if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllCategories")) {
 				GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE);
-				List<Category> categories = response.getCategories();	
+				categories = response.getCategories();	
 	    	
 				String[] values = response.getNames();
 				mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));

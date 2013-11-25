@@ -24,7 +24,7 @@ import ar.edu.itba.utils.Utils;
 public class MasterActivity extends Activity implements APIResultReceiver.Receiver {
 	public APIResultReceiver apiResultReceiver;
     public ListView mDrawerList;
-    private List<Category> categories;
+    public List<Category> categories;
     
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

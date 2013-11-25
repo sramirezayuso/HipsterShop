@@ -1,15 +1,13 @@
 package ar.edu.itba;
 
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import ar.edu.itba.model.Category;
 import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
@@ -31,6 +29,15 @@ public class HelloAndroidActivity extends MasterActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+	        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
+				System.out.println(categories.get(position).getName());
+				Intent intent = new Intent(HelloAndroidActivity.this, SubcategoriesActivity.class);
+				intent.putExtra(Utils.ID, categories.get(position).getId());
+				startActivity(intent);
+			}
+	     });
 		
         final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
 	   	startService(intent);
@@ -48,7 +55,7 @@ public class HelloAndroidActivity extends MasterActivity {
 		case ApiService.STATUS_FINISHED:
 			if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllCategories")) {
 				GetAllCategories response = (GetAllCategories) resultData.get(Utils.RESPONSE);
-				List<Category> categories = response.getCategories();	
+				categories = response.getCategories();	
 	    	
 				String[] values = response.getNames();
 				mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_listview_item, values));
