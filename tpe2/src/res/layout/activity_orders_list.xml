@@ -1,19 +1,49 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/orders_list_container"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
 
-    <com.viewpagerindicator.TitlePageIndicator
-        android:id="@+id/ordersTitles"
-        style="@style/CustomTitlePageIndicator"
+    <!-- Progress -->
+
+    <LinearLayout
+        android:id="@+id/orders_progress_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif-light"
+            android:text="@string/loading"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/orders_list_container"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/ordersPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <com.viewpagerindicator.TitlePageIndicator
+            android:id="@+id/ordersTitles"
+            style="@style/CustomTitlePageIndicator"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
 
-</LinearLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/ordersPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</merge>

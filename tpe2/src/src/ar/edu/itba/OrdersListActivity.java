@@ -36,9 +36,7 @@ public class OrdersListActivity extends MasterActivity {
     	System.out.println(resultCode);
         switch (resultCode) {
         case ApiService.STATUS_RUNNING:
-            //show progress
-        	System.out.println("progress");
-
+        	Utils.showProgress(true, this, findViewById(R.id.orders_progress_status), findViewById(R.id.orders_list_container));
             break;
         case ApiService.STATUS_FINISHED:
         	GetAllOrders response = (GetAllOrders) resultData.get(Utils.RESPONSE); 
@@ -52,6 +50,7 @@ public class OrdersListActivity extends MasterActivity {
             TitlePageIndicator titleIndicator = (TitlePageIndicator) findViewById(R.id.ordersTitles);
             titleIndicator.setViewPager(pager);
             
+            Utils.showProgress(false, this, findViewById(R.id.orders_progress_status), findViewById(R.id.orders_list_container));
             break;
         case ApiService.STATUS_ERROR:
         	System.out.println("error");

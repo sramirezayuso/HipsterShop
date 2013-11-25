@@ -1,11 +1,17 @@
 package ar.edu.itba;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import ar.edu.itba.model.GetOrderById;
 import ar.edu.itba.model.Order;
+import ar.edu.itba.model.SpecificOrder;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.OrderProductAdapter;
@@ -27,7 +33,6 @@ public class OrderActivity extends MasterActivity {
 	}
 
 	public void showData() {
-		// Implement displaying data
 		TextView address = (TextView) findViewById(R.id.orderAddress);
 		address.setText(order.getAddress().getName());
 
@@ -40,9 +45,11 @@ public class OrderActivity extends MasterActivity {
 
 		ListView lv = (ListView) findViewById(R.id.orderList);
 		lv.setAdapter(new OrderProductAdapter(this, order.getListItems()));
+		lv.setOnItemClickListener(mMessageClickedHandler);
 
 		TextView total = (TextView) findViewById(R.id.orderTotal);
-		total.setText(getResources().getString(R.string.order_total) + order.getTotalPrice());
+		total.setText(getResources().getString(R.string.order_total)
+				+ order.getTotalPrice());
 	}
 
 	@Override
@@ -50,16 +57,27 @@ public class OrderActivity extends MasterActivity {
 		System.out.println(resultCode);
 		switch (resultCode) {
 		case ApiService.STATUS_RUNNING:
-			// show progress
-			System.out.println("progress");
-
+			Utils.showProgress(true, this, findViewById(R.id.order_progress_status), findViewById(R.id.order_form));
 			break;
 		case ApiService.STATUS_FINISHED:
 			GetOrderById response = (GetOrderById) resultData
 					.get(Utils.RESPONSE);
-
 			this.order = response.getOrder();
-			showData();
+
+			if (order.getItems().length != 0) {
+				showData();
+				Utils.showProgress(false, this, findViewById(R.id.order_progress_status), findViewById(R.id.order_form));
+			} else {
+				new AlertDialog.Builder(this)
+					.setMessage(getResources().getString(R.string.order_alert))
+					.setPositiveButton(getResources().getString(R.string.accept_message),
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,	int id) {
+								dialog.cancel();
+								finish();
+							}
+				}).show();
+			}
 
 			break;
 		case ApiService.STATUS_ERROR:
@@ -69,5 +87,18 @@ public class OrderActivity extends MasterActivity {
 			break;
 		}
 	}
+
+	private OnItemClickListener mMessageClickedHandler = new OnItemClickListener() {
+		public void onItemClick(AdapterView parent, View v, int position,
+				long id) {
+			Integer productId = ((SpecificOrder) parent.getAdapter().getItem(
+					position)).getProduct().getId();
+
+			Intent intent = new Intent(parent.getContext(),
+					ProductActivity.class);
+			intent.putExtra(Utils.ID, productId);
+			startActivity(intent);
+		}
+	};
 
 }
