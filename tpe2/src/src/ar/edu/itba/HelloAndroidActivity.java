@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
@@ -98,6 +99,24 @@ public class HelloAndroidActivity extends MasterActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(ar.edu.itba.R.menu.main, menu);
+		SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+		final SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() { 
+		    @Override 
+		    public boolean onQueryTextChange(String newText) { 
+		        // Do something 
+		        return true; 
+		    } 
+
+		    @Override 
+		    public boolean onQueryTextSubmit(String query) {
+				Intent intent = new Intent(HelloAndroidActivity.this, ProductsActivity.class);
+				intent.putExtra("searchTerm", query);
+				startActivity(intent);
+				return true; 
+		    } 
+		}; 
+
+		searchView.setOnQueryTextListener(queryTextListener);
 		return true;
 	}
 

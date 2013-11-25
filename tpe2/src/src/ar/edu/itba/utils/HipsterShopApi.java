@@ -21,6 +21,7 @@ import ar.edu.itba.model.GetAllSubcategories;
 import ar.edu.itba.model.GetOrderById;
 import ar.edu.itba.model.GetProductById;
 import ar.edu.itba.model.GetProductsByCategoryId;
+import ar.edu.itba.model.GetProductsByName;
 import ar.edu.itba.model.GetProductsBySubcategoryId;
 import ar.edu.itba.model.SignIn;
 import ar.edu.itba.services.APIResultReceiver;
@@ -140,6 +141,18 @@ public class HipsterShopApi {
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductsByCategoryId", parameters));
 		intent.putExtra(Utils.METHOD_CLASS, GetProductsByCategoryId.class.getName());
+		return intent;
+	}
+	
+	public static Intent getProductsByNameRequest(Activity activity, APIResultReceiver receiver, String name){
+		checkInternet(activity);
+		Intent intent = buildIntent(activity, receiver);
+		
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		parameters.put("name", name);
+		
+		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductsByName", parameters));
+		intent.putExtra(Utils.METHOD_CLASS, GetProductsByName.class.getName());
 		return intent;
 	}
 	

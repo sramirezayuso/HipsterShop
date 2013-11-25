@@ -102,7 +102,7 @@ public class MasterActivity extends Activity implements APIResultReceiver.Receiv
 	    // Handle presses on the action bar items
 		Intent intent = null;
 	    switch (item.getItemId()) {
-	        case R.id.action_search:
+	        case R.id.menu_search:
 	        	 //get focus
 	            item.getActionView().requestFocus();
 	            //get input method

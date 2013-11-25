@@ -11,12 +11,11 @@
      	android:title="@string/orders_list_title"
      	android:icon="@drawable/ic_action_view_as_list"
     />
-    <item 
-        android:id="@+id/action_search"
-     	android:showAsAction="ifRoom|collapseActionView"
-     	android:title="@string/search_title"
-     	android:icon="@drawable/ic_action_search"
-     	android:actionLayout="@layout/menu_search"
-    />
+    
+   	<item android:id="@+id/menu_search"
+        android:title="Search"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="ifRoom|collapseActionView"
+        android:actionViewClass="android.widget.SearchView" />
     
 </menu>

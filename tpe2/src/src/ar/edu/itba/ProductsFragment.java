@@ -20,6 +20,7 @@ import android.widget.GridView;
 import android.widget.Spinner;
 import ar.edu.itba.model.GetAllProducts;
 import ar.edu.itba.model.GetProductsByCategoryId;
+import ar.edu.itba.model.GetProductsByName;
 import ar.edu.itba.model.GetProductsBySubcategoryId;
 import ar.edu.itba.model.Product;
 import ar.edu.itba.services.APIResultReceiver;
@@ -36,6 +37,7 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 	private GridView gridView;
 	private View view;
 	private int subcategoryId;
+	private String query;
 	
 	
 	 @Override
@@ -70,16 +72,22 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
         apiResultReceiver.setReceiver(this);
 		SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
 		subcategoryId = prefs.getInt("selectedSubcategory", -1);
-	   	if(subcategoryId == -1) {
-	   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver,  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
+		query = getActivity().getIntent().getStringExtra("searchTerm");
+		if(query == null) {
+		   	if(subcategoryId == -1) {
+		   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver,  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
+		   		view.getContext().startService(intent);
+		   	} else if(subcategoryId == -2) {
+		   		final Intent intent = HipsterShopApi.getProductsByCategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(getActivity().getIntent().getIntExtra(Utils.CAT_ID, 1)),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
+		   		view.getContext().startService(intent);
+		   	} else {
+		   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
+		   		view.getContext().startService(intent);
+		   	}
+		} else {
+			final Intent intent = HipsterShopApi.getProductsByNameRequest(getActivity(), apiResultReceiver, query);
 	   		view.getContext().startService(intent);
-	   	} else if(subcategoryId == -2) {
-	   		final Intent intent = HipsterShopApi.getProductsByCategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(getActivity().getIntent().getIntExtra(Utils.CAT_ID, 1)),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
-	   		view.getContext().startService(intent);
-	   	} else {
-	   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
-	   		view.getContext().startService(intent);
-	   	}
+		}
 	}
 	
 	@Override
@@ -102,6 +110,14 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
         		gridView.setOnItemClickListener(mMessageClickedHandler); 
         	} else if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetProductsByCategoryId")) {
         		GetProductsByCategoryId response = (GetProductsByCategoryId) resultData.get(Utils.RESPONSE);
+        		
+            	List<Product> products = response.getProducts();
+	    		 
+            	ProductAdapter imageAdapter = new ProductAdapter(view.getContext(), products);
+            	gridView.setAdapter(imageAdapter);
+        		gridView.setOnItemClickListener(mMessageClickedHandler); 
+        	} else if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetProductsByName")) {
+        		GetProductsByName response = (GetProductsByName) resultData.get(Utils.RESPONSE);
         		
             	List<Product> products = response.getProducts();
 	    		 
