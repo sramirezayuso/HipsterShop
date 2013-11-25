@@ -15,6 +15,7 @@ import android.net.Uri;
 import ar.edu.itba.R;
 import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.GetAllOrders;
+import ar.edu.itba.model.GetAllProducts;
 import ar.edu.itba.model.GetAllStates;
 import ar.edu.itba.model.GetAllSubcategories;
 import ar.edu.itba.model.GetOrderById;
@@ -62,6 +63,22 @@ public class HipsterShopApi {
 		Intent intent = buildIntent(activity, receiver);
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetAllCategories", null));
 		intent.putExtra(Utils.METHOD_CLASS, GetAllCategories.class.getName());
+		return intent;
+	}
+	
+	public static Intent getAllProductsRequest(Activity activity, APIResultReceiver receiver, String gender, String age){
+		checkInternet(activity);
+		Intent intent = buildIntent(activity, receiver);
+		HashMap<String, String> parameters = new HashMap<String, String>();
+		String filters = "[";
+		if(!gender.equals(""))
+			filters = filters + "{\"id\":1,\"value\":\"" + gender + "\"},";
+		if(!age.equals(""))
+			filters = filters + "{\"id\":2,\"value\":\"" + age + "\"}";
+		filters = filters + "]";
+		parameters.put("filters", filters);
+		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetAllProducts", parameters));
+		intent.putExtra(Utils.METHOD_CLASS, GetAllProducts.class.getName());
 		return intent;
 	}
 	

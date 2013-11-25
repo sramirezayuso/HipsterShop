@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.GridView;
 import android.widget.Spinner;
+import ar.edu.itba.model.GetAllProducts;
 import ar.edu.itba.model.GetProductsBySubcategoryId;
 import ar.edu.itba.model.Product;
 import ar.edu.itba.services.APIResultReceiver;
@@ -69,12 +70,17 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
         apiResultReceiver = new APIResultReceiver(new Handler());
         apiResultReceiver.setReceiver(this);
 	   	subcategoryId = getActivity().getIntent().getIntExtra(Utils.ID, -1);
-	   	mGender =  getActivity().getIntent().getExtras().getString(Utils.GENDER, "");
-	   	mAge =  getActivity().getIntent().getExtras().getString(Utils.AGE, "");
+	   	//mGender =  getActivity().getIntent().getExtras().getString(Utils.GENDER, "");
+	   	//mAge =  getActivity().getIntent().getExtras().getString(Utils.AGE, "");
 	   	System.out.println("Edad:" + mAge);
 	   	System.out.println("Genero:" + mGender);
-		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), "", "");
-	    view.getContext().startService(intent);
+	   	if(subcategoryId == -1){
+	   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver, "", "");
+	   		view.getContext().startService(intent);
+	   	} else {
+	   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), "", "");
+	   		view.getContext().startService(intent);
+	   	}
 	}
 	
 	@Override
@@ -87,13 +93,25 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 
             break;
         case ApiService.STATUS_FINISHED:
-        	GetProductsBySubcategoryId response = (GetProductsBySubcategoryId) resultData.get(Utils.RESPONSE); 
-        	System.out.println(response.getProducts());
-        	List<Product> products = response.getProducts();
-    		    		 
-        	ProductAdapter imageAdapter = new ProductAdapter(view.getContext(), products);
-        	gridView.setAdapter(imageAdapter);
-    		gridView.setOnItemClickListener(mMessageClickedHandler); 
+        	if(resultData.getString(Utils.METHOD_CLASS).equals("ar.edu.itba.model.GetAllProducts")){
+        		GetAllProducts response = (GetAllProducts) resultData.get(Utils.RESPONSE);
+        		
+            	List<Product> products = response.getProducts();
+	    		 
+            	ProductAdapter imageAdapter = new ProductAdapter(view.getContext(), products);
+            	gridView.setAdapter(imageAdapter);
+        		gridView.setOnItemClickListener(mMessageClickedHandler); 
+        	} else {
+        		GetProductsBySubcategoryId response = (GetProductsBySubcategoryId) resultData.get(Utils.RESPONSE);
+        		
+            	List<Product> products = response.getProducts();
+	    		 
+            	ProductAdapter imageAdapter = new ProductAdapter(view.getContext(), products);
+            	gridView.setAdapter(imageAdapter);
+        		gridView.setOnItemClickListener(mMessageClickedHandler); 
+        	}
+
+
 
             break;
         case ApiService.STATUS_ERROR:
@@ -129,8 +147,13 @@ public void setUpSpinners(){
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 		    	mAge = strings[position];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
-			    view.getContext().startService(intent);
+			   	if(subcategoryId == -1){
+			   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver, mGender, mAge);
+			   		view.getContext().startService(intent);
+			   	} else {
+			   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
+			   		view.getContext().startService(intent);
+			   	}
 		    }
 
 		    @Override
@@ -144,8 +167,13 @@ public void setUpSpinners(){
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 		    	mGender = strings[position];
-		    	final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
-			    view.getContext().startService(intent);
+			   	if(subcategoryId == -1){
+			   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver, mGender, mAge);
+			   		view.getContext().startService(intent);
+			   	} else {
+			   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), mGender, mAge);
+			   		view.getContext().startService(intent);
+			   	}
 		    }
 
 		    @Override

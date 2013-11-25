@@ -7,7 +7,7 @@ public class Product extends ModelObject {
 
 	private Integer id;
 	private String name;
-	private Integer price;
+	private Float price;
 	private String[] imageUrl;
 	private Category category;
 	private Category subcategory;
@@ -21,7 +21,7 @@ public class Product extends ModelObject {
 		return name;
 	}
 
-	public Integer getPrice() {
+	public Float getPrice() {
 		return price;
 	}
 
@@ -86,7 +86,7 @@ public class Product extends ModelObject {
 	public void writeToParcel(Parcel out, int flags) {
 	}
 
-	public Product(String name, Integer price, Attribute[] attributes) {
+	public Product(String name, Float price, Attribute[] attributes) {
 		super();
 		this.name = name;
 		this.price = price;
