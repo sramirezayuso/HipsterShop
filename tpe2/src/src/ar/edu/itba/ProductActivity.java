@@ -1,6 +1,8 @@
 package ar.edu.itba;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -38,10 +40,13 @@ public class ProductActivity extends MasterActivity {
 	        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				System.out.println(categories.get(position).getName());
 				Intent intent = new Intent(ProductActivity.this, SubcategoriesActivity.class);
-				intent.putExtra(Utils.ID, categories.get(position).getId());
+		    	SharedPreferences prefs = ProductActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences.Editor editor = prefs.edit();
+		        editor.putInt("selectedCategory", categories.get(position).getId());
+		        editor.commit();
 				startActivity(intent);
 			}
-	     });
+	    });
 		
         final Intent catIntent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
 	   	startService(catIntent);

@@ -30,7 +30,7 @@
     <string name="order_price">$</string>
     <string name="order_quantity">Cantidad:</string>
         
-    <string name="product_price">$%1$d</string>
+    <string name="product_price">$%1$f</string>
     
    	<string name="loading">Cargando&#8230;</string>
    	<string name="male">Men</string>

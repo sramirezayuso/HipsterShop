@@ -42,7 +42,7 @@ public class HelloAndroidActivity extends MasterActivity {
 		        editor.commit();
 				startActivity(intent);
 			}
-	     });
+	    });
     	SharedPreferences prefs = this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
     	SharedPreferences.Editor editor = prefs.edit();
         editor.putString("filterAge", "");

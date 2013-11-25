@@ -1,10 +1,9 @@
 package ar.edu.itba;
 
-import java.util.List;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -15,13 +14,12 @@ import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
-import ar.edu.itba.model.Category;
 import ar.edu.itba.model.GetAllCategories;
 import ar.edu.itba.model.SignIn;
 import ar.edu.itba.services.ApiService;
@@ -55,10 +53,13 @@ public class LoginActivity extends MasterActivity {
 	        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				System.out.println(categories.get(position).getName());
 				Intent intent = new Intent(LoginActivity.this, SubcategoriesActivity.class);
-				intent.putExtra(Utils.ID, categories.get(position).getId());
+		    	SharedPreferences prefs = LoginActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences.Editor editor = prefs.edit();
+		        editor.putInt("selectedCategory", categories.get(position).getId());
+		        editor.commit();
 				startActivity(intent);
 			}
-	     });
+	    });
 		
         final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
 	   	startService(intent);
