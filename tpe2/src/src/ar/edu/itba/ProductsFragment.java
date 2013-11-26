@@ -78,7 +78,7 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 		   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver,  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 		   		view.getContext().startService(intent);
 		   	} else if(subcategoryId == -2) {
-		   		final Intent intent = HipsterShopApi.getProductsByCategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(getActivity().getIntent().getIntExtra(Utils.CAT_ID, 1)),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
+		   		final Intent intent = HipsterShopApi.getProductsByCategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(prefs.getInt("selectedCategory", 1)),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 		   		view.getContext().startService(intent);
 		   	} else {
 		   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
@@ -176,6 +176,9 @@ public void setUpSpinners(){
 			   	if(subcategoryId == -1){
 			   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver, prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 			   		view.getContext().startService(intent);
+			   	} else if(subcategoryId == -2) {
+			   		final Intent intent = HipsterShopApi.getProductsByCategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(prefs.getInt("selectedCategory", 1)),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
+			   		view.getContext().startService(intent);
 			   	} else {
 			   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 			   		view.getContext().startService(intent);
@@ -198,6 +201,9 @@ public void setUpSpinners(){
                 editor.commit();
 			   	if(subcategoryId == -1){
 			   		final Intent intent = HipsterShopApi.getAllProductsRequest(getActivity(), apiResultReceiver, prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
+			   		view.getContext().startService(intent);
+			   	} else if(subcategoryId == -2) {
+			   		final Intent intent = HipsterShopApi.getProductsByCategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(prefs.getInt("selectedCategory", 1)),  prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 			   		view.getContext().startService(intent);
 			   	} else {
 			   		final Intent intent = HipsterShopApi.getProductsBySubcategoryIdRequest(getActivity(), apiResultReceiver, String.valueOf(subcategoryId), prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
