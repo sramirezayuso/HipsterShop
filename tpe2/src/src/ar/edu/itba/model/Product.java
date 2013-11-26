@@ -56,6 +56,9 @@ public class Product extends ModelObject {
 				size = attr;
 			}
 		}
+		
+		if(size == null)
+			return null;
 		return size.getValues();
 	}
 

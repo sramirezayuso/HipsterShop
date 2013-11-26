@@ -138,18 +138,20 @@ public class ProductActivity extends MasterActivity {
 				productPrice.setText(getResources().getString(R.string.order_price) + num);
 				
 				String[] colors_array = product.getColors();
-				
-				Spinner productColors = (Spinner) findViewById(R.id.productColors);
-				ArrayAdapter<String> color_adapter = new ArrayAdapter<String>(this,
-						R.layout.spinner_item, colors_array);
-				productColors.setAdapter(color_adapter);
-				
+				if(colors_array != null) {
+					Spinner productColors = (Spinner) findViewById(R.id.productColors);
+					ArrayAdapter<String> color_adapter = new ArrayAdapter<String>(this,
+							R.layout.spinner_item, colors_array);
+					productColors.setAdapter(color_adapter);
+				}
 				
 				String[] sizes_array = product.getSizes();
-				Spinner productSizes = (Spinner) findViewById(R.id.productSizes);
-				ArrayAdapter<String> size_adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,
-						sizes_array);
-				productSizes.setAdapter(size_adapter);
+				if(sizes_array != null) {
+					Spinner productSizes = (Spinner) findViewById(R.id.productSizes);
+					ArrayAdapter<String> size_adapter = new ArrayAdapter<String>(this, R.layout.spinner_item,
+							sizes_array);
+					productSizes.setAdapter(size_adapter);
+				}
 				
 				setImages();
 				getActionBar().setTitle(product.getName());
