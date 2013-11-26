@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import ar.edu.itba.model.Attribute;
 import ar.edu.itba.model.GetAllCategories;
@@ -120,12 +122,12 @@ public class ProductActivity extends MasterActivity {
 				this.product = response.getProduct();
 				
 				TextView productName = (TextView) findViewById(R.id.productName);
-				productName.setText(product.getId().toString());
+				productName.setText(product.getName());
 				
 				TextView productBrand = (TextView) findViewById(R.id.productBrand);
 				productBrand.setText(product.getBrand());
 				
-				/*TextView productDetails = (TextView) findViewById(R.id.productDetails);
+				TextView productDetails = (TextView) findViewById(R.id.productDetails);
 				productDetails.setText(getProductDetails(product));
 				productDetails.setMovementMethod(new ScrollingMovementMethod());
 				
@@ -150,7 +152,7 @@ public class ProductActivity extends MasterActivity {
 					productSizes.setAdapter(size_adapter);
 				}
 				
-				setImages();*/
+				setImages();
 				getActionBar().setTitle(product.getName());
 			}
 

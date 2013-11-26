@@ -52,6 +52,7 @@
     <string name="drawer_close">Cajon cerrado</string>
     <string name="drawer_title">Categorias</string>
     
+    <string name="notification_title">Hay una actualización en tu orden.</string>
     <string name="order_alert">La orden seleccionada no contiene productos.</string>
     <string name="orders_alert">Necesitas iniciar sesión para poder ver los pedidos realizados.</string>
     <string name="internet_message">Hipster Shop necesita de una conexión a Internet para funcionar, verificá que se encuentre habilitada y volvé a intentar.</string>

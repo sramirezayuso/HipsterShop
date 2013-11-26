@@ -3,26 +3,19 @@ package ar.edu.itba.notifications;
 import java.io.BufferedReader;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import android.app.IntentService;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.os.Handler;
-import ar.edu.itba.R;
 import ar.edu.itba.model.GetAllOrders;
-import ar.edu.itba.model.MethodObject;
 import ar.edu.itba.model.Order;
-import ar.edu.itba.services.APIResultReceiver;
 import ar.edu.itba.services.ApiService;
 import ar.edu.itba.utils.HipsterShopApi;
 import ar.edu.itba.utils.Utils;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class OrderStatusDetector extends IntentService {
 	public OrderStatusDetector() {

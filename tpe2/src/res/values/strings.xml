@@ -50,6 +50,7 @@
     <string name="drawer_close">Drawer close</string>
     <string name="drawer_title">Categories</string>
     
+    <string name="notification_title">There is an update in your order.</string>
     <string name="order_alert">The selected order contains no products.</string>
     <string name="orders_alert">You need to Log In to check your orders.</string>
     <string name="internet_message">Hipster Shop needs to be connected to the internet to work, check your connection and try again.</string>
