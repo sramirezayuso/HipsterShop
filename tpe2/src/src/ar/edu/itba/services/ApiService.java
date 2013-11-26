@@ -50,7 +50,7 @@ public class ApiService extends IntentService{
 	    	receiver.send(STATUS_RUNNING, Bundle.EMPTY);
 	        try {
 	        	Gson gson = new GsonBuilder().create();
-	            BufferedReader reader = getJSONData(requestUrl);
+	            BufferedReader reader = ApiService.getJSONData(requestUrl);
 	            MethodObject response = gson.fromJson(reader, methodObjectClass);	   
 	            System.out.println("Lo que devuelve de la API desde el service " + response);
 	                
@@ -65,7 +65,7 @@ public class ApiService extends IntentService{
 	    this.stopSelf();
 	 }
 
-	   public BufferedReader getJSONData(String url){
+	   public static BufferedReader getJSONData(String url){
 	        // create DefaultHttpClient
 	        HttpClient httpClient = new DefaultHttpClient();
 	        URI uri; // for URL
