@@ -18,6 +18,18 @@ public class Order extends ModelObject {
 	private Address address;
 	private Integer latitude;
 	private Integer longitude;
+	
+
+	public String getStatusString(){
+		switch(Integer.getInteger(status)){
+		case 1 : return "created"; 
+		case 2 : return "confirmed"; 
+		case 3 : return "moving";
+		case 4 : return "shipped"; 
+		}
+		
+		return "";
+	}
 
 	private SpecificOrder[] items;
 
