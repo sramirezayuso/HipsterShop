@@ -62,6 +62,10 @@ public class SubcategoriesActivity extends MasterActivity {
 			}
 	    });
 		
+		SharedPreferences settings = getSharedPreferences(Utils.PREFERENCES, 0);
+		String title = settings.getString("categoryName", getResources().getString(R.string.title_activity_subcategories));
+		getActionBar().setTitle(title);
+		
         final Intent intent = HipsterShopApi.getAllCategoriesRequest(this, apiResultReceiver);
 	   	startService(intent);
 	}
