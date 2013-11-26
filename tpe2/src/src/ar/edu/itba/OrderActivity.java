@@ -38,6 +38,7 @@ public class OrderActivity extends MasterActivity {
 		    	SharedPreferences prefs = OrderActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
 		    	SharedPreferences.Editor editor = prefs.edit();
 		        editor.putInt("selectedCategory", categories.get(position).getId());
+		        editor.putString("selectedCategoryName", categories.get(position).getName());
 		        editor.commit();
 				startActivity(intent);
 			}

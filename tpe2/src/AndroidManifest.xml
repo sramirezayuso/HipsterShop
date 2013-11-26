@@ -30,11 +30,11 @@
        
         <activity
             android:name="ar.edu.itba.ItemListActivity"
-            android:label="@string/title_item_list" >
+            android:label="lalala" >
         </activity>
         <activity
             android:name="ar.edu.itba.ItemDetailActivity"
-            android:label="@string/title_item_detail"
+            android:label="lalalala"
             android:parentActivityName=".ItemListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

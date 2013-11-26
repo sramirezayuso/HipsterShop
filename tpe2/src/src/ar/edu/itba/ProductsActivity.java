@@ -45,6 +45,7 @@ public class ProductsActivity extends MasterActivity{
 		    	SharedPreferences prefs = ProductsActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
 		    	SharedPreferences.Editor editor = prefs.edit();
 		        editor.putInt("selectedCategory", categories.get(position).getId());
+		        editor.putString("selectedCategoryName", categories.get(position).getName());
 		        editor.commit();
 				startActivity(intent);
 			}
@@ -61,7 +62,10 @@ public class ProductsActivity extends MasterActivity{
 	 */
 	public void setupActionBar() {
 		super.setupActionBar();
+    	SharedPreferences prefs = ProductsActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setTitle(prefs.getString("selectedSubcategoryName", getString(R.string.all_products)));
+
 
 	}
 

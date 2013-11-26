@@ -1,16 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
+<?xml version="1.0" encoding="utf-8"?><resources>
 
-    <string name="app_name">Maven Inicio</string>
-    <string name="hello">Hello hci-application!</string>
+    <string name="app_name">Hipster Shop</string>
+    <string name="hello">Hola Hipster Shop!</string>
     
     <string name="action_settings">Ajustes</string>
     <string name="hello_world">Hola mundo</string>
-    <string name="title_activity_product">ProductActivity</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_activity_product">Producto</string>
+    <string name="title_section1">Seccion1</string>
+    <string name="title_section2">Seccion 2</string>
+    <string name="title_section3">Seccion 3</string>
     <string name="button_name">Productos</string>
+    
+    <string name="title_activity_subcategories">Subcategorías</string>
+    <string name="title_activity_products">Productos</string>
+    
+    <string name="main.orders_button_name">Pedidos</string>
+    <string name="main.products_button_name">Productos</string>
+    
+    <string name="orders_list_title">Pedidos</string>
+    
+    <string name="search_title">Buscar</string>
+    
+    <string name="order_title">Pedido</string>
+    <string name="order_total">Total: $</string>
+    <string name="order_creation">Creado:</string>
+    <string name="order_delivery">Entrega:</string>
+    
+    <string name="order_request">Pedido nro:</string>
+    <string name="order_price">$</string>
+    <string name="order_quantity">Cantidad:</string>
+        
+    <string name="product_format">%.2f</string>
+    
+   	<string name="loading">Cargando&#8230;</string>
+   	<string name="male">Hombres</string>
+   	<string name="female">Mujeres</string>
+   	<string name="all_genders">Todos</string>
+   	<string name="adults">Adultos</string>
+   	<string name="children">Niños</string>
+   	<string name="babies">Bebes</string>
+   	<string name="all_ages">Todos</string>
+    
+    <string name="received">Creado</string>
+    <string name="processed">Confirmado</string>
+    <string name="shipped">Despachado</string>
+    <string name="delivered">Entregado</string>
+    
+    <string name="drawer_open">Cajon abiert</string>
+    <string name="drawer_close">Cajon cerrado</string>
+    <string name="drawer_title">Categorias</string>
+    
+    <string name="order_alert">La orden seleccionada no contiene productos.</string>
+    <string name="orders_alert">Necesitas iniciar sesión para poder ver los pedidos realizados.</string>
+    <string name="internet_message">Hipster Shop necesita de una conexión a Internet para funcionar, verificá que se encuentre habilitada y volvé a intentar.</string>
+    <string name="accept_message">Entendido</string>
+    
+    <string name="all_subcategories">Todas las subcategorias</string>
+    <string name="all_products">Todos los productos</string>
     
     
 

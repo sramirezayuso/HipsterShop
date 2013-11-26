@@ -44,12 +44,14 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 			SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putInt("selectedSubcategory", products.get(position-1).getId());
+			editor.putString("selectedSubcategoryName", products.get(position-1).getName());
 			editor.commit();
 		}
 		else {
 			SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putInt("selectedSubcategory", -2);
+			editor.putString("selectedSubcategoryName", getString(R.string.all_subcategories));
 			editor.commit();
 		}
 		if(((SubcategoriesActivity)getActivity()).mProductsLayout != null){

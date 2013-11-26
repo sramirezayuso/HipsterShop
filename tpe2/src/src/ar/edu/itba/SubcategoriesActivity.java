@@ -56,6 +56,7 @@ public class SubcategoriesActivity extends MasterActivity {
 		    	SharedPreferences prefs = SubcategoriesActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
 		    	SharedPreferences.Editor editor = prefs.edit();
 		        editor.putInt("selectedCategory", categories.get(position).getId());
+		        editor.putString("selectedCategoryName", categories.get(position).getName());
 		        editor.commit();
 				startActivity(intent);
 			}
@@ -69,8 +70,9 @@ public class SubcategoriesActivity extends MasterActivity {
 	 * Set up the {@link android.app.ActionBar}.
 	 */
 	public void setupActionBar() {
-
+    	SharedPreferences prefs = SubcategoriesActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setTitle(prefs.getString("selectedCategoryName", getString(R.string.title_activity_subcategories)));
 
 	}
 	
