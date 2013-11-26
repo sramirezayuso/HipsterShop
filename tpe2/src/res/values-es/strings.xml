@@ -14,6 +14,8 @@
     <string name="title_activity_subcategories">Subcategorías</string>
     <string name="title_activity_products">Productos</string>
     
+    <string name="offers">Ofertas</string>
+    
     <string name="main.orders_button_name">Pedidos</string>
     <string name="main.products_button_name">Productos</string>
     
