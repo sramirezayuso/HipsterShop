@@ -50,16 +50,13 @@ public class Product extends ModelObject {
 	}
 	
 	public String[] getSizes(){
-		Attribute size = null;
 		for(Attribute attr : attributes){
 			if (attr.isSize()){
-				size = attr;
+				return attr.getValues();
 			}
 		}
 		
-		if(size == null)
-			return null;
-		return size.getValues();
+		return null;
 	}
 
 	public Category getCategory() {

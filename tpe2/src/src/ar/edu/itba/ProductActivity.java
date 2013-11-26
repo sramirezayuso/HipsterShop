@@ -123,7 +123,7 @@ public class ProductActivity extends MasterActivity {
 				this.product = response.getProduct();
 				
 				TextView productName = (TextView) findViewById(R.id.productName);
-				productName.setText(product.getName());
+				productName.setText(product.getId().toString());
 				
 				TextView productBrand = (TextView) findViewById(R.id.productBrand);
 				productBrand.setText(product.getBrand());

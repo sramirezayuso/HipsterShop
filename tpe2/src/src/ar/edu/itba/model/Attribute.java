@@ -33,7 +33,7 @@ public class Attribute {
 	}
 	
 	public boolean isSize(){
-		return id.equals(7);
+		return name.contains("Talle");
 	}
 	
 }
