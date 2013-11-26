@@ -28,7 +28,7 @@ public class Order extends ModelObject {
 		case 4 : return "shipped"; 
 		}
 		
-		return "";
+		return null;
 	}
 
 	private SpecificOrder[] items;
