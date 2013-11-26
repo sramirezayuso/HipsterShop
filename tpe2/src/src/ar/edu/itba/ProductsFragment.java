@@ -70,7 +70,7 @@ public class ProductsFragment extends Fragment implements APIResultReceiver.Rece
 		setUpSpinners();
         apiResultReceiver = new APIResultReceiver(new Handler());
         apiResultReceiver.setReceiver(this);
-		SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		SharedPreferences prefs = getActivity().getSharedPreferences(Utils.PREFERENCES, 0);
 		subcategoryId = prefs.getInt("selectedSubcategory", -1);
 		query = getActivity().getIntent().getStringExtra("searchTerm");
 		if(query == null) {
@@ -169,7 +169,7 @@ public void setUpSpinners(){
 			
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-		    	SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences prefs = getActivity().getSharedPreferences(Utils.PREFERENCES, 0);
 		    	SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("filterAge", strings[position]);
                 editor.commit();
@@ -195,7 +195,7 @@ public void setUpSpinners(){
 			
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-		    	SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences prefs = getActivity().getSharedPreferences(Utils.PREFERENCES, 0);
 		    	SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("filterGender", strings[position]);
                 editor.commit();

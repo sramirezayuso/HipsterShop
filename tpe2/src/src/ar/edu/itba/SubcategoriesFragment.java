@@ -5,7 +5,6 @@ import java.util.List;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -41,14 +40,14 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		
 		if(position > 0) {
-			SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+			SharedPreferences prefs = getActivity().getSharedPreferences(Utils.PREFERENCES, 0);
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putInt("selectedSubcategory", products.get(position-1).getId());
 			editor.putString("selectedSubcategoryName", products.get(position-1).getName());
 			editor.commit();
 		}
 		else {
-			SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+			SharedPreferences prefs = getActivity().getSharedPreferences(Utils.PREFERENCES, 0);
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putInt("selectedSubcategory", -2);
 			editor.putString("selectedSubcategoryName", getString(R.string.all_subcategories));
@@ -72,7 +71,7 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 		setUpSpinners();
 	   	apiResultReceiver = new APIResultReceiver(new Handler());
 	   	apiResultReceiver.setReceiver(this);
-		SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		SharedPreferences prefs = getActivity().getSharedPreferences(Utils.PREFERENCES, 0);
 	   	categoryId = prefs.getInt("selectedCategory", -1);
 	   	final Intent intent = HipsterShopApi.getAllSubcategoriesRequest(getActivity(), apiResultReceiver, String.valueOf(categoryId), prefs.getString("filterGender", ""), prefs.getString("filterAge", ""));
 	   	getActivity().startService(intent);
@@ -126,7 +125,7 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 			
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-		    	SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences prefs = getActivity().getSharedPreferences(Utils.PREFERENCES, 0);
 		    	SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("filterAge", strings[position]);
                 editor.commit();
@@ -144,7 +143,7 @@ public class SubcategoriesFragment extends ListFragment implements APIResultRece
 			
 		    @Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-		    	SharedPreferences prefs = getActivity().getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences prefs = getActivity().getSharedPreferences(Utils.PREFERENCES, 0);
 		    	SharedPreferences.Editor editor = prefs.edit();
                 editor.putString("filterGender", strings[position]);
                 editor.commit();

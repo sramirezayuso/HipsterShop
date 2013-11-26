@@ -1,11 +1,9 @@
 package ar.edu.itba;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +13,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import ar.edu.itba.model.Attribute;
 import ar.edu.itba.model.GetAllCategories;
@@ -40,7 +37,7 @@ public class ProductActivity extends MasterActivity {
 	        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				System.out.println(categories.get(position).getName());
 				Intent intent = new Intent(ProductActivity.this, SubcategoriesActivity.class);
-		    	SharedPreferences prefs = ProductActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences prefs = ProductActivity.this.getSharedPreferences(Utils.PREFERENCES, 0);
 		    	SharedPreferences.Editor editor = prefs.edit();
 		        editor.putInt("selectedCategory", categories.get(position).getId());
 		        editor.putString("selectedCategoryName", categories.get(position).getName());
@@ -128,7 +125,7 @@ public class ProductActivity extends MasterActivity {
 				TextView productBrand = (TextView) findViewById(R.id.productBrand);
 				productBrand.setText(product.getBrand());
 				
-				TextView productDetails = (TextView) findViewById(R.id.productDetails);
+				/*TextView productDetails = (TextView) findViewById(R.id.productDetails);
 				productDetails.setText(getProductDetails(product));
 				productDetails.setMovementMethod(new ScrollingMovementMethod());
 				
@@ -153,7 +150,7 @@ public class ProductActivity extends MasterActivity {
 					productSizes.setAdapter(size_adapter);
 				}
 				
-				setImages();
+				setImages();*/
 				getActionBar().setTitle(product.getName());
 			}
 

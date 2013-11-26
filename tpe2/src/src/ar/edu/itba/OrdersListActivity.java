@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -40,11 +39,12 @@ public class OrdersListActivity extends MasterActivity {
 	        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				System.out.println(categories.get(position).getName());
 				Intent intent = new Intent(OrdersListActivity.this, SubcategoriesActivity.class);
-		    	SharedPreferences prefs = OrdersListActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences prefs = OrdersListActivity.this.getSharedPreferences(Utils.PREFERENCES, 0);
 		    	SharedPreferences.Editor editor = prefs.edit();
 		        editor.putInt("selectedCategory", categories.get(position).getId());
 		        editor.putString("selectedCategoryName", categories.get(position).getName());
 		        editor.commit();
+				startActivity(intent);
 				startActivity(intent);
 			}
 	    });

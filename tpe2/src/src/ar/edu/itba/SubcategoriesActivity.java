@@ -53,7 +53,7 @@ public class SubcategoriesActivity extends MasterActivity {
 	        public void onItemClick(AdapterView<?> parent, View view, int position, long id){
 				System.out.println(categories.get(position).getName());
 				Intent intent = new Intent(SubcategoriesActivity.this, SubcategoriesActivity.class);
-		    	SharedPreferences prefs = SubcategoriesActivity.this.getSharedPreferences("hipster_preferences", Context.MODE_PRIVATE);
+		    	SharedPreferences prefs = SubcategoriesActivity.this.getSharedPreferences(Utils.PREFERENCES, 0);
 		    	SharedPreferences.Editor editor = prefs.edit();
 		        editor.putInt("selectedCategory", categories.get(position).getId());
 		        editor.putString("selectedCategoryName", categories.get(position).getName());
