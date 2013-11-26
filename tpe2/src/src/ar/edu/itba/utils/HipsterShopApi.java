@@ -78,6 +78,7 @@ public class HipsterShopApi {
 			filters = filters + "{\"id\":2,\"value\":\"" + age + "\"}";
 		filters = filters + "]";
 		parameters.put("filters", filters);
+		parameters.put("page_size", "100");
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetAllProducts", parameters));
 		intent.putExtra(Utils.METHOD_CLASS, GetAllProducts.class.getName());
 		return intent;
@@ -149,6 +150,7 @@ public class HipsterShopApi {
 			filters = filters + "{\"id\":2,\"value\":\"" + age + "\"}";
 		filters = filters + "]";
 		parameters.put("filters", filters);
+		parameters.put("page_size", "100");
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductsByCategoryId", parameters));
 		intent.putExtra(Utils.METHOD_CLASS, GetProductsByCategoryId.class.getName());
@@ -161,6 +163,7 @@ public class HipsterShopApi {
 		
 		HashMap<String, String> parameters = new HashMap<String, String>();
 		parameters.put("name", name);
+		parameters.put("page_size", "100");
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductsByName", parameters));
 		intent.putExtra(Utils.METHOD_CLASS, GetProductsByName.class.getName());
@@ -179,8 +182,8 @@ public class HipsterShopApi {
 		if(!age.equals(""))
 			filters = filters + "{\"id\":2,\"value\":\"" + age + "\"}";
 		filters = filters + "]";
-		System.out.println(filters);
 		parameters.put("filters", filters);
+		parameters.put("page_size", "100");
 		
 		intent.putExtra(Utils.REQUEST_URL, buildUrl("Catalog", "GetProductsBySubcategoryId", parameters));
 		intent.putExtra(Utils.METHOD_CLASS, GetProductsBySubcategoryId.class.getName());
