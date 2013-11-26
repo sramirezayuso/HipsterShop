@@ -37,7 +37,7 @@ public class AgeAdapter extends ArrayAdapter<String>{
     	View topBar = inflater.inflate(R.layout.spinner, parent, false);
     	
         ImageView icon=(ImageView)topBar.findViewById(R.id.image);
-        icon.setImageResource(R.drawable.hipster);
+        icon.setImageResource(R.drawable.ages);
         
         return topBar;
     }
