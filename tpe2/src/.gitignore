@@ -9,7 +9,14 @@
 *.class
 
 # generated files
-bin/
+bin/resources.ap_
+bin/R.txt
+bin/jarlist.cache
+bin/classes.dex
+bin/AndroidManifest.xml
+bin/res/
+bin/dexedLibs/
+bin/classes/
 gen/
 
 # Local configuration file (sdk path, etc)
